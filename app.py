@@ -1496,7 +1496,7 @@ else:
 
         st.subheader("Game Transition Comparison")
         st.caption(
-            "Select any consecutive-game transition to inspect which defender "
+            "Select any available game-to-game transition to inspect which defender "
             "shares changed most and how concentration and offensive outcomes moved "
             "over the same interval."
         )
@@ -1577,7 +1577,7 @@ else:
                     f"**{from_label} → {to_label} context**"
                 )
 
-                trans_col1, trans_col2, trans_col3, trans_col4 = st.columns(4)
+                trans_col1, trans_col2, trans_col3, trans_col4, trans_col5 = st.columns(5)
 
                 trans_col1.metric(
                     "Adjustment Score",
@@ -1599,6 +1599,12 @@ else:
                     "eFG%",
                     f'{to_outcome["eFG%"]:.1f}%',
                     f'{to_outcome["eFG%"] - from_outcome["eFG%"]:+.1f} pp',
+                    delta_color="off"
+                )
+                trans_col5.metric(
+                    "TOV/75",
+                    f'{to_outcome["TOV/75"]:.1f}',
+                    f'{to_outcome["TOV/75"] - from_outcome["TOV/75"]:+.1f}',
                     delta_color="off"
                 )
 
