@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 
 from data_pipeline import (
@@ -79,3 +81,19 @@ def test_exact_duplicate_row_fails_validation():
 
     assert report["status"] == "fail"
     assert any("Exact duplicate rows" in error for error in report["errors"])
+
+
+def test_repository_dataset_passes_validation():
+    data_path = Path("data/OKC Spurs Matchup Data.csv")
+    raw = pd.read_csv(data_path)
+
+    cleaned, report = prepare_matchup_data(raw)
+
+    assert report["status"] == "pass"
+    assert report["errors"] == []
+    assert report["warnings"] == []
+    assert report["rows"] == 1074
+    assert report["games"] == 5
+    assert report["offensive_players"] == 29
+    assert set(report["teams"]) == {"OKC", "SAS"}
+    assert cleaned["matchup_seconds"].notna().all()
