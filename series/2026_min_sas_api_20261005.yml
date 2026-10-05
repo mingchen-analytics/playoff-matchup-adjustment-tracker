@@ -1,0 +1,30 @@
+series_id: 2026_min_sas_api_20261005
+season: 2025-26
+season_type: Playoffs
+playoff_round: Western Conference Semifinals
+team_a: MIN
+team_b: SAS
+games:
+- game_number: 1
+  game_id: '0042500231'
+  game_date: '2026-05-04'
+- game_number: 2
+  game_id: '0042500232'
+  game_date: '2026-05-06'
+- game_number: 3
+  game_id: '0042500233'
+  game_date: '2026-05-08'
+- game_number: 4
+  game_id: '0042500234'
+  game_date: '2026-05-10'
+- game_number: 5
+  game_id: '0042500235'
+  game_date: '2026-05-12'
+- game_number: 6
+  game_id: '0042500236'
+  game_date: '2026-05-15'
+series_complete: true
+source_csv: null
+default_player: null
+notes: Discovered from NBA LeagueGameFinder played-game results; complete means one
+  team reached four wins.

@@ -1,5 +1,8 @@
 # V2 player game context — 2026-10-05
 
+This document records the initial two-series milestone. The current seven-series
+catalog and new acquisition evidence are in [Series expansion](SERIES_EXPANSION.md).
+
 The second context milestone adds traditional full-game player box scores to
 both independent API series. This completes the team-result and player-game
 portions of the handoff's game-context stage, not possession or lineup analysis.

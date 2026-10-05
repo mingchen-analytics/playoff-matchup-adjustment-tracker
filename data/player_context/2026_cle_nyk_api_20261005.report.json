@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_cle_nyk_api_20261005",
+  "status": "complete",
+  "endpoint": "NBA BoxScoreTraditionalV3",
+  "started_at": "2026-10-05T20:02:33.043486+00:00",
+  "manifest_sha256": "e29cc1d9adac2df5ce8a94a1f63cb23957e290b0bc993de3edf6c35c2221dc40",
+  "team_game_log_sha256": "794cc650c4eeb232dac3599361d7e73317dc6b5dc55c808df850069032b87dda",
+  "matchup_dataset_sha256": "5e53b310ea5cb7260637c3a893eb00df2874d3b520dca69a4912579534ef5753",
+  "normalizer_sha256": "4606fe0929a7f11e1cd5fc5637f0d9dee9157e1a7d60e1031eae378dc8a82d57",
+  "games": [
+    {
+      "game_id": "0042500301",
+      "game_number": 1,
+      "status": "cached",
+      "rows": 30,
+      "acquisition": {
+        "game_id": "0042500301",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T19:59:56.586169+00:00",
+        "raw_sha256": "b0826ee78490f75b9b1cee4a9de7b7dd699876cff9e24c5c252900f90fd1dd37"
+      }
+    },
+    {
+      "game_id": "0042500302",
+      "game_number": 2,
+      "status": "cached",
+      "rows": 30,
+      "acquisition": {
+        "game_id": "0042500302",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T19:59:58.736885+00:00",
+        "raw_sha256": "f686c9f5a74a13990838701ea7a2cff498174c0490abe30bc6297bc60d16c976"
+      }
+    },
+    {
+      "game_id": "0042500303",
+      "game_number": 3,
+      "status": "cached",
+      "rows": 30,
+      "acquisition": {
+        "game_id": "0042500303",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T20:00:00.938642+00:00",
+        "raw_sha256": "3dc0268dec53e1c2be2635758444fd671b51c3664ca8377195deb68ea7501ec4"
+      }
+    },
+    {
+      "game_id": "0042500304",
+      "game_number": 4,
+      "status": "cached",
+      "rows": 29,
+      "acquisition": {
+        "game_id": "0042500304",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T20:00:03.180441+00:00",
+        "raw_sha256": "1512947417a6c229c388b2747595f442e63c4b4c0f01b9c36023295251a89194"
+      }
+    }
+  ],
+  "rows": 119,
+  "dataset_sha256": "bdcfb1966cdac1b1069ba763042b22920153c0c6e3af7bc7088226e2ff043e42",
+  "finished_at": "2026-10-05T20:02:33.073101+00:00"
+}

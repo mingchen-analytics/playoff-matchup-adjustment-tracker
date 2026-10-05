@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_den_min_api_20261005",
+  "endpoint": "NBA PlayByPlayV3",
+  "status": "complete",
+  "started_at": "2026-10-05T20:01:30.727577+00:00",
+  "manifest_sha256": "64a744b2f5706e82fef80cd2be80a8a2bd4ae7fa089a260d0b0bd01e197fe319",
+  "normalizer_sha256": "db6669983a4718530d210f01a3eedd8a62eba2ce0a98b29832ca0dcf5a52499f",
+  "team_game_log_sha256": "282a53139ff49bc75eb13bcbf2f875542e2373bde286c6273ff0248c748be5af",
+  "player_dataset_sha256": "ee19d64f7e8def5f390491900c03f35463d6fc1b79e5839145b6d6e21f5ee9e3",
+  "games": [
+    {
+      "game_id": "0042500161",
+      "game_number": 1,
+      "status": "fetched",
+      "raw_actions": 497,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "DEN",
+      "away_team": "MIN",
+      "final_home_score": 116,
+      "final_away_score": 105,
+      "duplicate_action_numbers": 18,
+      "substitutions": 47,
+      "fouls": 45,
+      "rows": 92,
+      "acquisition": {
+        "game_id": "0042500161",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:30.990173+00:00",
+        "raw_sha256": "4d2ae30a8b16c54760c59e0d3eec49446f2d53121cd9f58978d4c1cae1387b64"
+      },
+      "dataset_sha256": "c72730a0f31c471cf54fa552cb001742d9f3bb6949a84deab0bb00b3232b9e61"
+    },
+    {
+      "game_id": "0042500162",
+      "game_number": 2,
+      "status": "fetched",
+      "raw_actions": 523,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "DEN",
+      "away_team": "MIN",
+      "final_home_score": 114,
+      "final_away_score": 119,
+      "duplicate_action_numbers": 14,
+      "substitutions": 55,
+      "fouls": 55,
+      "rows": 110,
+      "acquisition": {
+        "game_id": "0042500162",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:33.249431+00:00",
+        "raw_sha256": "c467af2c3ce098b0eafbdcf6475f521e31c82f073ab46ce984292b8ee7527468"
+      },
+      "dataset_sha256": "86702249f588125ed29df098fa272df9e079eb372007ec6beb25bfafc2e77f85"
+    },
+    {
+      "game_id": "0042500163",
+      "game_number": 3,
+      "status": "fetched",
+      "raw_actions": 504,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "MIN",
+      "away_team": "DEN",
+      "final_home_score": 113,
+      "final_away_score": 96,
+      "duplicate_action_numbers": 18,
+      "substitutions": 44,
+      "fouls": 46,
+      "rows": 90,
+      "acquisition": {
+        "game_id": "0042500163",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:35.572777+00:00",
+        "raw_sha256": "8c8ddeead300714741d7e797f81d1c5cf4c9097589f70247536a976bdc726bd8"
+      },
+      "dataset_sha256": "c72f7fb47dd1233d6c8c5ea3243b25b4e29c0579736675872a1849b3d5b54866"
+    },
+    {
+      "game_id": "0042500164",
+      "game_number": 4,
+      "status": "fetched",
+      "raw_actions": 518,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "MIN",
+      "away_team": "DEN",
+      "final_home_score": 112,
+      "final_away_score": 96,
+      "duplicate_action_numbers": 25,
+      "substitutions": 54,
+      "fouls": 47,
+      "rows": 101,
+      "acquisition": {
+        "game_id": "0042500164",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:37.962464+00:00",
+        "raw_sha256": "d04d3a536ffffe37ab33978db9b18ae26f0a345008b25a7c5797321da06b9542"
+      },
+      "dataset_sha256": "41b35f7cc3d7df7010b861b0e126254f9e954bb96d7ac9427360ed9105f424e3"
+    },
+    {
+      "game_id": "0042500165",
+      "game_number": 5,
+      "status": "fetched",
+      "raw_actions": 498,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "DEN",
+      "away_team": "MIN",
+      "final_home_score": 125,
+      "final_away_score": 113,
+      "duplicate_action_numbers": 30,
+      "substitutions": 46,
+      "fouls": 58,
+      "rows": 104,
+      "acquisition": {
+        "game_id": "0042500165",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:40.218745+00:00",
+        "raw_sha256": "061a6a7961c095cd684d4d2010f53fcdf005046e4a04050af57c192f8b285d66"
+      },
+      "dataset_sha256": "1102ca1710532be335ab7c3edb0b379f86b449a868892b18d48b4507fec7e336"
+    },
+    {
+      "game_id": "0042500166",
+      "game_number": 6,
+      "status": "fetched",
+      "raw_actions": 495,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "MIN",
+      "away_team": "DEN",
+      "final_home_score": 110,
+      "final_away_score": 98,
+      "duplicate_action_numbers": 23,
+      "substitutions": 51,
+      "fouls": 49,
+      "rows": 100,
+      "acquisition": {
+        "game_id": "0042500166",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:42.482927+00:00",
+        "raw_sha256": "866e4ecfa53b98aef2714a69f4ee8ff70e1a8554446480de6cbc703b375c42ef"
+      },
+      "dataset_sha256": "e803ae4ad47bc16d7daefb14a9083810009cc6ab1fd592550c853171fb33295a"
+    }
+  ],
+  "rows": 597,
+  "finished_at": "2026-10-05T20:01:42.616436+00:00"
+}

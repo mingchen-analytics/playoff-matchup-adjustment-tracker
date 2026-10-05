@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_den_min_api_20261005",
+  "status": "complete",
+  "coverage_complete": true,
+  "series_complete": true,
+  "expected_games": 6,
+  "games": [
+    {
+      "game_number": 1,
+      "game_id": "0042500161",
+      "status": "fetched",
+      "rows": 167,
+      "raw_sha256": "87e88ec34dee4f62d77ac58d915eef92e151f9c388556a8e27e216b2061748c8",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500161",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:01:07.180204+00:00",
+        "raw_sha256": "87e88ec34dee4f62d77ac58d915eef92e151f9c388556a8e27e216b2061748c8"
+      }
+    },
+    {
+      "game_number": 2,
+      "game_id": "0042500162",
+      "status": "fetched",
+      "rows": 155,
+      "raw_sha256": "2d650fb1582bd98cdeb2c478dcfc37860579df3174767d77a4881f08ca0c93be",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500162",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:01:09.406984+00:00",
+        "raw_sha256": "2d650fb1582bd98cdeb2c478dcfc37860579df3174767d77a4881f08ca0c93be"
+      }
+    },
+    {
+      "game_number": 3,
+      "game_id": "0042500163",
+      "status": "fetched",
+      "rows": 187,
+      "raw_sha256": "90404c37659d51178688289e7c256194d7f0053819866e9e706bbe9628605c2e",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500163",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:01:11.951260+00:00",
+        "raw_sha256": "90404c37659d51178688289e7c256194d7f0053819866e9e706bbe9628605c2e"
+      }
+    },
+    {
+      "game_number": 4,
+      "game_id": "0042500164",
+      "status": "fetched",
+      "rows": 160,
+      "raw_sha256": "8d95dee41764af1dcebb0b64631408b08d184b682433cda5fa9070921e08485d",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500164",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:01:14.426595+00:00",
+        "raw_sha256": "8d95dee41764af1dcebb0b64631408b08d184b682433cda5fa9070921e08485d"
+      }
+    },
+    {
+      "game_number": 5,
+      "game_id": "0042500165",
+      "status": "fetched",
+      "rows": 196,
+      "raw_sha256": "e349128cff257a25f6dd8c93ed9ebfc4a72d05d538de49df58d87aa106f01022",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500165",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:01:16.683369+00:00",
+        "raw_sha256": "e349128cff257a25f6dd8c93ed9ebfc4a72d05d538de49df58d87aa106f01022"
+      }
+    },
+    {
+      "game_number": 6,
+      "game_id": "0042500166",
+      "status": "fetched",
+      "rows": 144,
+      "raw_sha256": "946c0a676cec45cf9ec16fe13daae00430b1e48a30e05f41e7f198295d93c8c2",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500166",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:01:18.899032+00:00",
+        "raw_sha256": "946c0a676cec45cf9ec16fe13daae00430b1e48a30e05f41e7f198295d93c8c2"
+      }
+    }
+  ],
+  "errors": [],
+  "started_at": "2026-10-05T20:01:07.057993+00:00",
+  "adapter_sha256": "9b09f31322043e76b7965336f2c98e111d80b800ac84a76be6e88441ff6097d3",
+  "manifest_sha256": "64a744b2f5706e82fef80cd2be80a8a2bd4ae7fa089a260d0b0bd01e197fe319",
+  "discovery_sha256": "282a53139ff49bc75eb13bcbf2f875542e2373bde286c6273ff0248c748be5af",
+  "source_verification": "approved_separate_snapshot",
+  "manual_parity": "fail",
+  "source_policy_sha256": "ce864dc1aed74651767632cd1d71dd983f88102a9c0fa54e817976b2ee73ae82",
+  "rows": 1009,
+  "quality": {
+    "status": "pass",
+    "rows": 1009,
+    "games": 6,
+    "offensive_players": 29,
+    "teams": [
+      "DEN",
+      "MIN"
+    ],
+    "duplicate_rows": 0,
+    "zero_matchup_time_rows": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "dataset_sha256": "7d5ebdaac1d2db48da6f39cc12c0adcdef4ee356d9f279b71fdd45d93e776d07",
+  "dataset_path": "2026_den_min_api_20261005.csv",
+  "finished_at": "2026-10-05T20:01:19.038631+00:00"
+}

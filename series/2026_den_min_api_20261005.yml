@@ -1,0 +1,30 @@
+series_id: 2026_den_min_api_20261005
+season: 2025-26
+season_type: Playoffs
+playoff_round: First Round
+team_a: DEN
+team_b: MIN
+games:
+- game_number: 1
+  game_id: '0042500161'
+  game_date: '2026-04-18'
+- game_number: 2
+  game_id: '0042500162'
+  game_date: '2026-04-20'
+- game_number: 3
+  game_id: '0042500163'
+  game_date: '2026-04-23'
+- game_number: 4
+  game_id: '0042500164'
+  game_date: '2026-04-25'
+- game_number: 5
+  game_id: '0042500165'
+  game_date: '2026-04-27'
+- game_number: 6
+  game_id: '0042500166'
+  game_date: '2026-04-30'
+series_complete: true
+source_csv: null
+default_player: null
+notes: Discovered from NBA LeagueGameFinder played-game results; complete means one
+  team reached four wins.

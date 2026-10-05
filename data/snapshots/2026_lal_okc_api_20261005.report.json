@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_lal_okc_api_20261005",
+  "status": "complete",
+  "coverage_complete": true,
+  "series_complete": true,
+  "expected_games": 4,
+  "games": [
+    {
+      "game_number": 1,
+      "game_id": "0042500221",
+      "status": "fetched",
+      "rows": 211,
+      "raw_sha256": "ca6191c8a93298657de22546f35ecd9aec8a36b5658b27cbf1f69fbf9f62d7e6",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500221",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:45.271239+00:00",
+        "raw_sha256": "ca6191c8a93298657de22546f35ecd9aec8a36b5658b27cbf1f69fbf9f62d7e6"
+      }
+    },
+    {
+      "game_number": 2,
+      "game_id": "0042500222",
+      "status": "fetched",
+      "rows": 204,
+      "raw_sha256": "24768c762e3d228d1c7055d6f3880c92dc3f6d99ba033e8c77ce6733d078a5c4",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500222",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:47.489007+00:00",
+        "raw_sha256": "24768c762e3d228d1c7055d6f3880c92dc3f6d99ba033e8c77ce6733d078a5c4"
+      }
+    },
+    {
+      "game_number": 3,
+      "game_id": "0042500223",
+      "status": "fetched",
+      "rows": 215,
+      "raw_sha256": "03fc99d01abb1a73706a98c819b381af9ba3e486b3ee5886a33cbac83314ce27",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500223",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:49.758242+00:00",
+        "raw_sha256": "03fc99d01abb1a73706a98c819b381af9ba3e486b3ee5886a33cbac83314ce27"
+      }
+    },
+    {
+      "game_number": 4,
+      "game_id": "0042500224",
+      "status": "fetched",
+      "rows": 164,
+      "raw_sha256": "5939d649349545bf206e90b26ee62e307e7584c475fa3e6a2a139d6f8ba784d7",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500224",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:52.591452+00:00",
+        "raw_sha256": "5939d649349545bf206e90b26ee62e307e7584c475fa3e6a2a139d6f8ba784d7"
+      }
+    }
+  ],
+  "errors": [],
+  "started_at": "2026-10-05T20:00:45.161556+00:00",
+  "adapter_sha256": "9b09f31322043e76b7965336f2c98e111d80b800ac84a76be6e88441ff6097d3",
+  "manifest_sha256": "39f2d7b20c6edb1855e1fe784a6d2769c6202dff2d70eec7c7942a208ec0ee70",
+  "discovery_sha256": "838ea643e4b0ef2d4a046acac794d29f13ce4c09c7216b1131e95a3d97cbc079",
+  "source_verification": "approved_separate_snapshot",
+  "manual_parity": "fail",
+  "source_policy_sha256": "ce864dc1aed74651767632cd1d71dd983f88102a9c0fa54e817976b2ee73ae82",
+  "rows": 794,
+  "quality": {
+    "status": "pass",
+    "rows": 794,
+    "games": 4,
+    "offensive_players": 27,
+    "teams": [
+      "LAL",
+      "OKC"
+    ],
+    "duplicate_rows": 0,
+    "zero_matchup_time_rows": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "dataset_sha256": "f7522f030c5eca4f124bd719139002799f9ea39b899cc771f6ff82997bbd5115",
+  "dataset_path": "2026_lal_okc_api_20261005.csv",
+  "finished_at": "2026-10-05T20:00:52.728860+00:00"
+}

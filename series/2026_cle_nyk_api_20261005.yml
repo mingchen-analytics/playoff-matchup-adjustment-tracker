@@ -1,0 +1,24 @@
+series_id: 2026_cle_nyk_api_20261005
+season: 2025-26
+season_type: Playoffs
+playoff_round: Eastern Conference Finals
+team_a: CLE
+team_b: NYK
+games:
+- game_number: 1
+  game_id: '0042500301'
+  game_date: '2026-05-19'
+- game_number: 2
+  game_id: '0042500302'
+  game_date: '2026-05-21'
+- game_number: 3
+  game_id: '0042500303'
+  game_date: '2026-05-23'
+- game_number: 4
+  game_id: '0042500304'
+  game_date: '2026-05-25'
+series_complete: true
+source_csv: null
+default_player: null
+notes: Discovered from NBA LeagueGameFinder played-game results; complete means one
+  team reached four wins.

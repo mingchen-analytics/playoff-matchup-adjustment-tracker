@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_cle_nyk_api_20261005",
+  "status": "complete",
+  "coverage_complete": true,
+  "series_complete": true,
+  "expected_games": 4,
+  "games": [
+    {
+      "game_number": 1,
+      "game_id": "0042500301",
+      "status": "fetched",
+      "rows": 162,
+      "raw_sha256": "493d2efd9f67bd93e7489890c73b52f4c690181540790b2aeead6f40de3ce7a5",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500301",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T19:59:49.495627+00:00",
+        "raw_sha256": "493d2efd9f67bd93e7489890c73b52f4c690181540790b2aeead6f40de3ce7a5"
+      }
+    },
+    {
+      "game_number": 2,
+      "game_id": "0042500302",
+      "status": "fetched",
+      "rows": 186,
+      "raw_sha256": "0a01f76b50a4e249cce40a91fc676812acec57be726f770d79328e6c28384913",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500302",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T19:59:51.802789+00:00",
+        "raw_sha256": "0a01f76b50a4e249cce40a91fc676812acec57be726f770d79328e6c28384913"
+      }
+    },
+    {
+      "game_number": 3,
+      "game_id": "0042500303",
+      "status": "fetched",
+      "rows": 149,
+      "raw_sha256": "d55103d7a2542e6d78816a9b39c84435dab686f7ce698dfbc45b870952586152",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500303",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T19:59:54.005780+00:00",
+        "raw_sha256": "d55103d7a2542e6d78816a9b39c84435dab686f7ce698dfbc45b870952586152"
+      }
+    },
+    {
+      "game_number": 4,
+      "game_id": "0042500304",
+      "status": "fetched",
+      "rows": 224,
+      "raw_sha256": "c6db722dff9160920f5a490c143686889a7aa820f94ec04973a94564d2ca8ba4",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500304",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T19:59:56.240156+00:00",
+        "raw_sha256": "c6db722dff9160920f5a490c143686889a7aa820f94ec04973a94564d2ca8ba4"
+      }
+    }
+  ],
+  "errors": [],
+  "started_at": "2026-10-05T19:59:49.298589+00:00",
+  "adapter_sha256": "9b09f31322043e76b7965336f2c98e111d80b800ac84a76be6e88441ff6097d3",
+  "manifest_sha256": "e29cc1d9adac2df5ce8a94a1f63cb23957e290b0bc993de3edf6c35c2221dc40",
+  "discovery_sha256": "794cc650c4eeb232dac3599361d7e73317dc6b5dc55c808df850069032b87dda",
+  "source_verification": "approved_separate_snapshot",
+  "manual_parity": "fail",
+  "source_policy_sha256": "ce864dc1aed74651767632cd1d71dd983f88102a9c0fa54e817976b2ee73ae82",
+  "rows": 721,
+  "quality": {
+    "status": "pass",
+    "rows": 721,
+    "games": 4,
+    "offensive_players": 28,
+    "teams": [
+      "CLE",
+      "NYK"
+    ],
+    "duplicate_rows": 0,
+    "zero_matchup_time_rows": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "dataset_sha256": "5e53b310ea5cb7260637c3a893eb00df2874d3b520dca69a4912579534ef5753",
+  "dataset_path": "2026_cle_nyk_api_20261005.csv",
+  "finished_at": "2026-10-05T19:59:56.368470+00:00"
+}

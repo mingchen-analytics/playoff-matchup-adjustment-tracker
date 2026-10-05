@@ -1,5 +1,8 @@
 # First V2 milestone: offline game context
 
+This document records the initial two-series milestone. The current seven-series
+catalog and new acquisition evidence are in [Series expansion](SERIES_EXPANSION.md).
+
 V1 is merged and the owner confirmed the local dashboard runs correctly. The
 handoff's next stage is game context, beginning with team results rather than
 play-by-play or a new analytical definition.

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_lal_okc_api_20261005",
+  "endpoint": "NBA PlayByPlayV3",
+  "status": "complete",
+  "started_at": "2026-10-05T20:00:59.595217+00:00",
+  "manifest_sha256": "39f2d7b20c6edb1855e1fe784a6d2769c6202dff2d70eec7c7942a208ec0ee70",
+  "normalizer_sha256": "db6669983a4718530d210f01a3eedd8a62eba2ce0a98b29832ca0dcf5a52499f",
+  "team_game_log_sha256": "838ea643e4b0ef2d4a046acac794d29f13ce4c09c7216b1131e95a3d97cbc079",
+  "player_dataset_sha256": "c119f4ed40b9d223932a578efb71f05ba9386fce63b2f4e2789d15f4331dce30",
+  "games": [
+    {
+      "game_id": "0042500221",
+      "game_number": 1,
+      "status": "fetched",
+      "raw_actions": 478,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "OKC",
+      "away_team": "LAL",
+      "final_home_score": 108,
+      "final_away_score": 90,
+      "duplicate_action_numbers": 27,
+      "substitutions": 66,
+      "fouls": 31,
+      "rows": 97,
+      "acquisition": {
+        "game_id": "0042500221",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:59.810430+00:00",
+        "raw_sha256": "4909ec4f6e23cbb5f80f1660df748ded1d8fb110af830fadbf2c023b3abccbf0"
+      },
+      "dataset_sha256": "d00320e7b78a2487c2fb24d24a7f1657a9349a41d78803e89492e992a2b30ace"
+    },
+    {
+      "game_id": "0042500222",
+      "game_number": 2,
+      "status": "fetched",
+      "raw_actions": 492,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "OKC",
+      "away_team": "LAL",
+      "final_home_score": 125,
+      "final_away_score": 107,
+      "duplicate_action_numbers": 24,
+      "substitutions": 68,
+      "fouls": 48,
+      "rows": 116,
+      "acquisition": {
+        "game_id": "0042500222",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:02.193946+00:00",
+        "raw_sha256": "29b154163a4b1e071e38b96befb66da643d63b06dd1112743799105aee8b0c2c"
+      },
+      "dataset_sha256": "4ee691df6b518ad67d9ebd4fdd6289e4a2f6cc632262c2b415dce7c89302fbcb"
+    },
+    {
+      "game_id": "0042500223",
+      "game_number": 3,
+      "status": "fetched",
+      "raw_actions": 468,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "LAL",
+      "away_team": "OKC",
+      "final_home_score": 108,
+      "final_away_score": 131,
+      "duplicate_action_numbers": 22,
+      "substitutions": 54,
+      "fouls": 39,
+      "rows": 93,
+      "acquisition": {
+        "game_id": "0042500223",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:04.628591+00:00",
+        "raw_sha256": "f1f72b06e8981022b124d4f427d3e2afb640ac9995f8238fecb4c8f8ec2c0e9a"
+      },
+      "dataset_sha256": "9e8c7ef2b02bbce4c103624f20379acda56514f571339073c15eb05d841c9819"
+    },
+    {
+      "game_id": "0042500224",
+      "game_number": 4,
+      "status": "fetched",
+      "raw_actions": 492,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "LAL",
+      "away_team": "OKC",
+      "final_home_score": 110,
+      "final_away_score": 115,
+      "duplicate_action_numbers": 20,
+      "substitutions": 78,
+      "fouls": 46,
+      "rows": 124,
+      "acquisition": {
+        "game_id": "0042500224",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:01:06.884298+00:00",
+        "raw_sha256": "325810cb0e5056d6ec7d86f7088a783a87d83fd56f871f0bc6fc0e7a61bedae8"
+      },
+      "dataset_sha256": "de7dc4a372f1f92b28397c0d4027cef70f003ac98add0d9d801df5cd9e50a649"
+    }
+  ],
+  "rows": 430,
+  "finished_at": "2026-10-05T20:01:07.048193+00:00"
+}

@@ -4,16 +4,16 @@
 
 A reusable basketball analytics system for tracking how defensive assignments change **game by game** during a playoff series.
 
-**Current status:** V1.0 implementation and validation are complete under the owner-approved independent API snapshot policy. Two complete real seven-game series are bundled: 2026 OKC–SAS (1,513 matchup rows) and 2025 OKC–IND (1,388 rows). The original five-game manual sample remains the default; its values and formulas are unchanged. API/manual numerical parity remains **failed**, not silently waived or relabeled as passing. See [validation findings](docs/V1_VALIDATION.md).
+**Current status:** V1.0 implementation and validation are complete under the owner-approved independent API snapshot policy. Seven complete real API series are bundled across two seasons and four playoff stages, covering 39 games. See the [series catalog and expansion validation](docs/SERIES_EXPANSION.md). The original five-game manual sample remains the default; its values and formulas are unchanged. API/manual numerical parity remains **failed**, not silently waived or relabeled as passing. See [validation findings](docs/V1_VALIDATION.md).
 
-**First V2 milestone:** Verified offline game context is available for both API series: scores, result, home/away, point differential, and series records before/after each game. The table follows the selected player's team and the selected adjustment transition. See [game-context design and validation](docs/V2_GAME_CONTEXT.md).
+**First V2 milestone:** Verified offline game context is available for all seven API series: scores, result, home/away, point differential, and series records before/after each game. The table follows the selected player's team and the selected adjustment transition. See [game-context design and validation](docs/V2_GAME_CONTEXT.md).
 
-**Player game context:** Both API series also include full-game player box scores:
+**Player game context:** All seven API series also include full-game player box scores:
 minutes, starter status, points, FGA, FTA, turnovers, personal fouls and plus/minus.
 Player IDs join these records to matchup identities. DNP/inactive entries retain
 their source comments and blank statistics. See [player-context validation and CLI](docs/V2_PLAYER_CONTEXT.md).
 
-**Event timelines:** Both API series include verified substitution/foul observations
+**Event timelines:** All seven API series include verified substitution/foul observations
 with regulation and overtime clocks. In Game Transition Comparison, open
 **Substitutions and Fouls** to inspect either game, filter teams/event types, and
 compare the chart with the original event descriptions. See [event timeline design](docs/V2_EVENT_TIMELINE.md).
@@ -500,7 +500,7 @@ Offline mode makes no NBA requests and requires `data/raw/<game_id>.csv` for eve
 3. Generate its processed data and report using `scripts.fetch_series`.
 4. Start/reload the app and select the season, round, and series.
 
-Only successfully validated data reaches analytics. API manifests without processed datasets produce a clear unavailable message. The bundled dated manifests each have a complete real dataset and provenance report; tests verify both real-series switching and synthetic edge cases. The old pending OKC–SAS configuration was replaced by its dated, fully acquired snapshot configuration.
+Only successfully validated data reaches analytics. API manifests without processed datasets produce a clear unavailable message. The bundled dated manifests each have a complete real dataset and provenance report; tests verify real-series switching across seasons and rounds, including multiple series in one round, and synthetic edge cases. The old pending OKC–SAS configuration was replaced by its dated, fully acquired snapshot configuration.
 
 ### Schema and reports
 
@@ -523,7 +523,7 @@ python -m pytest -q
 
 Normal CI installs only app/test dependencies, blocks live HTTP in tests, and validates manifests, discovery, schema, cache reuse, partial failures, source gates, and actual Streamlit interactions. It preserves the original Wembanyama largest adjustment of **0.620**. The existing manual-only API smoke workflow remains separate from normal CI.
 
-V1.0 is implemented, merged and verified locally with two full real series under the approved source policy. Historical parity remains failed and visible; its cause is unconfirmed. Detailed evidence is recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md). Hosted Streamlit deployment has not been confirmed updated.
+V1.0 is implemented, merged and verified with the original two full real series under the approved source policy; the catalog now includes seven complete API series. Historical parity remains failed and visible; its cause is unconfirmed. Detailed evidence is recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md). Hosted Streamlit deployment has not been confirmed updated.
 
 Team results and player game box scores are the first V2 context milestones.
 Substitution/foul event timelines are available. Lineup reconstruction, possession

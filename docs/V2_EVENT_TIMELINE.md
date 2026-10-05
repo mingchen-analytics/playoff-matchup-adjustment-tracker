@@ -1,5 +1,8 @@
 # V2 substitution and foul timelines — 2026-10-05
 
+This document records the initial two-series milestone. The current seven-series
+catalog and new acquisition evidence are in [Series expansion](SERIES_EXPANSION.md).
+
 The third context milestone adds observed event timing to the two independent
 API series. It does not reconstruct five-player lineups or identify when an
 on-ball defender assignment changed within a game.

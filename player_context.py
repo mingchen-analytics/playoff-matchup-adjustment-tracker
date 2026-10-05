@@ -59,7 +59,12 @@ def integer(value, label, *, signed=False):
 
 
 def minutes_seconds(value):
-    if not isinstance(value, str) or not re.fullmatch(r"\d+:[0-5]\d(?:\.\d+)?", value):
+    # NBA Traditional V3 can return a seconds component of exactly 60 (e.g.
+    # Jeremy Sochan's 2:60 in 0042500404). Preserve raw acquisition evidence;
+    # elapsed seconds carry that minute without relaxing team-total validation.
+    if not isinstance(value, str) or not re.fullmatch(
+        r"\d+:(?:[0-5]\d(?:\.\d+)?|60)", value
+    ):
         raise ValueError("Invalid box-score minutes.")
     minutes, seconds = value.split(":")
     return int(minutes) * 60 + float(seconds)

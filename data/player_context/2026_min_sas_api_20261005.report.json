@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_min_sas_api_20261005",
+  "status": "complete",
+  "endpoint": "NBA BoxScoreTraditionalV3",
+  "started_at": "2026-10-05T20:02:33.179480+00:00",
+  "manifest_sha256": "d10139e825f90e644e5f883142cc9cf989225fd86b028dc12142fe390dbb872b",
+  "team_game_log_sha256": "1bb7049a4a8c1865ff2fb1365701416dea071f09bc6ef252bf17e21c761659dd",
+  "matchup_dataset_sha256": "0166b2d4aaa7f08ffa1e2fe971fadcc82842d08c311f36690000aabdc12b8afd",
+  "normalizer_sha256": "4606fe0929a7f11e1cd5fc5637f0d9dee9157e1a7d60e1031eae378dc8a82d57",
+  "games": [
+    {
+      "game_id": "0042500231",
+      "game_number": 1,
+      "status": "cached",
+      "rows": 27,
+      "acquisition": {
+        "game_id": "0042500231",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T20:00:22.305563+00:00",
+        "raw_sha256": "46f03d6516a5f61025408664ba3acfbde6d2f469ef127d19b066dac3eb506102"
+      }
+    },
+    {
+      "game_id": "0042500232",
+      "game_number": 2,
+      "status": "cached",
+      "rows": 29,
+      "acquisition": {
+        "game_id": "0042500232",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T20:00:24.483063+00:00",
+        "raw_sha256": "872062ec9d7fed2d112b3169801e6f3afc838b23801119d97048341b187fd99f"
+      }
+    },
+    {
+      "game_id": "0042500233",
+      "game_number": 3,
+      "status": "cached",
+      "rows": 29,
+      "acquisition": {
+        "game_id": "0042500233",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T20:00:26.731454+00:00",
+        "raw_sha256": "24d822308620caedaf42ab994f595accfe3e9ca5a9c2663457dec1ff0d71270d"
+      }
+    },
+    {
+      "game_id": "0042500234",
+      "game_number": 4,
+      "status": "cached",
+      "rows": 29,
+      "acquisition": {
+        "game_id": "0042500234",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T20:00:28.864854+00:00",
+        "raw_sha256": "a519fdf3522e233736173a000d267ca25e6e96def1adb3f12f2532e9fb0f54a4"
+      }
+    },
+    {
+      "game_id": "0042500235",
+      "game_number": 5,
+      "status": "cached",
+      "rows": 29,
+      "acquisition": {
+        "game_id": "0042500235",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T20:00:30.999716+00:00",
+        "raw_sha256": "0296dc62cced64f69b0500859084d1a232431ebd24189bc8960beec54a156fc1"
+      }
+    },
+    {
+      "game_id": "0042500236",
+      "game_number": 6,
+      "status": "cached",
+      "rows": 29,
+      "acquisition": {
+        "game_id": "0042500236",
+        "endpoint": "NBA BoxScoreTraditionalV3",
+        "fetched_at": "2026-10-05T20:00:33.186794+00:00",
+        "raw_sha256": "572581d4a2fc3e3b089c3bb97515782c92d52ebc3ea187c9f8675c04327448f8"
+      }
+    }
+  ],
+  "rows": 172,
+  "dataset_sha256": "c97c5184bf0f480277a5d95fe9606db8f198fa2a34d5d99a009799d5723bd1cf",
+  "finished_at": "2026-10-05T20:02:33.222891+00:00"
+}

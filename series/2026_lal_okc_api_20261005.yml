@@ -1,0 +1,24 @@
+series_id: 2026_lal_okc_api_20261005
+season: 2025-26
+season_type: Playoffs
+playoff_round: Western Conference Semifinals
+team_a: LAL
+team_b: OKC
+games:
+- game_number: 1
+  game_id: '0042500221'
+  game_date: '2026-05-05'
+- game_number: 2
+  game_id: '0042500222'
+  game_date: '2026-05-07'
+- game_number: 3
+  game_id: '0042500223'
+  game_date: '2026-05-09'
+- game_number: 4
+  game_id: '0042500224'
+  game_date: '2026-05-11'
+series_complete: true
+source_csv: null
+default_player: null
+notes: Discovered from NBA LeagueGameFinder played-game results; complete means one
+  team reached four wins.

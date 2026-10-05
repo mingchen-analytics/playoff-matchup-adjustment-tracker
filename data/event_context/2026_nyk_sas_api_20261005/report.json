@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_nyk_sas_api_20261005",
+  "endpoint": "NBA PlayByPlayV3",
+  "status": "complete",
+  "started_at": "2026-10-05T19:59:39.648251+00:00",
+  "manifest_sha256": "15e0dea0aaf229cb95da626ef192f7a5576d9adb80cf9720f66976aa0931c4d7",
+  "normalizer_sha256": "db6669983a4718530d210f01a3eedd8a62eba2ce0a98b29832ca0dcf5a52499f",
+  "team_game_log_sha256": "6897365e7d74556725b1111412079754534eced3a9ac0fa5d78a70d896150102",
+  "player_dataset_sha256": "cc387e2323d8120127e82cb1b0e3ae438a887f596f9abf0c460c7d3a01e33648",
+  "games": [
+    {
+      "game_id": "0042500401",
+      "game_number": 1,
+      "status": "fetched",
+      "raw_actions": 524,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "SAS",
+      "away_team": "NYK",
+      "final_home_score": 95,
+      "final_away_score": 105,
+      "duplicate_action_numbers": 20,
+      "substitutions": 64,
+      "fouls": 46,
+      "rows": 110,
+      "acquisition": {
+        "game_id": "0042500401",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T19:59:39.808435+00:00",
+        "raw_sha256": "1f4bd14b260058db30ddd9c5b72340a455693923c9ff7f55334df71dabcb41bb"
+      },
+      "dataset_sha256": "ab36278424078e77302aa3fde8519ffae9851926f3c7ce8651a67fcac378004a"
+    },
+    {
+      "game_id": "0042500402",
+      "game_number": 2,
+      "status": "fetched",
+      "raw_actions": 520,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "SAS",
+      "away_team": "NYK",
+      "final_home_score": 104,
+      "final_away_score": 105,
+      "duplicate_action_numbers": 31,
+      "substitutions": 63,
+      "fouls": 44,
+      "rows": 107,
+      "acquisition": {
+        "game_id": "0042500402",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T19:59:42.078144+00:00",
+        "raw_sha256": "62a9db7f9539057e31a0452469784a9048b01fc20152bf2d93d105e037f0bdfa"
+      },
+      "dataset_sha256": "379388c0fa27f4f850666d4cead8936dd28666ee1b04795da609d5656254c8e8"
+    },
+    {
+      "game_id": "0042500403",
+      "game_number": 3,
+      "status": "fetched",
+      "raw_actions": 504,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "NYK",
+      "away_team": "SAS",
+      "final_home_score": 111,
+      "final_away_score": 115,
+      "duplicate_action_numbers": 24,
+      "substitutions": 55,
+      "fouls": 45,
+      "rows": 100,
+      "acquisition": {
+        "game_id": "0042500403",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T19:59:44.365648+00:00",
+        "raw_sha256": "b47d6e86073c58f4526dd5c929dbf250c0599830a5e106525746e27da8a91f7d"
+      },
+      "dataset_sha256": "6690bc93be0e5b43ee65085399c25014f2711adc7b46ad7ededef26b35e84004"
+    },
+    {
+      "game_id": "0042500404",
+      "game_number": 4,
+      "status": "fetched",
+      "raw_actions": 517,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "NYK",
+      "away_team": "SAS",
+      "final_home_score": 107,
+      "final_away_score": 106,
+      "duplicate_action_numbers": 24,
+      "substitutions": 76,
+      "fouls": 44,
+      "rows": 120,
+      "acquisition": {
+        "game_id": "0042500404",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T19:59:46.804962+00:00",
+        "raw_sha256": "6dbba44d84ada4bc3dc07c867e14ad96cfc2271310ebf74fb187bf4c194bfb8d"
+      },
+      "dataset_sha256": "fff0a0bfd2ec7c248f9bda8b6164965ff5e006c4f568a161e1f61c628615f5e1"
+    },
+    {
+      "game_id": "0042500405",
+      "game_number": 5,
+      "status": "fetched",
+      "raw_actions": 554,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "SAS",
+      "away_team": "NYK",
+      "final_home_score": 90,
+      "final_away_score": 94,
+      "duplicate_action_numbers": 25,
+      "substitutions": 77,
+      "fouls": 43,
+      "rows": 120,
+      "acquisition": {
+        "game_id": "0042500405",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T19:59:49.119999+00:00",
+        "raw_sha256": "a014319c5577540ff5f53d6bceb78544d8faedc40bff9aa167fac187e1a449fd"
+      },
+      "dataset_sha256": "c86343b4a673197ebef59f4df7a8bd8826f6c17fa8b68ca552be21bc8c1ee75e"
+    }
+  ],
+  "rows": 557,
+  "finished_at": "2026-10-05T19:59:49.286824+00:00"
+}

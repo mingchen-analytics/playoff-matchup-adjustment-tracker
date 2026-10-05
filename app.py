@@ -1,11 +1,7 @@
-import streamlit as st
 from pathlib import Path
 
-from series_catalog import list_series, load_series
-from game_context import load_game_context, context_for_team
-from player_context import load_player_context, player_context_display
-from event_context import load_event_context, event_display
-from visualizations.event_timeline import make_event_timeline
+import streamlit as st
+
 from analytics.metrics import (
     build_adjustment_event_summary,
     calculate_adjustment_scores,
@@ -14,6 +10,10 @@ from analytics.metrics import (
     calculate_series_adjustment_leaderboard,
     calculate_transition_share_changes,
 )
+from event_context import event_display, load_event_context
+from game_context import context_for_team, load_game_context
+from player_context import load_player_context, player_context_display
+from series_catalog import list_series, load_series
 from visualizations.charts import (
     make_concentration_chart,
     make_matchup_heatmap,
@@ -22,7 +22,7 @@ from visualizations.charts import (
     make_series_leaderboard_chart,
     make_transition_change_chart,
 )
-
+from visualizations.event_timeline import make_event_timeline
 
 # -----------------------------
 # Page setup
@@ -104,8 +104,11 @@ season = st.sidebar.selectbox(
     "Season", sorted({m.season for _, m in catalog}, reverse=True)
 )
 season_catalog = [(path, m) for path, m in catalog if m.season == season]
+round_options = sorted({m.playoff_round for _, m in season_catalog})
 round_name = st.sidebar.selectbox(
-    "Round", sorted({m.playoff_round for _, m in season_catalog})
+    "Round",
+    round_options,
+    index=round_options.index(season_catalog[0][1].playoff_round),
 )
 round_catalog = [
     (path, m) for path, m in season_catalog if m.playoff_round == round_name
