@@ -247,6 +247,7 @@ Single-game matchup samples can be very small, so the main analytical signal in 
 ```text
 playoff-matchup-adjustment-tracker/
 ├── app.py
+├── data_pipeline.py
 ├── analytics/
 │   ├── __init__.py
 │   └── metrics.py
@@ -262,11 +263,14 @@ playoff-matchup-adjustment-tracker/
 └── README.md
 ```
 
-The project separates responsibilities into three layers:
+The project separates responsibilities into four layers:
 
+- **`data_pipeline.py`** — schema normalization, validation, and matchup-time parsing
 - **`app.py`** — Streamlit controls, layout, and user workflow
 - **`analytics/metrics.py`** — reusable matchup, concentration, outcome, transition, and summary logic
 - **`visualizations/charts.py`** — Plotly chart construction
+
+The data pipeline runs before any analytics are calculated. It checks required columns, player and team identities, game numbers, matchup-time values, numeric fields, negative values, duplicate rows, and team consistency. The app stops rather than silently analyzing invalid data.
 
 The analytics module does not depend on Streamlit or Plotly, which keeps the core calculations easier to test and reuse.
 
@@ -291,11 +295,16 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
-The initial tests cover two core analytical properties:
+The test suite covers core analytical properties and data validation, including:
 
 - identical matchup distributions produce an Adjustment Score of 0
 - complete redistribution produces an Adjustment Score of 1
 - an even two-defender split produces HHI = 0.5 and Effective Defenders = 2
+- valid matchup data passes the preparation pipeline
+- missing required columns fail validation
+- invalid matchup-time formats fail validation
+- negative numeric values fail validation
+- exact duplicate rows fail validation
 
 ## Limitations and Next Steps
 
