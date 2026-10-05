@@ -2,6 +2,8 @@
 
 [Open the live Streamlit dashboard](https://playoff-matchup-adjustment-tracker-zdee28tjezgw42ujydet6v.streamlit.app/)
 
+> **Rebuild in progress (`rebuild` branch).** The project is moving from a dashboard to measurement research: separating rotation, assignment choice and sampling noise in matchup changes. Phases 1–3 (measure audit, decomposition, noise baselines) are in [research/FINDINGS.md](research/FINDINGS.md). The V1 dashboard is preserved at tag `v1-archive`; development logs moved to `archive/`.
+
 A reusable basketball analytics system for tracking how defensive assignments change **game by game** during a playoff series.
 
 **Current status:** V1.0 implementation and validation are complete under the owner-approved independent API snapshot policy. Seven complete real API series are bundled across two seasons and four playoff stages, covering 39 games. See the [series catalog and expansion validation](archive/SERIES_EXPANSION.md). The original five-game manual sample remains the default; its values and formulas are unchanged. API/manual numerical parity remains **failed**, not silently waived or relabeled as passing. See [validation findings](archive/V1_VALIDATION.md).

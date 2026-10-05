@@ -1,0 +1,19 @@
+{
+  "simulations": 4000,
+  "seed": 20261005,
+  "transitions": 681,
+  "transitions_uncertain": 255,
+  "transitions_spanning_missed_games": 38,
+  "players_largest_spans_missed_games": 25,
+  "transitions_q_below_0_10_league": 182,
+  "players": 183,
+  "players_q_below_0_10_league": 71,
+  "audit_reproduction": {
+    "filter": "both games >= 20 possessions",
+    "transitions": 477,
+    "median_observed_tvd": 0.2671986417657046,
+    "median_null_tvd": 0.19206579583938074,
+    "share_above_null_p95": 0.3752620545073375,
+    "corr_tvd_min_possessions": -0.35761549117453945
+  }
+}
