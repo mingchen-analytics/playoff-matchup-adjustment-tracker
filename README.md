@@ -76,6 +76,23 @@ Defenders are ranked within each game by matchup time.
 
 The defender with the most recorded matchup time is labeled **Primary** and the second-most is labeled **Secondary**.
 
+### Game-to-game Adjustment Score
+
+The dashboard quantifies changes in matchup allocation using **total variation distance** between consecutive games.
+
+```text
+Adjustment Score = 0.5 × Σ |share_current − share_previous|
+```
+
+where each share is a defender's proportion of the offensive player's recorded matchup time in that game.
+
+The score ranges from:
+
+- **0.0** — identical matchup allocation
+- **1.0** — completely different matchup allocation
+
+For Victor Wembanyama, the largest change occurred from **Game 1 to Game 2 (0.620)**. Isaiah Hartenstein's matchup share increased by roughly **53 percentage points**, while Alex Caruso's fell by about **30 percentage points**.
+
 ### Efficiency metrics
 
 The dashboard also calculates:
