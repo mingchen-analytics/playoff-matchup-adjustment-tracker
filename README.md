@@ -91,6 +91,30 @@ This view is designed for series-level pattern recognition: it makes it easier t
 
 For readability, the dashboard displays the defenders with the most total matchup time across the selected player's series.
 
+### Series Adjustment Leaderboard
+
+The dashboard can also scan the entire series and rank offensive players by their **largest game-to-game matchup redistribution**.
+
+For each eligible player, the leaderboard reports:
+
+- Largest Adjustment Score
+- Transition where the largest change occurred
+- Average Adjustment Score across the series
+- Number of primary-defender changes
+- Average HHI matchup concentration
+- Total recorded matchup minutes
+
+Because low-volume players can produce unstable matchup-share swings, the leaderboard uses explicit eligibility filters.
+
+The default view requires:
+
+- **5 games played**
+- **30 minutes of recorded matchup time across the series**
+
+Users can adjust both thresholds in the sidebar.
+
+Under the default eligibility settings, Victor Wembanyama ranks first in this series with a largest Adjustment Score of **0.620**, followed by Isaiah Hartenstein (**0.590**) and Keldon Johnson (**0.580**).
+
 ### Adjustment Event Summary
 
 The dashboard generates a **rule-based summary** of the largest game-to-game matchup adjustment for the selected offensive player.
