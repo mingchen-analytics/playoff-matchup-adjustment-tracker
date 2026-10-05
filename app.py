@@ -180,6 +180,145 @@ def seconds_to_label(seconds):
     return f"{minutes}:{sec:02d}"
 
 
+def calculate_series_adjustment_leaderboard(
+    data,
+    min_games=5,
+    min_matchup_minutes=30
+):
+    """
+    Ranks offensive players by their largest game-to-game matchup redistribution.
+
+    Eligibility filters are explicit because low-volume matchup samples can create
+    very large share swings that are not necessarily meaningful strategic changes.
+    """
+    records = []
+
+    for (off_team, offense_player), player_df in data.groupby(
+        ["off_team", "offense_player"]
+    ):
+        player_df = player_df.copy()
+        game_count = player_df["game"].nunique()
+        total_matchup_minutes = player_df["matchup_seconds"].sum() / 60
+
+        if game_count < 2:
+            continue
+
+        adjustment_df = calculate_adjustment_scores(player_df)
+        concentration_df = calculate_matchup_concentration(player_df)
+
+        if adjustment_df.empty:
+            continue
+
+        largest = adjustment_df.loc[
+            adjustment_df["Adjustment Score"].idxmax()
+        ]
+
+        primary_by_game = (
+            player_df.groupby(["game", "defense_player"], as_index=False)["matchup_seconds"]
+            .sum()
+            .sort_values(["game", "matchup_seconds"], ascending=[True, False])
+            .groupby("game")
+            .head(1)
+            .sort_values("game")
+        )
+
+        primary_defenders = primary_by_game["defense_player"].tolist()
+        primary_changes = sum(
+            current != previous
+            for previous, current in zip(
+                primary_defenders[:-1],
+                primary_defenders[1:]
+            )
+        )
+
+        records.append({
+            "Team": off_team,
+            "Player": offense_player,
+            "Games": game_count,
+            "Matchup Min": total_matchup_minutes,
+            "Largest Adjustment": largest["Adjustment Score"],
+            "Largest Transition": (
+                f'{largest["From"]} → {largest["To"]}'
+            ),
+            "Average Adjustment": adjustment_df["Adjustment Score"].mean(),
+            "Primary Changes": primary_changes,
+            "Average HHI": (
+                concentration_df["HHI"].mean()
+                if not concentration_df.empty
+                else 0
+            )
+        })
+
+    leaderboard = pd.DataFrame(records)
+
+    if leaderboard.empty:
+        return leaderboard
+
+    leaderboard = leaderboard[
+        (leaderboard["Games"] >= min_games)
+        & (leaderboard["Matchup Min"] >= min_matchup_minutes)
+    ].copy()
+
+    leaderboard = leaderboard.sort_values(
+        ["Largest Adjustment", "Average Adjustment"],
+        ascending=[False, False]
+    ).reset_index(drop=True)
+
+    leaderboard.insert(0, "Rank", range(1, len(leaderboard) + 1))
+
+    return leaderboard
+
+
+def make_series_leaderboard_chart(leaderboard_df, top_n=10):
+    if leaderboard_df.empty:
+        return None
+
+    chart_df = leaderboard_df.head(top_n).sort_values(
+        "Largest Adjustment",
+        ascending=True
+    ).copy()
+
+    chart_df["Label"] = (
+        chart_df["Team"] + " — " + chart_df["Player"]
+    )
+
+    fig = go.Figure(
+        go.Bar(
+            x=chart_df["Largest Adjustment"],
+            y=chart_df["Label"],
+            orientation="h",
+            text=chart_df["Largest Adjustment"].round(3),
+            textposition="outside",
+            customdata=chart_df[[
+                "Largest Transition",
+                "Average Adjustment",
+                "Matchup Min"
+            ]].values,
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                "Largest adjustment: %{x:.3f}<br>"
+                "Transition: %{customdata[0]}<br>"
+                "Average adjustment: %{customdata[1]:.3f}<br>"
+                "Series matchup time: %{customdata[2]:.1f} min"
+                "<extra></extra>"
+            )
+        )
+    )
+
+    fig.update_layout(
+        title="Largest Game-to-Game Matchup Adjustment",
+        xaxis=dict(
+            title="Adjustment Score",
+            range=[0, 1]
+        ),
+        yaxis=dict(title=""),
+        height=max(430, 42 * len(chart_df) + 170),
+        margin=dict(l=180, r=70, t=90, b=60)
+    )
+
+    return fig
+
+
 def calculate_outcome_context(player_df):
     """
     Aggregates the selected offensive player's recorded matchup outcomes by game.
@@ -889,6 +1028,23 @@ def make_matchup_timeline(
 # -----------------------------
 st.sidebar.header("Controls")
 
+max_series_games = int(df["game"].nunique())
+
+st.sidebar.subheader("Leaderboard Eligibility")
+leaderboard_min_games = st.sidebar.slider(
+    "Minimum games",
+    min_value=2,
+    max_value=max_series_games,
+    value=max_series_games
+)
+leaderboard_min_minutes = st.sidebar.slider(
+    "Minimum series matchup minutes",
+    min_value=0,
+    max_value=60,
+    value=30,
+    step=5
+)
+
 team_order = ["OKC", "SAS"]
 
 offense_options = []
@@ -962,6 +1118,48 @@ Instead of only showing series-level totals, it helps users see **when defensive
 Efficiency numbers are included in the hover details, but matchup time and matchup share are treated as the primary signals because single-game matchup samples are small.
 """
 )
+
+st.subheader("Series Adjustment Leaderboard")
+st.caption(
+    "Ranks eligible offensive players by their largest game-to-game matchup "
+    "redistribution. Eligibility filters are shown in the sidebar because "
+    "small matchup samples can produce unstable share changes."
+)
+
+leaderboard_df = calculate_series_adjustment_leaderboard(
+    data=df,
+    min_games=leaderboard_min_games,
+    min_matchup_minutes=leaderboard_min_minutes
+)
+
+if leaderboard_df.empty:
+    st.info("No players meet the current leaderboard eligibility filters.")
+else:
+    leaderboard_fig = make_series_leaderboard_chart(leaderboard_df)
+    if leaderboard_fig is not None:
+        st.plotly_chart(leaderboard_fig, use_container_width=True)
+
+    leaderboard_display = leaderboard_df.copy()
+    leaderboard_display["Matchup Min"] = (
+        leaderboard_display["Matchup Min"].round(1)
+    )
+    leaderboard_display["Largest Adjustment"] = (
+        leaderboard_display["Largest Adjustment"].round(3)
+    )
+    leaderboard_display["Average Adjustment"] = (
+        leaderboard_display["Average Adjustment"].round(3)
+    )
+    leaderboard_display["Average HHI"] = (
+        leaderboard_display["Average HHI"].round(3)
+    )
+
+    st.dataframe(
+        leaderboard_display,
+        use_container_width=True,
+        hide_index=True
+    )
+
+st.divider()
 
 result = make_matchup_timeline(
     selected_player=selected_player,
