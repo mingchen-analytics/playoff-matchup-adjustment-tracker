@@ -91,6 +91,28 @@ This view is designed for series-level pattern recognition: it makes it easier t
 
 For readability, the dashboard displays the defenders with the most total matchup time across the selected player's series.
 
+### Outcome Context
+
+The dashboard also summarizes the selected offensive player's recorded outcomes by game:
+
+- Player points
+- Partial possessions
+- PTS/75
+- eFG%
+- TOV/75
+
+These metrics are used as **descriptive context**, not as causal evidence that a specific defender or matchup adjustment produced the outcome.
+
+For Wembanyama, the largest matchup adjustment occurred from Game 1 to Game 2. Over the same transition:
+
+- **PTS/75:** 38.3 → 22.1
+- **eFG%:** 66.2% → 64.7%
+- **TOV/75:** 2.9 → 4.6
+
+The scoring rate declined sharply and turnovers increased, while shooting efficiency changed only slightly. That distinction matters: the result suggests the change was not simply a matter of shots no longer falling.
+
+Because these are small, game-level matchup samples, the dashboard avoids claiming that the defensive adjustment caused the outcome.
+
 ### Matchup Concentration
 
 The dashboard also measures whether a team's matchup plan is concentrated on one or two defenders or distributed more broadly.
