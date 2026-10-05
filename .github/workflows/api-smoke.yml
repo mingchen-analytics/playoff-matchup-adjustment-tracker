@@ -1,13 +1,10 @@
 name: NBA API Smoke Test
 
 on:
-  push:
-    paths:
-      - ".github/workflows/api-smoke.yml"
   workflow_dispatch:
 
 jobs:
-  probe-endpoints:
+  compare-game-1:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -15,34 +12,20 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Probe NBA matchup endpoints
-        shell: bash
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project and data dependencies
         run: |
-          set +e
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-data.txt
 
-          urls=(
-            "https://stats.nba.com/stats/boxscorematchupsv3?GameID=0042500311"
-            "https://nba.cloud/games/0042500311/boxscorematchups?Format=json"
-            "http://nba.cloud/games/0042500311/boxscorematchups?Format=json"
-            "https://cdn.nba.com/static/json/liveData/boxscorematchups/boxscorematchups_0042500311.json"
-          )
-
-          for url in "${urls[@]}"; do
-            echo "=== $url ==="
-            code=$(curl -L -sS \
-              -A "$UA" \
-              -H "Accept: application/json, text/plain, */*" \
-              -H "Referer: https://www.nba.com/" \
-              -H "Origin: https://www.nba.com" \
-              --connect-timeout 8 \
-              --max-time 20 \
-              -o /tmp/nba_probe \
-              -w "%{http_code}" \
-              "$url")
-            echo "HTTP $code"
-            echo "Bytes: $(wc -c < /tmp/nba_probe 2>/dev/null || echo 0)"
-            head -c 160 /tmp/nba_probe 2>/dev/null || true
-            echo
-            echo
-          done
+      - name: Compare API with manual Game 1
+        run: |
+          python -m scripts.compare_api_manual \
+            --game-id 0042500311 \
+            --game-number 1
