@@ -72,10 +72,11 @@ Wembanyama result remains 0.620 for Game 1 → Game 2.
 ## Next scope
 
 This completes the team-result portion of game context, not all of V2.
-The next milestone is separately cached and validated **player game box scores**:
-minutes, starter status, points, FGA, FTA, turnovers, personal fouls and plus/minus.
-Do not infer these from defender matchup rows. Only after that layer is stable
-should play-by-play or lineup reconstruction be considered.
+The player game box-score milestone is now implemented separately:
+[player context](V2_PLAYER_CONTEXT.md). It provides minutes, starter status,
+points, FGA, FTA, turnovers, personal fouls and plus/minus from traditional
+box scores, never inferred from defender matchup rows. Only after that layer
+is stable should play-by-play or lineup reconstruction be considered.
 
 Game results provide descriptive context. They do not establish coaching intent
 or that a matchup adjustment caused a win or changed an offensive outcome.

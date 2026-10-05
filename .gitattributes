@@ -1,6 +1,7 @@
 # Keep hashed snapshots and approval evidence identical across platforms.
 data/snapshots/*.csv text eol=lf
 data/context/*.csv text eol=lf
+data/player_context/*.csv text eol=lf
 *.json text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
