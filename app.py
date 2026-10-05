@@ -2,6 +2,7 @@ import streamlit as st
 from pathlib import Path
 
 from series_catalog import list_series, load_series
+from game_context import load_game_context, context_for_team
 from analytics.metrics import (
     build_adjustment_event_summary,
     calculate_adjustment_scores,
@@ -310,6 +311,26 @@ selected_offense_key = st.selectbox(
 
 selected_off_team, selected_player = parse_player_key(selected_offense_key)
 
+game_context_display = None
+st.subheader("Game Context")
+try:
+    game_context = load_game_context(manifest, PROJECT_ROOT)
+    if game_context is None:
+        st.info("Verified game context is not available for this dataset.")
+    else:
+        game_context_display = context_for_team(
+            game_context, manifest, selected_off_team
+        )
+        st.caption(
+            f"Scores, venue and series records from {selected_off_team}'s perspective. "
+            "Series records are shown before and after each game. Opponent points "
+            "are derived from team points minus the team point differential in the "
+            "cached NBA LeagueGameFinder log. These results provide context, not coaching intent."
+        )
+        st.dataframe(game_context_display, use_container_width=True, hide_index=True)
+except (ValueError, OSError) as exc:
+    st.warning(f"Game context is unavailable: {exc}")
+
 temp = df[
     (df["off_team"] == selected_off_team) & (df["offense_player"] == selected_player)
 ].copy()
@@ -526,6 +547,16 @@ else:
         to_label = transition_row["To"]
         from_game = int(from_label.replace("Game ", ""))
         to_game = int(to_label.replace("Game ", ""))
+
+        if game_context_display is not None:
+            st.markdown("**Game results around this adjustment**")
+            st.dataframe(
+                game_context_display[
+                    game_context_display["Game"].isin([from_label, to_label])
+                ],
+                use_container_width=True,
+                hide_index=True,
+            )
 
         transition_comparison = calculate_transition_share_changes(
             player_df=player_df, from_game=from_game, to_game=to_game

@@ -2,7 +2,7 @@
 
 ## Status
 
-**V1.0 implementation and validation complete under the owner-approved independent-snapshot policy.** Two full real seven-game series are published and exercised in the dashboard. No merge or deployment has been performed. The original CSV and analytical formulas are unchanged. Historical numerical parity still fails; this is explicitly recorded rather than relabeled as passing.
+**V1.0 implementation and validation complete under the owner-approved independent-snapshot policy.** Two full real seven-game series are published and exercised in the dashboard. V1 and the Windows checkout fix are merged; the owner confirmed the local dashboard works. Hosted Streamlit deployment has not been confirmed updated. The original CSV and analytical formulas are unchanged. Historical numerical parity still fails; this is explicitly recorded rather than relabeled as passing.
 
 ## Completed engineering
 
@@ -107,6 +107,6 @@ On 2026-10-05 Ming explicitly approved the recommended policy: preserve the hist
 
 `--source-policy separate_snapshot` is explicit, not an automatic fallback after strict verification fails. It rejects changed comparison, adapter, benchmark, or approval evidence. The normal strict gate is retained and still rejects live ingestion on the failed numerical comparison. No tolerances or comparison outcomes were altered.
 
-The revised policy, full-series acquisition, second real series, and real multi-series dashboard tests have now been completed. V1.0 implementation is ready for owner review; merging the draft PR and deploying remain separate actions, not performed automatically.
+The revised policy, full-series acquisition, second real series, and real multi-series dashboard tests have now been completed and merged in PR #1. PR #2 fixed LF/CRLF snapshot validation on Windows, with 68 passing tests. The owner confirmed the local dashboard works after updating. Hosted deployment remains a separate unresolved step.
 
-The earlier pause followed the handoff's Phase 1 source-decision gate. Work resumed only after the explicit owner approval. V2+ scope (ML, play-by-play, lineups, video, scouting PDFs, major UI redesign) remains excluded.
+The earlier pause followed the handoff's Phase 1 source-decision gate. Work resumed only after the explicit owner approval. The first post-V1 milestone is documented in [V2_GAME_CONTEXT.md](V2_GAME_CONTEXT.md); ML, play-by-play, lineups, video, scouting PDFs and major UI redesign remain deferred.
