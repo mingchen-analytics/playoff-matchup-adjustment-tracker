@@ -71,44 +71,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    """
-    <style>
-    .block-container {
-        max-width: 1500px;
-        padding-top: 2.5rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-
-    h1 {
-        font-size: 2.7rem !important;
-        line-height: 1.15 !important;
-    }
-
-    h2, h3 {
-        font-size: 1.6rem !important;
-    }
-
-    p, li, div {
-        font-size: 1rem;
-    }
-
-    [data-testid="stSidebar"] {
-        min-width: 300px;
-    }
-
-    [data-testid="stSidebar"] label {
-        font-size: 1rem !important;
-    }
-
-    [data-testid="stDataFrame"] {
-        font-size: 1rem !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 
 # -----------------------------
@@ -116,21 +78,17 @@ st.markdown(
 # -----------------------------
 DATA_PATH = Path("data/OKC Spurs Matchup Data.csv")
 
-#----------------------------------
-#with st.sidebar.expander("Advanced: Upload matchup CSV"):
-#    uploaded_file = st.file_uploader(
-#        "Upload matchup CSV",
-#        type=["csv"]
-#    )
-#------------------------------
 
-df = pd.read_csv(DATA_PATH)
+@st.cache_data
+def load_matchup_data(path):
+    return pd.read_csv(path)
 
-if DATA_PATH.exists():
-    df = pd.read_csv(DATA_PATH)
-else:
+
+if not DATA_PATH.exists():
     st.error("CSV file not found. Please make sure the CSV is inside the data folder.")
     st.stop()
+
+df = load_matchup_data(DATA_PATH)
 
 
 # -----------------------------
