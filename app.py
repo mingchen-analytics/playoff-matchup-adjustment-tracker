@@ -10,6 +10,7 @@ from analytics.metrics import (
     calculate_series_adjustment_leaderboard,
     calculate_transition_share_changes,
 )
+from defensive_personnel import compare_defensive_personnel, personnel_display
 from event_context import event_display, load_event_context
 from game_context import context_for_team, load_game_context
 from player_context import load_player_context, player_context_display
@@ -23,6 +24,7 @@ from visualizations.charts import (
     make_transition_change_chart,
 )
 from visualizations.event_timeline import make_event_timeline
+from visualizations.personnel import make_personnel_change_chart
 
 # -----------------------------
 # Page setup
@@ -593,6 +595,60 @@ else:
                 use_container_width=True,
                 hide_index=True,
             )
+
+        with st.expander("Defensive Personnel Comparison"):
+            if player_box_display is None:
+                st.info(
+                    "Verified defensive personnel context is not available for this dataset."
+                )
+            else:
+                try:
+                    personnel = compare_defensive_personnel(
+                        df,
+                        player_box,
+                        manifest,
+                        selected_off_team,
+                        selected_player,
+                        from_game,
+                        to_game,
+                    )
+                    defending_team = personnel.team.iloc[0]
+                    st.caption(
+                        f"{defending_team} roster context against {selected_player}. "
+                        "Starting status, minutes and personal fouls are full-game box-score "
+                        "observations. Matchup share uses all recorded defender time against "
+                        "this player in each game. Zero matchup time means no recorded matchup; "
+                        "non-participant box statistics and unavailable changes remain blank. "
+                        "These records describe personnel changes and do not establish simultaneous "
+                        "five-player lineups or the reason for an adjustment."
+                    )
+                    durations = [
+                        float(
+                            player_box.loc[
+                                player_box.game_number.eq(game), "game_seconds"
+                            ].iloc[0]
+                        ) / 60
+                        for game in (from_game, to_game)
+                    ]
+                    st.caption(
+                        f"Game duration: Game {from_game} {durations[0]:g} min → "
+                        f"Game {to_game} {durations[1]:g} min. Full-game minute changes "
+                        "reflect both rotation and game length, including overtime. "
+                        "The chart shows up to 10 defenders by absolute matchup-share change; "
+                        "the table includes the full defending roster from both games."
+                    )
+                    personnel_chart = make_personnel_change_chart(
+                        personnel, from_game, to_game
+                    )
+                    if personnel_chart is not None:
+                        st.plotly_chart(personnel_chart, use_container_width=True)
+                    st.dataframe(
+                        personnel_display(personnel, from_game, to_game),
+                        use_container_width=True,
+                        hide_index=True,
+                    )
+                except (ValueError, OSError) as exc:
+                    st.warning(f"Defensive personnel context is unavailable: {exc}")
 
         with st.expander("Substitutions and Fouls"):
             try:
