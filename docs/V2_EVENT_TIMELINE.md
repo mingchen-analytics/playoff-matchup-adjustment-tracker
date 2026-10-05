@@ -103,3 +103,7 @@ These are event observations, not proof of coaching intent or matchup-adjustment
 causality. Reliable lineup reconstruction needs both substitution player IDs,
 period-opening players and consistency checks against player minutes. Resolving
 those inputs is the next checkpoint before any five-player lineup claim.
+
+The next context milestone and the completed source-feasibility checkpoint are
+recorded in [Defensive personnel context](V2_DEFENSIVE_PERSONNEL.md). Five-player
+lineup reconstruction remains gated on the missing identity/opening evidence.

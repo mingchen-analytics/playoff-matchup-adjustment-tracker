@@ -18,6 +18,14 @@ with regulation and overtime clocks. In Game Transition Comparison, open
 **Substitutions and Fouls** to inspect either game, filter teams/event types, and
 compare the chart with the original event descriptions. See [event timeline design](docs/V2_EVENT_TIMELINE.md).
 
+**Defensive personnel context:** In Game Transition Comparison, open
+**Defensive Personnel Comparison** to compare the opponent's full roster across
+the selected games: starting status, participation, full-game minutes/personal
+fouls and recorded matchup time/share. All seven API series use their existing
+offline assets. Separate chart axes and game-duration labels preserve the
+interpretation of percentage points versus minutes. See [validation and the
+five-player lineup source checkpoint](docs/V2_DEFENSIVE_PERSONNEL.md).
+
 ## Why I Built This
 
 Series-level matchup totals are useful, but they can hide the timing of tactical adjustments.
@@ -526,7 +534,9 @@ Normal CI installs only app/test dependencies, blocks live HTTP in tests, and va
 V1.0 is implemented, merged and verified with the original two full real series under the approved source policy; the catalog now includes seven complete API series. Historical parity remains failed and visible; its cause is unconfirmed. Detailed evidence is recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md). Hosted Streamlit deployment has not been confirmed updated.
 
 Team results and player game box scores are the first V2 context milestones.
-Substitution/foul event timelines are available. Lineup reconstruction, possession
+Substitution/foul timelines and defensive personnel comparisons are available.
+Five-player lineup reconstruction still requires validated substitution IDs and
+period-opening players. Possession
 models, ML, video, scouting PDFs and major UI redesign remain deferred.
 
 ## Author
