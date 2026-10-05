@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 from pathlib import Path
 
+from data_pipeline import prepare_matchup_data
 from analytics.metrics import (
     build_adjustment_event_summary,
     calculate_adjustment_scores,
@@ -103,92 +104,22 @@ if not DATA_PATH.exists():
     st.error("CSV file not found. Please make sure the CSV is inside the data folder.")
     st.stop()
 
-df = load_matchup_data(DATA_PATH)
+raw_df = load_matchup_data(DATA_PATH)
+df, data_quality = prepare_matchup_data(raw_df)
+
+if data_quality["errors"]:
+    st.error("Data validation failed. Analysis has been stopped.")
+    for issue in data_quality["errors"]:
+        st.write(f"- {issue}")
+
+    if data_quality["warnings"]:
+        st.warning("Additional data-quality warnings:")
+        for issue in data_quality["warnings"]:
+            st.write(f"- {issue}")
+
+    st.stop()
 
 
-# -----------------------------
-# Clean data
-# -----------------------------
-df.columns = (
-    df.columns
-    .str.strip()
-    .str.lower()
-    .str.replace(" ", "_")
-    .str.replace("%", "percent")
-)
-
-for col in ["offense_player", "defense_player", "off_team", "def_team"]:
-    if col in df.columns:
-        df[col] = (
-            df[col]
-            .astype(str)
-            .str.replace("\xa0", " ", regex=False)
-            .str.strip()
-        )
-
-
-def time_to_seconds(time_value):
-    """
-    Converts matchup time to seconds.
-    Handles common formats:
-    - '8:18'
-    - Excel time fraction, if accidentally exported that way
-    - numeric seconds fallback
-    """
-    if pd.isna(time_value):
-        return 0
-
-    text = str(time_value).strip()
-
-    if ":" in text:
-        parts = text.split(":")
-        if len(parts) == 2:
-            minutes, seconds = parts
-            return int(minutes) * 60 + int(seconds)
-        if len(parts) == 3:
-            hours, minutes, seconds = parts
-            return int(hours) * 3600 + int(minutes) * 60 + int(seconds)
-
-    try:
-        value = float(text)
-
-        # If Excel exported time as a fraction of a day
-        if 0 < value < 1:
-            return value * 24 * 60 * 60
-
-        # Otherwise treat as seconds
-        return value
-
-    except ValueError:
-        return 0
-
-
-df["matchup_seconds"] = df["min"].apply(time_to_seconds)
-
-numeric_cols = [
-    "partial_poss",
-    "players_pts",
-    "team_pts",
-    "ast",
-    "tov",
-    "blk",
-    "fgm",
-    "fga",
-    "3pm",
-    "3pa",
-    "ftm",
-    "fta",
-    "sfl"
-]
-
-for col in numeric_cols:
-    if col in df.columns:
-        df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
-
-
-# -----------------------------
-# Helper functions
-# -----------------------------
 # -----------------------------
 # Sidebar controls
 # -----------------------------
@@ -249,6 +180,31 @@ Instead of only showing series-level totals, it helps users see **when defensive
 Efficiency numbers are included in the hover details, but matchup time and matchup share are treated as the primary signals because single-game matchup samples are small.
 """
 )
+
+with st.expander("Data Quality"):
+    quality_col1, quality_col2, quality_col3, quality_col4 = st.columns(4)
+    quality_col1.metric("Rows", f'{data_quality["rows"]:,}')
+    quality_col2.metric("Games", data_quality["games"])
+    quality_col3.metric(
+        "Offensive Players",
+        data_quality["offensive_players"]
+    )
+    quality_col4.metric(
+        "Validation",
+        data_quality["status"].upper()
+    )
+
+    st.caption(
+        "Validation runs before any analytics are calculated. "
+        "Required columns, identities, game numbers, matchup times, numeric "
+        "values, negative values, duplicate rows, and team consistency are checked."
+    )
+
+    if data_quality["warnings"]:
+        for warning in data_quality["warnings"]:
+            st.warning(warning)
+    else:
+        st.success("No data-quality warnings detected.")
 
 st.subheader("Series Adjustment Leaderboard")
 st.caption(
