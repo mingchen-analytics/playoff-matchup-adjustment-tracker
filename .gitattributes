@@ -1,0 +1,9 @@
+# Keep hashed snapshots and approval evidence identical across platforms.
+data/snapshots/*.csv text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.py text eol=lf
+
+# Preserve the historical manual benchmark's original CRLF bytes and hash.
+"data/OKC Spurs Matchup Data.csv" -text

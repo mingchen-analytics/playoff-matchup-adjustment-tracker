@@ -309,6 +309,13 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+Windows checkouts may convert LF line endings to CRLF. Snapshot verification
+accepts this conversion while still rejecting content changes; `.gitattributes`
+keeps newly checked-out snapshots and approval evidence in their original format.
+If an older checkout reports `Dataset hash differs from its ingestion report`,
+stop Streamlit, run `git pull --ff-only`, and restart with
+`python -m streamlit run app.py`. Do not edit the data or its report to bypass verification.
+
 ### Run Tests
 
 ```bash
