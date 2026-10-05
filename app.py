@@ -180,6 +180,132 @@ def seconds_to_label(seconds):
     return f"{minutes}:{sec:02d}"
 
 
+def calculate_outcome_context(player_df):
+    """
+    Aggregates the selected offensive player's recorded matchup outcomes by game.
+
+    These metrics are descriptive context only. They do not isolate the causal
+    effect of a defender or a matchup adjustment.
+    """
+    if player_df.empty:
+        return pd.DataFrame()
+
+    outcome_df = (
+        player_df.groupby("game", as_index=False)
+        .agg({
+            "partial_poss": "sum",
+            "players_pts": "sum",
+            "fgm": "sum",
+            "fga": "sum",
+            "3pm": "sum",
+            "fta": "sum",
+            "ast": "sum",
+            "tov": "sum"
+        })
+        .sort_values("game")
+        .copy()
+    )
+
+    outcome_df["PTS/75"] = 0.0
+    poss_mask = outcome_df["partial_poss"] > 0
+    outcome_df.loc[poss_mask, "PTS/75"] = (
+        outcome_df.loc[poss_mask, "players_pts"]
+        / outcome_df.loc[poss_mask, "partial_poss"]
+        * 75
+    )
+
+    outcome_df["eFG%"] = 0.0
+    fga_mask = outcome_df["fga"] > 0
+    outcome_df.loc[fga_mask, "eFG%"] = (
+        (
+            outcome_df.loc[fga_mask, "fgm"]
+            + 0.5 * outcome_df.loc[fga_mask, "3pm"]
+        )
+        / outcome_df.loc[fga_mask, "fga"]
+        * 100
+    )
+
+    outcome_df["TOV/75"] = 0.0
+    outcome_df.loc[poss_mask, "TOV/75"] = (
+        outcome_df.loc[poss_mask, "tov"]
+        / outcome_df.loc[poss_mask, "partial_poss"]
+        * 75
+    )
+
+    outcome_df["Game"] = "Game " + outcome_df["game"].astype(int).astype(str)
+
+    return outcome_df[[
+        "game",
+        "Game",
+        "players_pts",
+        "partial_poss",
+        "PTS/75",
+        "eFG%",
+        "TOV/75",
+        "ast",
+        "tov",
+        "fgm",
+        "fga",
+        "fta"
+    ]]
+
+
+def make_outcome_chart(outcome_df, selected_player):
+    if outcome_df.empty:
+        return None
+
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=outcome_df["Game"],
+            y=outcome_df["PTS/75"],
+            mode="lines+markers",
+            name="PTS/75",
+            hovertemplate="%{x}<br>PTS/75: %{y:.1f}<extra></extra>"
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=outcome_df["Game"],
+            y=outcome_df["eFG%"],
+            mode="lines+markers",
+            name="eFG%",
+            yaxis="y2",
+            hovertemplate="%{x}<br>eFG%: %{y:.1f}%<extra></extra>"
+        )
+    )
+
+    fig.update_layout(
+        title=(
+            "Outcome Context by Game"
+            f"<br><sup>{selected_player} · descriptive context, not causal attribution</sup>"
+        ),
+        yaxis=dict(
+            title="PTS/75"
+        ),
+        yaxis2=dict(
+            title="eFG%",
+            overlaying="y",
+            side="right",
+            rangemode="tozero"
+        ),
+        xaxis=dict(title=""),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="left",
+            x=0
+        ),
+        height=430,
+        margin=dict(l=70, r=70, t=100, b=60)
+    )
+
+    return fig
+
+
 def calculate_matchup_concentration(player_df):
     """
     Summarizes how concentrated the matchup allocation is within each game.
@@ -743,6 +869,86 @@ else:
         )
 
     adjustment_df = calculate_adjustment_scores(player_df)
+    outcome_df = calculate_outcome_context(player_df)
+
+    if not outcome_df.empty:
+        st.subheader("Outcome Context")
+        st.caption(
+            "These are descriptive outcomes from the recorded matchup data. "
+            "They show what happened alongside the matchup changes, but they do not "
+            "establish that a defender or adjustment caused the result."
+        )
+
+        outcome_fig = make_outcome_chart(outcome_df, selected_player)
+        if outcome_fig is not None:
+            st.plotly_chart(outcome_fig, use_container_width=True)
+
+        if not adjustment_df.empty:
+            largest_adjustment_row = adjustment_df.loc[
+                adjustment_df["Adjustment Score"].idxmax()
+            ]
+
+            previous_game_label = largest_adjustment_row["From"]
+            current_game_label = largest_adjustment_row["To"]
+
+            previous_outcome = outcome_df[
+                outcome_df["Game"] == previous_game_label
+            ]
+            current_outcome = outcome_df[
+                outcome_df["Game"] == current_game_label
+            ]
+
+            if not previous_outcome.empty and not current_outcome.empty:
+                previous_outcome = previous_outcome.iloc[0]
+                current_outcome = current_outcome.iloc[0]
+
+                st.markdown(
+                    f"**Largest adjustment transition: {previous_game_label} → "
+                    f"{current_game_label}**"
+                )
+
+                out_col1, out_col2, out_col3 = st.columns(3)
+
+                out_col1.metric(
+                    "PTS/75",
+                    f'{current_outcome["PTS/75"]:.1f}',
+                    f'{current_outcome["PTS/75"] - previous_outcome["PTS/75"]:+.1f}'
+                )
+
+                out_col2.metric(
+                    "eFG%",
+                    f'{current_outcome["eFG%"]:.1f}%',
+                    f'{current_outcome["eFG%"] - previous_outcome["eFG%"]:+.1f} pp'
+                )
+
+                out_col3.metric(
+                    "TOV/75",
+                    f'{current_outcome["TOV/75"]:.1f}',
+                    f'{current_outcome["TOV/75"] - previous_outcome["TOV/75"]:+.1f}'
+                )
+
+        outcome_display = outcome_df[[
+            "Game",
+            "players_pts",
+            "partial_poss",
+            "PTS/75",
+            "eFG%",
+            "TOV/75"
+        ]].copy()
+
+        outcome_display = outcome_display.rename(columns={
+            "players_pts": "Player PTS",
+            "partial_poss": "Partial Poss"
+        })
+
+        for column in ["Partial Poss", "PTS/75", "eFG%", "TOV/75"]:
+            outcome_display[column] = outcome_display[column].round(1)
+
+        st.dataframe(
+            outcome_display,
+            use_container_width=True,
+            hide_index=True
+        )
 
     if not adjustment_df.empty:
         st.subheader("Game-to-Game Adjustment Score")
