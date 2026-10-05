@@ -180,6 +180,66 @@ def seconds_to_label(seconds):
     return f"{minutes}:{sec:02d}"
 
 
+def calculate_adjustment_scores(player_df):
+    """
+    Quantifies how much the defensive matchup-time distribution changes
+    from one game to the next using total variation distance.
+
+    Score range:
+    - 0.0 = identical matchup allocation
+    - 1.0 = completely different matchup allocation
+    """
+    if player_df.empty:
+        return pd.DataFrame()
+
+    game_defender_time = (
+        player_df.groupby(["game", "defense_player"], as_index=False)["matchup_seconds"]
+        .sum()
+    )
+
+    game_defender_time["game_total_seconds"] = (
+        game_defender_time.groupby("game")["matchup_seconds"].transform("sum")
+    )
+
+    game_defender_time["matchup_share"] = (
+        game_defender_time["matchup_seconds"]
+        / game_defender_time["game_total_seconds"]
+    )
+
+    share_matrix = (
+        game_defender_time
+        .pivot(index="game", columns="defense_player", values="matchup_share")
+        .fillna(0)
+        .sort_index()
+    )
+
+    games = share_matrix.index.tolist()
+    records = []
+
+    for previous_game, current_game in zip(games[:-1], games[1:]):
+        previous = share_matrix.loc[previous_game]
+        current = share_matrix.loc[current_game]
+
+        score = 0.5 * (current - previous).abs().sum()
+        deltas = ((current - previous) * 100).sort_values(
+            key=lambda values: values.abs(),
+            ascending=False
+        )
+
+        biggest_defender = deltas.index[0]
+        biggest_delta = deltas.iloc[0]
+
+        records.append({
+            "From": f"Game {int(previous_game)}",
+            "To": f"Game {int(current_game)}",
+            "Adjustment Score": score,
+            "Largest Share Change": biggest_defender,
+            "Share Change (pp)": biggest_delta
+        })
+
+    return pd.DataFrame(records)
+
+
 def make_segment_label(row):
     last_name = row["defense_player"].split()[-1]
 
@@ -439,6 +499,46 @@ if result is None:
 else:
     fig, player_df = result
     st.plotly_chart(fig, use_container_width=True)
+
+    adjustment_df = calculate_adjustment_scores(player_df)
+
+    if not adjustment_df.empty:
+        st.subheader("Game-to-Game Adjustment Score")
+        st.caption(
+            "Total variation distance between consecutive games' matchup-time distributions. "
+            "0 means the defender allocation was unchanged; 1 means it was completely different."
+        )
+
+        largest_adjustment = adjustment_df.loc[
+            adjustment_df["Adjustment Score"].idxmax()
+        ]
+
+        metric_col1, metric_col2 = st.columns(2)
+        metric_col1.metric(
+            "Largest Adjustment",
+            f'{largest_adjustment["Adjustment Score"]:.3f}',
+            f'{largest_adjustment["From"]} → {largest_adjustment["To"]}'
+        )
+        metric_col2.metric(
+            "Largest Defender Share Shift",
+            f'{largest_adjustment["Share Change (pp)"]:+.1f} pp',
+            largest_adjustment["Largest Share Change"]
+        )
+
+        adjustment_display = adjustment_df.copy()
+        adjustment_display["Adjustment Score"] = (
+            adjustment_display["Adjustment Score"].round(3)
+        )
+        adjustment_display["Share Change (pp)"] = (
+            adjustment_display["Share Change (pp)"].round(1)
+        )
+
+        st.dataframe(
+            adjustment_display,
+            use_container_width=True,
+            hide_index=True
+        )
+
     if selected_player == "Victor Wembanyama" and selected_off_team == "SAS":
         st.markdown(
             """
@@ -447,7 +547,9 @@ else:
     The clearest signal is the shift in matchup allocation.  
     For Victor Wembanyama, OKC did not use one fixed defensive matchup across the series.
 
-    The primary defender changed from Alex Caruso in Game 1 to Isaiah Hartenstein in Game 2, with Chet Holmgren and Hartenstein sharing the main responsibility in Game 3 before Hartenstein became the main matchup again in Games 4–5.
+    The largest game-to-game change occurred from **Game 1 to Game 2**, when the Adjustment Score reached **0.620**. Hartenstein's matchup share increased by roughly **53 percentage points**, while Caruso's fell by about **30 points**.
+
+    Game 3 then moved toward a near-even Holmgren–Hartenstein split before Hartenstein again carried the largest share in Games 4–5.
 
     This is exactly the type of adjustment that can be hidden in series-level matchup totals.
     """
