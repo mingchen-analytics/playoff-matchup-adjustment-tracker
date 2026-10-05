@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import math
-import re
-
 import pandas as pd
 
 
@@ -206,7 +204,6 @@ def prepare_matchup_data(raw_df):
                 _format_issue(f"Blank {column}", blank_count)
             )
 
-    raw_game = df["game"].copy()
     df["game"] = pd.to_numeric(df["game"], errors="coerce")
 
     invalid_game_mask = (
