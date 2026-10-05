@@ -319,6 +319,138 @@ def make_series_leaderboard_chart(leaderboard_df, top_n=10):
     return fig
 
 
+def calculate_transition_share_changes(player_df, from_game, to_game):
+    """
+    Compares defender matchup shares between two selected games.
+    """
+    if player_df.empty:
+        return pd.DataFrame()
+
+    transition_df = player_df[
+        player_df["game"].isin([from_game, to_game])
+    ].copy()
+
+    if transition_df["game"].nunique() < 2:
+        return pd.DataFrame()
+
+    grouped = (
+        transition_df.groupby(["game", "defense_player"], as_index=False)["matchup_seconds"]
+        .sum()
+    )
+
+    grouped["game_total_seconds"] = (
+        grouped.groupby("game")["matchup_seconds"].transform("sum")
+    )
+
+    grouped["matchup_share_pct"] = (
+        grouped["matchup_seconds"]
+        / grouped["game_total_seconds"]
+        * 100
+    )
+
+    share_matrix = (
+        grouped
+        .pivot(index="defense_player", columns="game", values="matchup_share_pct")
+        .fillna(0)
+    )
+
+    time_matrix = (
+        grouped
+        .pivot(index="defense_player", columns="game", values="matchup_seconds")
+        .fillna(0)
+    )
+
+    for game in [from_game, to_game]:
+        if game not in share_matrix.columns:
+            share_matrix[game] = 0
+        if game not in time_matrix.columns:
+            time_matrix[game] = 0
+
+    comparison = pd.DataFrame({
+        "Defender": share_matrix.index,
+        "From Share %": share_matrix[from_game].values,
+        "To Share %": share_matrix[to_game].values,
+        "Share Change (pp)": (
+            share_matrix[to_game].values
+            - share_matrix[from_game].values
+        ),
+        "From Time": [
+            seconds_to_label(value)
+            for value in time_matrix[from_game].values
+        ],
+        "To Time": [
+            seconds_to_label(value)
+            for value in time_matrix[to_game].values
+        ]
+    })
+
+    comparison["Absolute Change"] = (
+        comparison["Share Change (pp)"].abs()
+    )
+
+    return comparison.sort_values(
+        "Absolute Change",
+        ascending=False
+    ).reset_index(drop=True)
+
+
+def make_transition_change_chart(comparison_df, from_label, to_label, top_n=8):
+    if comparison_df.empty:
+        return None
+
+    chart_df = comparison_df.head(top_n).sort_values(
+        "Share Change (pp)",
+        ascending=True
+    )
+
+    fig = go.Figure(
+        go.Bar(
+            x=chart_df["Share Change (pp)"],
+            y=chart_df["Defender"],
+            orientation="h",
+            text=chart_df["Share Change (pp)"].map(
+                lambda value: f"{value:+.1f}"
+            ),
+            textposition="outside",
+            customdata=chart_df[[
+                "From Share %",
+                "To Share %",
+                "From Time",
+                "To Time"
+            ]].values,
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                f"{from_label}: " + "%{customdata[0]:.1f}% (%{customdata[2]})<br>"
+                f"{to_label}: " + "%{customdata[1]:.1f}% (%{customdata[3]})<br>"
+                "Change: %{x:+.1f} pp"
+                "<extra></extra>"
+            )
+        )
+    )
+
+    max_abs = max(
+        10,
+        float(chart_df["Share Change (pp)"].abs().max()) * 1.25
+    )
+
+    fig.update_layout(
+        title=(
+            "Defender Matchup Share Changes"
+            f"<br><sup>{from_label} → {to_label}</sup>"
+        ),
+        xaxis=dict(
+            title="Change in Matchup Share (percentage points)",
+            range=[-max_abs, max_abs],
+            zeroline=True
+        ),
+        yaxis=dict(title=""),
+        height=max(430, 45 * len(chart_df) + 170),
+        margin=dict(l=180, r=80, t=100, b=70)
+    )
+
+    return fig
+
+
 def calculate_outcome_context(player_df):
     """
     Aggregates the selected offensive player's recorded matchup outcomes by game.
@@ -1361,6 +1493,150 @@ else:
             use_container_width=True,
             hide_index=True
         )
+
+        st.subheader("Game Transition Comparison")
+        st.caption(
+            "Select any consecutive-game transition to inspect which defender "
+            "shares changed most and how concentration and offensive outcomes moved "
+            "over the same interval."
+        )
+
+        transition_options = [
+            f'{row["From"]} → {row["To"]}'
+            for _, row in adjustment_df.iterrows()
+        ]
+
+        largest_transition_label = (
+            f'{largest_adjustment["From"]} → {largest_adjustment["To"]}'
+        )
+
+        selected_transition = st.selectbox(
+            "Transition",
+            options=transition_options,
+            index=transition_options.index(largest_transition_label)
+        )
+
+        transition_row = adjustment_df[
+            (
+                adjustment_df["From"]
+                + " → "
+                + adjustment_df["To"]
+            )
+            == selected_transition
+        ].iloc[0]
+
+        from_label = transition_row["From"]
+        to_label = transition_row["To"]
+        from_game = int(from_label.replace("Game ", ""))
+        to_game = int(to_label.replace("Game ", ""))
+
+        transition_comparison = calculate_transition_share_changes(
+            player_df=player_df,
+            from_game=from_game,
+            to_game=to_game
+        )
+
+        if not transition_comparison.empty:
+            transition_chart = make_transition_change_chart(
+                transition_comparison,
+                from_label=from_label,
+                to_label=to_label
+            )
+
+            if transition_chart is not None:
+                st.plotly_chart(
+                    transition_chart,
+                    use_container_width=True
+                )
+
+            from_concentration = concentration_df[
+                concentration_df["Game"] == from_label
+            ]
+            to_concentration = concentration_df[
+                concentration_df["Game"] == to_label
+            ]
+            from_outcome = outcome_df[
+                outcome_df["Game"] == from_label
+            ]
+            to_outcome = outcome_df[
+                outcome_df["Game"] == to_label
+            ]
+
+            if (
+                not from_concentration.empty
+                and not to_concentration.empty
+                and not from_outcome.empty
+                and not to_outcome.empty
+            ):
+                from_concentration = from_concentration.iloc[0]
+                to_concentration = to_concentration.iloc[0]
+                from_outcome = from_outcome.iloc[0]
+                to_outcome = to_outcome.iloc[0]
+
+                st.markdown(
+                    f"**{from_label} → {to_label} context**"
+                )
+
+                trans_col1, trans_col2, trans_col3, trans_col4 = st.columns(4)
+
+                trans_col1.metric(
+                    "Adjustment Score",
+                    f'{transition_row["Adjustment Score"]:.3f}'
+                )
+                trans_col2.metric(
+                    "HHI",
+                    f'{to_concentration["HHI"]:.3f}',
+                    f'{to_concentration["HHI"] - from_concentration["HHI"]:+.3f}',
+                    delta_color="off"
+                )
+                trans_col3.metric(
+                    "PTS/75",
+                    f'{to_outcome["PTS/75"]:.1f}',
+                    f'{to_outcome["PTS/75"] - from_outcome["PTS/75"]:+.1f}',
+                    delta_color="off"
+                )
+                trans_col4.metric(
+                    "eFG%",
+                    f'{to_outcome["eFG%"]:.1f}%',
+                    f'{to_outcome["eFG%"] - from_outcome["eFG%"]:+.1f} pp',
+                    delta_color="off"
+                )
+
+                primary_from = from_concentration["Primary Defender"]
+                primary_to = to_concentration["Primary Defender"]
+
+                if primary_from != primary_to:
+                    st.markdown(
+                        f"Primary matchup: **{primary_from} → {primary_to}**"
+                    )
+                else:
+                    st.markdown(
+                        f"Primary matchup remained **{primary_to}**."
+                    )
+
+            transition_display = transition_comparison[[
+                "Defender",
+                "From Share %",
+                "To Share %",
+                "Share Change (pp)",
+                "From Time",
+                "To Time"
+            ]].copy()
+
+            for column in [
+                "From Share %",
+                "To Share %",
+                "Share Change (pp)"
+            ]:
+                transition_display[column] = (
+                    transition_display[column].round(1)
+                )
+
+            st.dataframe(
+                transition_display,
+                use_container_width=True,
+                hide_index=True
+            )
 
     event_summary = build_adjustment_event_summary(
         selected_player=selected_player,
