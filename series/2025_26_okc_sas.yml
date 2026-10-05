@@ -1,0 +1,33 @@
+series_id: 2025_26_okc_sas
+season: 2025-26
+season_type: Playoffs
+playoff_round: Western Conference Finals
+team_a: OKC
+team_b: SAS
+games:
+- game_number: 1
+  game_id: '0042500311'
+  game_date: '2026-05-18'
+- game_number: 2
+  game_id: '0042500312'
+  game_date: '2026-05-20'
+- game_number: 3
+  game_id: '0042500313'
+  game_date: '2026-05-22'
+- game_number: 4
+  game_id: '0042500314'
+  game_date: '2026-05-24'
+- game_number: 5
+  game_id: '0042500315'
+  game_date: '2026-05-26'
+- game_number: 6
+  game_id: '0042500316'
+  game_date: '2026-05-28'
+- game_number: 7
+  game_id: '0042500317'
+  game_date: '2026-05-30'
+series_complete: true
+source_csv: null
+default_player: null
+notes: Discovered from NBA LeagueGameFinder played-game results; complete means one
+  team reached four wins.

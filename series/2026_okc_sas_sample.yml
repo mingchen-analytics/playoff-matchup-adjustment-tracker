@@ -1,0 +1,30 @@
+series_id: 2026_okc_sas_sample
+season: '2025-26'
+season_type: Playoffs
+playoff_round: Western Conference Finals
+team_a: OKC
+team_b: SAS
+series_complete: false
+source_csv: data/OKC Spurs Matchup Data.csv
+default_player: Victor Wembanyama
+notes: >-
+  Original manually collected NBA.com reference: Games 1–5, 1,074 rows.
+  NBA LeagueGameFinder lists seven played games for this series.
+  This sample preserves the original public case study and has not been replaced
+  by current API values. API/manual parity is unresolved.
+games:
+  - game_number: 1
+    game_id: '0042500311'
+    game_date: '2026-05-18'
+  - game_number: 2
+    game_id: '0042500312'
+    game_date: '2026-05-20'
+  - game_number: 3
+    game_id: '0042500313'
+    game_date: '2026-05-22'
+  - game_number: 4
+    game_id: '0042500314'
+    game_date: '2026-05-24'
+  - game_number: 5
+    game_id: '0042500315'
+    game_date: '2026-05-26'

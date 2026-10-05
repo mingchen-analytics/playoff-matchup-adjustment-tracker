@@ -6,7 +6,11 @@ import argparse
 from pathlib import Path
 
 from data_pipeline import prepare_matchup_data
-from data_sources.nba_matchups import fetch_and_normalize_game
+from data_sources.nba_matchups import (
+    fetch_boxscore_matchups,
+    normalize_boxscore_matchups,
+)
+from series_ingestion import atomic_write
 
 
 def main():
@@ -23,11 +27,10 @@ def main():
     parser.add_argument(
         "--output",
         default=None,
-        help=(
-            "Output CSV path. Defaults to "
-            "data/api/<game_id>_matchups.csv"
-        ),
+        help=("Output CSV path. Defaults to data/api/<game_id>_matchups.csv"),
     )
+    parser.add_argument("--timeout", type=float, default=20)
+    parser.add_argument("--retries", type=int, default=2)
     args = parser.parse_args()
 
     output = (
@@ -36,10 +39,12 @@ def main():
         else Path("data/api") / f"{args.game_id}_matchups.csv"
     )
 
-    normalized = fetch_and_normalize_game(
-        game_id=args.game_id,
-        game_number=args.game_number,
+    raw = fetch_boxscore_matchups(
+        args.game_id, timeout=args.timeout, retries=args.retries
     )
+    raw_path = Path("data/raw") / f"{args.game_id}.csv"
+    atomic_write(raw_path, raw.to_csv(index=False))
+    normalized = normalize_boxscore_matchups(raw, args.game_number)
 
     cleaned, report = prepare_matchup_data(normalized)
 
@@ -50,7 +55,7 @@ def main():
         raise SystemExit(1)
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    normalized.to_csv(output, index=False)
+    atomic_write(output, normalized.to_csv(index=False))
 
     print(f"Fetched {len(normalized):,} matchup rows.")
     print(

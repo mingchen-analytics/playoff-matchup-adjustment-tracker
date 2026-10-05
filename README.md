@@ -2,7 +2,9 @@
 
 [Open the live Streamlit dashboard](https://playoff-matchup-adjustment-tracker-zdee28tjezgw42ujydet6v.streamlit.app/)
 
-A basketball analytics prototype for tracking how defensive assignments change **game by game** during a playoff series.
+A reusable basketball analytics system for tracking how defensive assignments change **game by game** during a playoff series.
+
+**Current status:** Manifest ingestion, game discovery, a standardized schema, cached-series loading, and multi-series controls are implemented. V1.0 acceptance remains **blocked by API/manual source parity**. The original five-game manual sample remains the default; no public case-study values were replaced. See [validation findings](docs/V1_VALIDATION.md).
 
 ## Why I Built This
 
@@ -19,7 +21,7 @@ The concept was inspired by Databallr's playoff matchup pages and focuses on mak
 
 ## Case Study
 
-The current prototype uses a five-game **Oklahoma City vs. San Antonio** playoff series.
+The bundled case study uses a five-game **Oklahoma City vs. San Antonio** sample (Games 1–5). NBA game discovery identifies seven played games in the full series.
 
 The dataset contains:
 
@@ -248,13 +250,21 @@ Single-game matchup samples can be very small, so the main analytical signal in 
 playoff-matchup-adjustment-tracker/
 ├── app.py
 ├── data_pipeline.py
+├── series_manifest.py
+├── series_schema.py
+├── series_ingestion.py
+├── series_catalog.py
+├── series/
+├── docs/
 ├── data_sources/
 │   ├── __init__.py
-│   └── nba_matchups.py
+│   ├── nba_matchups.py
+│   └── game_discovery.py
 ├── scripts/
 │   ├── __init__.py
 │   ├── fetch_matchup_game.py
-│   └── compare_api_manual.py
+│   ├── compare_api_manual.py
+│   └── fetch_series.py
 ├── analytics/
 │   ├── __init__.py
 │   └── metrics.py
@@ -271,8 +281,11 @@ playoff-matchup-adjustment-tracker/
 └── README.md
 ```
 
-The project separates responsibilities into four layers:
+The project separates ingestion, data validation, analytics, visualization, and UI responsibilities:
 
+- **`series_manifest.py` / `series_schema.py`** — configuration and versioned processed schema
+- **`series_ingestion.py` / `data_sources/`** — cached CLI acquisition and game discovery
+- **`series_catalog.py`** — local series loading and provenance checks
 - **`data_pipeline.py`** — schema normalization, validation, and matchup-time parsing
 - **`app.py`** — Streamlit controls, layout, and user workflow
 - **`analytics/metrics.py`** — reusable matchup, concentration, outcome, transition, and summary logic
@@ -314,9 +327,9 @@ The test suite covers core analytical properties and data validation, including:
 - negative numeric values fail validation
 - exact duplicate rows fail validation
 
-## NBA Matchup Data Ingestion POC
+## NBA Matchup Data Ingestion
 
-The repository now includes a proof-of-concept adapter for NBA.com's game-level matchup data through the community-maintained `nba_api` package.
+The repository includes an adapter for NBA.com's game-level matchup data through the community-maintained `nba_api` package.
 
 The target endpoint is `BoxScoreMatchupsV3`, which accepts a 10-digit NBA Game ID and exposes the same core fields used by this project, including matchup minutes, partial possessions, defender/offensive time shares, points, assists, turnovers, blocks, shooting, free throws, and shooting fouls.
 
@@ -345,7 +358,7 @@ By default, the normalized result is written to:
 data/api/0042500311_matchups.csv
 ```
 
-The `data/api/` folder is ignored by Git because these files are treated as reproducible local cache outputs.
+The raw PlayerStats snapshot is also saved to `data/raw/<game_id>.csv`. These cache outputs are ignored by Git.
 
 ### Compare API data with the manually collected Game 1
 
@@ -363,7 +376,9 @@ The comparison checks:
 - defender/offensive/both-on time percentages
 - points, assists, turnovers, blocks, shooting, free throws, and shooting fouls
 
-Small tolerances are allowed for fields displayed with rounding on NBA.com.
+Small tolerances are allowed for fields displayed with rounding on NBA.com. The command writes a JSON report and exits with code 1 when differences remain. Duplicate keys, missing fields, empty datasets, and missing numeric values cannot pass.
+
+On 2026-10-05, the live Game 1 request succeeded: all 176 matchup identities aligned after correcting the adapter to treat `teamTricode` as the **offensive** team. Some times and statistics still differed. This has **not** passed parity validation. See [the recorded report](docs/api_manual_game1_comparison.json); the cause of the remaining differences is not established.
 
 ### Network reliability note
 
@@ -387,18 +402,98 @@ Streamlit dashboard
 
 This avoids making the user-facing app dependent on a live NBA endpoint and gives the project a reproducible raw-data layer.
 
-## Limitations and Next Steps
+## Series Pipeline
 
-This is currently a single-series product prototype rather than a league-wide automated system.
+The dashboard only reads local reference files and validated processed snapshots. Network work stays in CLI ingestion commands.
 
-Potential extensions include:
+```text
+Series manifest / NBA game log
+        ↓
+Raw PlayerStats CSV cache
+        ↓
+Normalization + per-game validation
+        ↓
+Standardized series CSV + coverage/provenance report
+        ↓
+Season → Round → Series → Player → existing analytics
+```
 
-- additional playoff series
-- automated matchup-data ingestion
-- team and series selectors
-- possession-level video links
-- clearer before/after adjustment annotations
-- comparison of matchup allocation with lineup and scheme changes
+### Build the bundled manual sample (no network)
+
+```bash
+python -m scripts.fetch_series --manifest series/2026_okc_sas_sample.yml --offline
+```
+
+This writes `data/processed/2026_okc_sas_sample.csv` and its `.report.json`. The app can also validate and load the manual reference directly, so a fresh checkout still runs without ingestion or `nba_api`.
+
+### Discover a series
+
+```bash
+python -m scripts.fetch_series \
+  --season 2025-26 --season-type Playoffs --team-a OKC --team-b SAS \
+  --round "Western Conference Finals" --discover-only
+```
+
+Discovery queries NBA `LeagueGameFinder`, verifies season/opponents/playoff IDs, removes exact duplicates, orders games chronologically, and checks gaps/conflicting dates/results. The generic round name comes from the playoff Game ID; `--round` supplies the conference-specific label. One team reaching four wins marks a best-of-seven series complete.
+
+Discovery creates `series/<series_id>.yml` and caches the game log under `data/discovery/`. Existing curated manifests are never silently overwritten. Use a distinct `--series-id` when the intended snapshot differs.
+
+For offline discovery, add `--offline --game-log-csv path/to/league_game_finder.csv`. Game IDs must remain strings with leading zeros.
+
+### Acquire a series after source parity is resolved
+
+```bash
+python -m scripts.compare_api_manual --game-id 0042500311 --game-number 1
+python -m scripts.fetch_series \
+  --manifest series/2025_26_okc_sas.yml \
+  --verification-report data/api/verification.json
+```
+
+**The second command currently refuses live series acquisition because the first command has not passed.** A passing report must match the current adapter and the original manual benchmark hash. Do not increase tolerances to hide count differences or label unreviewed data as verified.
+
+With a passing gate, ingestion uses raw caches first, fetches missing games, retries a bounded number of times, spaces requests, validates each game, and publishes only when every configured game is present. Tune `--timeout`, `--retries`, and `--request-interval`; defaults are 20 seconds, 2 attempts, and 2 seconds between requests. Use `--cache-dir` or `--output-dir` for an alternative working location.
+
+### Explore cached API snapshots offline
+
+```bash
+python -m scripts.fetch_series --manifest path/to/manifest.yml --offline
+```
+
+Offline mode makes no NBA requests and requires `data/raw/<game_id>.csv` for every configured game. These snapshots remain explicitly **unverified against the manual source**, both in their report and the dashboard. Offline mode is for reproducible exploration, not approval of API/manual parity.
+
+### Add another series without analytical code changes
+
+1. Place a valid YAML manifest in `series/` (copy the bundled examples).
+2. For a manual source, set `source_csv` to its project-relative legacy CSV path. For API sources, omit it and include every game ID.
+3. Generate its processed data and report using `scripts.fetch_series`.
+4. Start/reload the app and select the season, round, and series.
+
+Only successfully validated data reaches analytics. API manifests without cached processed datasets produce a clear unavailable message. The bundled seven-game manifest is currently such a pending configuration, not a second completed dataset. Tests use synthetic temporary series to verify switching without claiming another real series was acquired.
+
+### Schema and reports
+
+`series_schema.py` defines schema version 1: season/round/series and game metadata; team/player IDs and names; matchup seconds/partial possessions; percentage fields in **0–100 display scale**; shooting/outcome and API-only context fields. Unknown IDs and dates remain null rather than being invented. `to_analytics` preserves the existing analytics interface and fractional seconds.
+
+Reports distinguish:
+
+- `coverage_complete`: every game explicitly listed in the manifest was loaded.
+- `series_complete`: the manifest represents a decided series, rather than a sample or ongoing series.
+- `source_verification`: passing API/manual gate or `offline_unverified` exploration.
+
+A failed/partial run records individual failed IDs and exits non-zero without publishing a complete dataset. The dashboard refuses data after a failed latest run or a changed dataset hash, rather than silently displaying an old successful file. Writes are atomic and raw/processed/report cache folders are ignored by Git.
+
+## Validation and V1.0 Acceptance
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+python -m pytest -q
+```
+
+Normal CI installs only app/test dependencies, blocks live HTTP in tests, and validates manifests, discovery, schema, cache reuse, partial failures, source gates, and actual Streamlit interactions. It preserves the original Wembanyama largest adjustment of **0.620**. The existing manual-only API smoke workflow remains separate from normal CI.
+
+The reusable software path is implemented and exercised offline. Full V1.0 acceptance still requires resolving Game 1 source differences and completing real multi-series acquisition/validation. Detailed status and the concrete source decision are recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md).
+
+V2+ remains outside this change: ML, play-by-play, lineups, video, scouting PDFs, and major UI redesign.
 
 ## Author
 
