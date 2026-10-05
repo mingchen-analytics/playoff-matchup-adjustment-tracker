@@ -249,6 +249,105 @@ def make_segment_label(row):
     return ""
 
 
+def make_matchup_heatmap(player_df, selected_player, top_n=8):
+    """
+    Shows how matchup share shifts across games.
+
+    Rows are defenders, columns are games, and cell values are each defender's
+    share of the offensive player's recorded matchup time in that game.
+    """
+    if player_df.empty:
+        return None
+
+    heatmap_df = (
+        player_df.groupby(["game", "defense_player"], as_index=False)["matchup_seconds"]
+        .sum()
+    )
+
+    heatmap_df["game_total_seconds"] = (
+        heatmap_df.groupby("game")["matchup_seconds"].transform("sum")
+    )
+
+    heatmap_df["matchup_share_pct"] = (
+        heatmap_df["matchup_seconds"]
+        / heatmap_df["game_total_seconds"]
+        * 100
+    )
+
+    defender_order = (
+        heatmap_df.groupby("defense_player")["matchup_seconds"]
+        .sum()
+        .sort_values(ascending=False)
+        .head(top_n)
+        .index
+        .tolist()
+    )
+
+    heatmap_df = heatmap_df[
+        heatmap_df["defense_player"].isin(defender_order)
+    ].copy()
+
+    share_matrix = (
+        heatmap_df
+        .pivot(index="defense_player", columns="game", values="matchup_share_pct")
+        .reindex(defender_order)
+        .fillna(0)
+    )
+
+    time_matrix = (
+        heatmap_df
+        .pivot(index="defense_player", columns="game", values="matchup_seconds")
+        .reindex(index=defender_order, columns=share_matrix.columns)
+        .fillna(0)
+    )
+
+    game_labels = [f"Game {int(game)}" for game in share_matrix.columns]
+    text_labels = share_matrix.map(
+        lambda value: f"{value:.0f}%" if value >= 5 else ""
+    )
+
+    hover_labels = time_matrix.map(seconds_to_label)
+
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=share_matrix.values,
+            x=game_labels,
+            y=share_matrix.index.tolist(),
+            text=text_labels.values,
+            texttemplate="%{text}",
+            customdata=hover_labels.values,
+            colorscale="Blues",
+            zmin=0,
+            zmax=max(50, float(share_matrix.to_numpy().max())),
+            colorbar=dict(title="Matchup<br>Share %"),
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                "%{x}<br>"
+                "Matchup share: %{z:.1f}%<br>"
+                "Matchup time: %{customdata}"
+                "<extra></extra>"
+            )
+        )
+    )
+
+    fig.update_layout(
+        title=(
+            "Matchup Share Heatmap"
+            f"<br><sup>{selected_player} on offense · top {len(defender_order)} defenders by series matchup time</sup>"
+        ),
+        title_font=dict(size=22),
+        xaxis=dict(title="", side="top"),
+        yaxis=dict(
+            title="",
+            autorange="reversed"
+        ),
+        height=max(430, 52 * len(defender_order) + 160),
+        margin=dict(l=170, r=80, t=120, b=60)
+    )
+
+    return fig
+
+
 def make_matchup_timeline(
     selected_player,
     selected_off_team=None,
@@ -499,6 +598,20 @@ if result is None:
 else:
     fig, player_df = result
     st.plotly_chart(fig, use_container_width=True)
+
+    st.subheader("Matchup Share Heatmap")
+    st.caption(
+        "Each cell shows a defender's share of the selected offensive player's "
+        "recorded matchup time in that game. Darker cells indicate a larger share."
+    )
+
+    heatmap_fig = make_matchup_heatmap(
+        player_df=player_df,
+        selected_player=selected_player
+    )
+
+    if heatmap_fig is not None:
+        st.plotly_chart(heatmap_fig, use_container_width=True)
 
     adjustment_df = calculate_adjustment_scores(player_df)
 
