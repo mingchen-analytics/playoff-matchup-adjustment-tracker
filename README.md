@@ -51,6 +51,7 @@ A series-level total can make this look like one blended defensive strategy. The
 
 - Select an offensive player
 - View matchup time for every game in the series
+- Compare game-by-game matchup share in a defender × game heatmap
 - Highlight one defender while fading the others
 - Identify primary and secondary defenders by game
 - Inspect matchup share, partial possessions, shooting, eFG%, and PTS/75 in hover details
@@ -75,6 +76,20 @@ matchup share = defender matchup time / total recorded matchup time
 Defenders are ranked within each game by matchup time.
 
 The defender with the most recorded matchup time is labeled **Primary** and the second-most is labeled **Secondary**.
+
+### Matchup Share Heatmap
+
+The heatmap reorganizes the same matchup-time data into a **defender × game matrix**.
+
+Each cell represents:
+
+```text
+defender matchup time / total recorded matchup time for that game
+```
+
+This view is designed for series-level pattern recognition: it makes it easier to see when responsibility shifts from one defender to another, when a two-player split emerges, or when the defense settles into a more stable matchup plan.
+
+For readability, the dashboard displays the defenders with the most total matchup time across the selected player's series.
 
 ### Game-to-game Adjustment Score
 
