@@ -247,11 +247,28 @@ Single-game matchup samples can be very small, so the main analytical signal in 
 ```text
 playoff-matchup-adjustment-tracker/
 ├── app.py
+├── analytics/
+│   ├── __init__.py
+│   └── metrics.py
+├── visualizations/
+│   ├── __init__.py
+│   └── charts.py
+├── tests/
+│   └── test_metrics.py
+├── data/
+│   └── OKC Spurs Matchup Data.csv
 ├── requirements.txt
-├── README.md
-└── data/
-    └── OKC Spurs Matchup Data.csv
+├── requirements-dev.txt
+└── README.md
 ```
+
+The project separates responsibilities into three layers:
+
+- **`app.py`** — Streamlit controls, layout, and user workflow
+- **`analytics/metrics.py`** — reusable matchup, concentration, outcome, transition, and summary logic
+- **`visualizations/charts.py`** — Plotly chart construction
+
+The analytics module does not depend on Streamlit or Plotly, which keeps the core calculations easier to test and reuse.
 
 ## Tech Stack
 
@@ -266,6 +283,19 @@ playoff-matchup-adjustment-tracker/
 pip install -r requirements.txt
 streamlit run app.py
 ```
+
+### Run Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
+The initial tests cover two core analytical properties:
+
+- identical matchup distributions produce an Adjustment Score of 0
+- complete redistribution produces an Adjustment Score of 1
+- an even two-defender split produces HHI = 0.5 and Effective Defenders = 2
 
 ## Limitations and Next Steps
 
