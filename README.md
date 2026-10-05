@@ -13,6 +13,11 @@ minutes, starter status, points, FGA, FTA, turnovers, personal fouls and plus/mi
 Player IDs join these records to matchup identities. DNP/inactive entries retain
 their source comments and blank statistics. See [player-context validation and CLI](docs/V2_PLAYER_CONTEXT.md).
 
+**Event timelines:** Both API series include verified substitution/foul observations
+with regulation and overtime clocks. In Game Transition Comparison, open
+**Substitutions and Fouls** to inspect either game, filter teams/event types, and
+compare the chart with the original event descriptions. See [event timeline design](docs/V2_EVENT_TIMELINE.md).
+
 ## Why I Built This
 
 Series-level matchup totals are useful, but they can hide the timing of tactical adjustments.
@@ -521,7 +526,8 @@ Normal CI installs only app/test dependencies, blocks live HTTP in tests, and va
 V1.0 is implemented, merged and verified locally with two full real series under the approved source policy. Historical parity remains failed and visible; its cause is unconfirmed. Detailed evidence is recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md). Hosted Streamlit deployment has not been confirmed updated.
 
 Team results and player game box scores are the first V2 context milestones.
-ML, play-by-play, lineups, video, scouting PDFs, and major UI redesign remain deferred.
+Substitution/foul event timelines are available. Lineup reconstruction, possession
+models, ML, video, scouting PDFs and major UI redesign remain deferred.
 
 ## Author
 

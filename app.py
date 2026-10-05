@@ -4,6 +4,8 @@ from pathlib import Path
 from series_catalog import list_series, load_series
 from game_context import load_game_context, context_for_team
 from player_context import load_player_context, player_context_display
+from event_context import load_event_context, event_display
+from visualizations.event_timeline import make_event_timeline
 from analytics.metrics import (
     build_adjustment_event_summary,
     calculate_adjustment_scores,
@@ -588,6 +590,78 @@ else:
                 use_container_width=True,
                 hide_index=True,
             )
+
+        with st.expander("Substitutions and Fouls"):
+            try:
+                events = load_event_context(manifest, PROJECT_ROOT)
+                if events is None:
+                    st.info(
+                        "Verified event timelines are not available for this dataset."
+                    )
+                else:
+                    st.caption(
+                        "Original NBA event observations, not explanations of coaching intent. "
+                        "Substitutions show the recorded player ID and original text; incoming "
+                        "IDs are not reconstructed. Larger markers identify the selected player's "
+                        "recorded ID, so they do not capture every substitution involving that player. "
+                        "Unassigned technical fouls appear only under Both teams. Foul events include "
+                        "different subtypes and are not a cumulative personal-foul count."
+                    )
+                    event_key = f"events_{selected_series_id}_{selected_offense_key}_{from_game}_{to_game}"
+                    timeline_game = st.selectbox(
+                        "Timeline game",
+                        [from_game, to_game],
+                        index=1,
+                        format_func=lambda g: f"Game {g}",
+                        key=f"{event_key}_game",
+                    )
+                    timeline_team = st.selectbox(
+                        "Timeline team",
+                        ["Both teams", manifest.team_a, manifest.team_b],
+                        key=f"{event_key}_team",
+                    )
+                    timeline_types = st.multiselect(
+                        "Event types",
+                        ["Substitution", "Foul"],
+                        default=["Substitution", "Foul"],
+                        key=f"{event_key}_types",
+                    )
+                    filtered = events[
+                        events.game_number.eq(timeline_game)
+                        & events.event_type.isin(timeline_types)
+                    ]
+                    if timeline_team != "Both teams":
+                        filtered = filtered[filtered.team.eq(timeline_team)]
+                    filtered = filtered.sort_values(["elapsed_seconds", "source_order"])
+                    if filtered.empty:
+                        st.info("No events match these timeline filters.")
+                    else:
+                        ids = (
+                            df.loc[
+                                df.off_team.eq(selected_off_team)
+                                & df.offense_player.eq(selected_player),
+                                "off_player_id",
+                            ]
+                            .dropna()
+                            .unique()
+                        )
+                        person_id = int(ids[0]) if len(ids) == 1 else None
+                        duration = int(
+                            player_box[
+                                player_box.game_number == timeline_game
+                            ].game_seconds.iloc[0]
+                        )
+                        st.plotly_chart(
+                            make_event_timeline(filtered, duration, person_id),
+                            use_container_width=True,
+                        )
+                        st.dataframe(
+                            event_display(filtered),
+                            use_container_width=True,
+                            hide_index=True,
+                        )
+            except (ValueError, OSError) as exc:
+                st.warning(f"Event timeline is unavailable: {exc}")
 
         transition_comparison = calculate_transition_share_changes(
             player_df=player_df, from_game=from_game, to_game=to_game

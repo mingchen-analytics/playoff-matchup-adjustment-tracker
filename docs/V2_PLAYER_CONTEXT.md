@@ -94,5 +94,6 @@ Score remains 0.620 for Game 1 → Game 2.
 Personal-foul totals cannot locate foul trouble within the game. Minutes do not
 describe substitution timing. Plus/minus describes the team's scoring margin
 while a player was on court, not the player's causal impact. To inspect timing,
-the next data layer would be separately validated play-by-play substitutions
-and fouls. No coaching intent is asserted from the current tables.
+the next data layer is now available as separately validated
+[substitution/foul timelines](V2_EVENT_TIMELINE.md). No coaching intent is asserted
+from these descriptive observations.
