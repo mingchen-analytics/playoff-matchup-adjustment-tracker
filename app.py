@@ -912,19 +912,22 @@ else:
                 out_col1.metric(
                     "PTS/75",
                     f'{current_outcome["PTS/75"]:.1f}',
-                    f'{current_outcome["PTS/75"] - previous_outcome["PTS/75"]:+.1f}'
+                    f'{current_outcome["PTS/75"] - previous_outcome["PTS/75"]:+.1f}',
+                    delta_color="off"
                 )
 
                 out_col2.metric(
                     "eFG%",
                     f'{current_outcome["eFG%"]:.1f}%',
-                    f'{current_outcome["eFG%"] - previous_outcome["eFG%"]:+.1f} pp'
+                    f'{current_outcome["eFG%"] - previous_outcome["eFG%"]:+.1f} pp',
+                    delta_color="off"
                 )
 
                 out_col3.metric(
                     "TOV/75",
                     f'{current_outcome["TOV/75"]:.1f}',
-                    f'{current_outcome["TOV/75"] - previous_outcome["TOV/75"]:+.1f}'
+                    f'{current_outcome["TOV/75"] - previous_outcome["TOV/75"]:+.1f}',
+                    delta_color="off"
                 )
 
         outcome_display = outcome_df[[
@@ -998,6 +1001,8 @@ else:
     The largest game-to-game change occurred from **Game 1 to Game 2**, when the Adjustment Score reached **0.620**. Hartenstein's matchup share increased by roughly **53 percentage points**, while Caruso's fell by about **30 points**.
 
     That change also made the assignment more concentrated: the primary defender share rose from **36.2% to 54.6%**, while HHI increased from **0.204 to 0.340**.
+
+    In the same transition, Wembanyama's recorded **PTS/75 fell from 38.3 to 22.1** and **TOV/75 rose from 2.9 to 4.6**, while **eFG% changed only slightly from 66.2% to 64.7%**. That pattern is descriptive context, not proof that the matchup change caused the outcome.
 
     Game 3 then moved toward a near-even Holmgren–Hartenstein split. The top two defenders still accounted for **67.5%** of Wembanyama's recorded matchup time even though neither defender individually exceeded 34%.
 
