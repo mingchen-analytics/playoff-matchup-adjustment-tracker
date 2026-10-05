@@ -1,0 +1,27 @@
+series_id: 2026_nyk_sas_api_20261005
+season: 2025-26
+season_type: Playoffs
+playoff_round: NBA Finals
+team_a: NYK
+team_b: SAS
+games:
+- game_number: 1
+  game_id: '0042500401'
+  game_date: '2026-06-03'
+- game_number: 2
+  game_id: '0042500402'
+  game_date: '2026-06-05'
+- game_number: 3
+  game_id: '0042500403'
+  game_date: '2026-06-08'
+- game_number: 4
+  game_id: '0042500404'
+  game_date: '2026-06-10'
+- game_number: 5
+  game_id: '0042500405'
+  game_date: '2026-06-13'
+series_complete: true
+source_csv: null
+default_player: null
+notes: Discovered from NBA LeagueGameFinder played-game results; complete means one
+  team reached four wins.

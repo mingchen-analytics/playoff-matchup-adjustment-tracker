@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_min_sas_api_20261005",
+  "endpoint": "NBA PlayByPlayV3",
+  "status": "complete",
+  "started_at": "2026-10-05T20:00:33.444378+00:00",
+  "manifest_sha256": "d10139e825f90e644e5f883142cc9cf989225fd86b028dc12142fe390dbb872b",
+  "normalizer_sha256": "db6669983a4718530d210f01a3eedd8a62eba2ce0a98b29832ca0dcf5a52499f",
+  "team_game_log_sha256": "1bb7049a4a8c1865ff2fb1365701416dea071f09bc6ef252bf17e21c761659dd",
+  "player_dataset_sha256": "c97c5184bf0f480277a5d95fe9606db8f198fa2a34d5d99a009799d5723bd1cf",
+  "games": [
+    {
+      "game_id": "0042500231",
+      "game_number": 1,
+      "status": "fetched",
+      "raw_actions": 504,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "SAS",
+      "away_team": "MIN",
+      "final_home_score": 102,
+      "final_away_score": 104,
+      "duplicate_action_numbers": 30,
+      "substitutions": 51,
+      "fouls": 47,
+      "rows": 98,
+      "acquisition": {
+        "game_id": "0042500231",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:33.614035+00:00",
+        "raw_sha256": "f181be48e0c76fecb38d5bdeaa79fc63774da53d95a573f0951fdeec5511ae58"
+      },
+      "dataset_sha256": "c34f63eeccd8cc852298380cdd7d856d86af79c275e1a5c24bb3484061e1e2b9"
+    },
+    {
+      "game_id": "0042500232",
+      "game_number": 2,
+      "status": "fetched",
+      "raw_actions": 559,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "SAS",
+      "away_team": "MIN",
+      "final_home_score": 133,
+      "final_away_score": 95,
+      "duplicate_action_numbers": 31,
+      "substitutions": 53,
+      "fouls": 54,
+      "rows": 107,
+      "acquisition": {
+        "game_id": "0042500232",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:35.974859+00:00",
+        "raw_sha256": "da15586535dcdcc1e593e831ea84684c6fd526d45e1544cdaa95b8f372f56cfc"
+      },
+      "dataset_sha256": "7695b28edc698a7b10f5585825481339299ee426ace75990ff4609225a7137a2"
+    },
+    {
+      "game_id": "0042500233",
+      "game_number": 3,
+      "status": "fetched",
+      "raw_actions": 537,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "MIN",
+      "away_team": "SAS",
+      "final_home_score": 108,
+      "final_away_score": 115,
+      "duplicate_action_numbers": 26,
+      "substitutions": 55,
+      "fouls": 49,
+      "rows": 104,
+      "acquisition": {
+        "game_id": "0042500233",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:38.226533+00:00",
+        "raw_sha256": "bc5853e9af23629b0b8d552df703da3b0c4bca9a3f6d6f396bb1bc73eef28601"
+      },
+      "dataset_sha256": "ff7ee586b2d86ee282e6790255aae392b16e9340309ddd8d2b35f029e7a80c63"
+    },
+    {
+      "game_id": "0042500234",
+      "game_number": 4,
+      "status": "fetched",
+      "raw_actions": 520,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "MIN",
+      "away_team": "SAS",
+      "final_home_score": 114,
+      "final_away_score": 109,
+      "duplicate_action_numbers": 22,
+      "substitutions": 58,
+      "fouls": 43,
+      "rows": 101,
+      "acquisition": {
+        "game_id": "0042500234",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:40.482240+00:00",
+        "raw_sha256": "7f4344705a4ce989d366a88219137a10ec07aa6a508a0c9f10da8a5cce11fb64"
+      },
+      "dataset_sha256": "d4a15bca581a5a419fe1d7d20fcda751f730f777bdd7d184b4706e2995844da0"
+    },
+    {
+      "game_id": "0042500235",
+      "game_number": 5,
+      "status": "fetched",
+      "raw_actions": 525,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "SAS",
+      "away_team": "MIN",
+      "final_home_score": 126,
+      "final_away_score": 97,
+      "duplicate_action_numbers": 28,
+      "substitutions": 61,
+      "fouls": 49,
+      "rows": 110,
+      "acquisition": {
+        "game_id": "0042500235",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:42.743099+00:00",
+        "raw_sha256": "9c53efafff76f4f35037c5e0dd5322668aabb338c2b03bffe31dc7e51703fd0b"
+      },
+      "dataset_sha256": "4137fc6d8bfea3e97299bcf32b4f92c4309bc19620102309fda90156db76816a"
+    },
+    {
+      "game_id": "0042500236",
+      "game_number": 6,
+      "status": "fetched",
+      "raw_actions": 531,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "MIN",
+      "away_team": "SAS",
+      "final_home_score": 109,
+      "final_away_score": 139,
+      "duplicate_action_numbers": 26,
+      "substitutions": 60,
+      "fouls": 43,
+      "rows": 103,
+      "acquisition": {
+        "game_id": "0042500236",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:45.009418+00:00",
+        "raw_sha256": "ac693384a7bb9185703a44f37021d106e671890ff3663521a123ff59781b2a5b"
+      },
+      "dataset_sha256": "739e4a27327458c9002228e219a46e6bff0a785eab2b0ed06dafd573c5aba455"
+    }
+  ],
+  "rows": 623,
+  "finished_at": "2026-10-05T20:00:45.150229+00:00"
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_cle_nyk_api_20261005",
+  "endpoint": "NBA PlayByPlayV3",
+  "status": "complete",
+  "started_at": "2026-10-05T20:00:03.347892+00:00",
+  "manifest_sha256": "e29cc1d9adac2df5ce8a94a1f63cb23957e290b0bc993de3edf6c35c2221dc40",
+  "normalizer_sha256": "db6669983a4718530d210f01a3eedd8a62eba2ce0a98b29832ca0dcf5a52499f",
+  "team_game_log_sha256": "794cc650c4eeb232dac3599361d7e73317dc6b5dc55c808df850069032b87dda",
+  "player_dataset_sha256": "bdcfb1966cdac1b1069ba763042b22920153c0c6e3af7bc7088226e2ff043e42",
+  "games": [
+    {
+      "game_id": "0042500301",
+      "game_number": 1,
+      "status": "fetched",
+      "raw_actions": 562,
+      "periods": 5,
+      "game_seconds": 3180,
+      "home_team": "NYK",
+      "away_team": "CLE",
+      "final_home_score": 115,
+      "final_away_score": 104,
+      "duplicate_action_numbers": 29,
+      "substitutions": 56,
+      "fouls": 55,
+      "rows": 111,
+      "acquisition": {
+        "game_id": "0042500301",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:03.526160+00:00",
+        "raw_sha256": "1a83c2c3e66545087cecf70732a359acb35188b564bd64169b40f93765ac1431"
+      },
+      "dataset_sha256": "0d0fea3b5dc3a5afdf841bb07647bda69e8c1c6388d1c98e146dc95efa8385ac"
+    },
+    {
+      "game_id": "0042500302",
+      "game_number": 2,
+      "status": "fetched",
+      "raw_actions": 477,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "NYK",
+      "away_team": "CLE",
+      "final_home_score": 109,
+      "final_away_score": 93,
+      "duplicate_action_numbers": 19,
+      "substitutions": 58,
+      "fouls": 42,
+      "rows": 100,
+      "acquisition": {
+        "game_id": "0042500302",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:05.879860+00:00",
+        "raw_sha256": "d601268fa473369525f9cc49ceb55c4afbe59402dc164f696aa20592fa1eddeb"
+      },
+      "dataset_sha256": "3670b1fda3f5b9a344b751de7bee390fb79be119bbcb508433e79e16faf3ff2c"
+    },
+    {
+      "game_id": "0042500303",
+      "game_number": 3,
+      "status": "fetched",
+      "raw_actions": 459,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "CLE",
+      "away_team": "NYK",
+      "final_home_score": 108,
+      "final_away_score": 121,
+      "duplicate_action_numbers": 23,
+      "substitutions": 43,
+      "fouls": 41,
+      "rows": 84,
+      "acquisition": {
+        "game_id": "0042500303",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:08.176061+00:00",
+        "raw_sha256": "8d8d4a948ff13278c0253936cb62d066bb3e0cc4814edf45daa22a83ac2dedd7"
+      },
+      "dataset_sha256": "a9e7509aa13083febc28c4b481403926626b70fc197e9f6e02649e7cbd16faf2"
+    },
+    {
+      "game_id": "0042500304",
+      "game_number": 4,
+      "status": "fetched",
+      "raw_actions": 494,
+      "periods": 4,
+      "game_seconds": 2880,
+      "home_team": "CLE",
+      "away_team": "NYK",
+      "final_home_score": 93,
+      "final_away_score": 130,
+      "duplicate_action_numbers": 30,
+      "substitutions": 47,
+      "fouls": 38,
+      "rows": 85,
+      "acquisition": {
+        "game_id": "0042500304",
+        "endpoint": "NBA PlayByPlayV3",
+        "fetched_at": "2026-10-05T20:00:10.443073+00:00",
+        "raw_sha256": "697d77d817abf67e072a1156f991601a993fbba12d3da5e9cc52c5aadc091b11"
+      },
+      "dataset_sha256": "a30af12e0099d47df663d62792c1f277b9bf5f67fd87f90b80cccf270785b76d"
+    }
+  ],
+  "rows": 380,
+  "finished_at": "2026-10-05T20:00:10.568519+00:00"
+}

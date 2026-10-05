@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "series_id": "2026_min_sas_api_20261005",
+  "status": "complete",
+  "coverage_complete": true,
+  "series_complete": true,
+  "expected_games": 6,
+  "games": [
+    {
+      "game_number": 1,
+      "game_id": "0042500231",
+      "status": "fetched",
+      "rows": 153,
+      "raw_sha256": "59517291f487b2efd03fcd28399ee605e7481503a8cf5c1efe7848e8c473cd21",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500231",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:10.731052+00:00",
+        "raw_sha256": "59517291f487b2efd03fcd28399ee605e7481503a8cf5c1efe7848e8c473cd21"
+      }
+    },
+    {
+      "game_number": 2,
+      "game_id": "0042500232",
+      "status": "fetched",
+      "rows": 269,
+      "raw_sha256": "b8a77c17a08948f7388ef70a55450a6bf5d097858692f04b0d2131689667f8d7",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500232",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:12.995782+00:00",
+        "raw_sha256": "b8a77c17a08948f7388ef70a55450a6bf5d097858692f04b0d2131689667f8d7"
+      }
+    },
+    {
+      "game_number": 3,
+      "game_id": "0042500233",
+      "status": "fetched",
+      "rows": 145,
+      "raw_sha256": "db300132e66284f4f372237a76a34459d217eaf09b6bcad49c4ed006e0593da3",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500233",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:15.229532+00:00",
+        "raw_sha256": "db300132e66284f4f372237a76a34459d217eaf09b6bcad49c4ed006e0593da3"
+      }
+    },
+    {
+      "game_number": 4,
+      "game_id": "0042500234",
+      "status": "fetched",
+      "rows": 153,
+      "raw_sha256": "4995e783f50c54b4ad676ab94a1c287554e5e55f4334839143809b971ad7687d",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500234",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:17.449115+00:00",
+        "raw_sha256": "4995e783f50c54b4ad676ab94a1c287554e5e55f4334839143809b971ad7687d"
+      }
+    },
+    {
+      "game_number": 5,
+      "game_id": "0042500235",
+      "status": "fetched",
+      "rows": 203,
+      "raw_sha256": "ace5b22964a1e2d87938ff66794dc6f0dd356a054248fbb21f3d54856974b20a",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500235",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:19.665216+00:00",
+        "raw_sha256": "ace5b22964a1e2d87938ff66794dc6f0dd356a054248fbb21f3d54856974b20a"
+      }
+    },
+    {
+      "game_number": 6,
+      "game_id": "0042500236",
+      "status": "fetched",
+      "rows": 212,
+      "raw_sha256": "cf846eb38671947293e250bb465773fb91cc16e0451cae323e6c9f7fba6a08ce",
+      "warnings": [],
+      "acquisition": {
+        "game_id": "0042500236",
+        "endpoint": "NBA BoxScoreMatchupsV3",
+        "fetched_at": "2026-10-05T20:00:21.934962+00:00",
+        "raw_sha256": "cf846eb38671947293e250bb465773fb91cc16e0451cae323e6c9f7fba6a08ce"
+      }
+    }
+  ],
+  "errors": [],
+  "started_at": "2026-10-05T20:00:10.580314+00:00",
+  "adapter_sha256": "9b09f31322043e76b7965336f2c98e111d80b800ac84a76be6e88441ff6097d3",
+  "manifest_sha256": "d10139e825f90e644e5f883142cc9cf989225fd86b028dc12142fe390dbb872b",
+  "discovery_sha256": "1bb7049a4a8c1865ff2fb1365701416dea071f09bc6ef252bf17e21c761659dd",
+  "source_verification": "approved_separate_snapshot",
+  "manual_parity": "fail",
+  "source_policy_sha256": "ce864dc1aed74651767632cd1d71dd983f88102a9c0fa54e817976b2ee73ae82",
+  "rows": 1135,
+  "quality": {
+    "status": "pass",
+    "rows": 1135,
+    "games": 6,
+    "offensive_players": 29,
+    "teams": [
+      "MIN",
+      "SAS"
+    ],
+    "duplicate_rows": 0,
+    "zero_matchup_time_rows": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "dataset_sha256": "0166b2d4aaa7f08ffa1e2fe971fadcc82842d08c311f36690000aabdc12b8afd",
+  "dataset_path": "2026_min_sas_api_20261005.csv",
+  "finished_at": "2026-10-05T20:00:22.071345+00:00"
+}
