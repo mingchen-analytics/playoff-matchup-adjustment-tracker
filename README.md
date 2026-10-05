@@ -248,6 +248,13 @@ Single-game matchup samples can be very small, so the main analytical signal in 
 playoff-matchup-adjustment-tracker/
 ├── app.py
 ├── data_pipeline.py
+├── data_sources/
+│   ├── __init__.py
+│   └── nba_matchups.py
+├── scripts/
+│   ├── __init__.py
+│   ├── fetch_matchup_game.py
+│   └── compare_api_manual.py
 ├── analytics/
 │   ├── __init__.py
 │   └── metrics.py
@@ -260,6 +267,7 @@ playoff-matchup-adjustment-tracker/
 │   └── OKC Spurs Matchup Data.csv
 ├── requirements.txt
 ├── requirements-dev.txt
+├── requirements-data.txt
 └── README.md
 ```
 
@@ -305,6 +313,79 @@ The test suite covers core analytical properties and data validation, including:
 - invalid matchup-time formats fail validation
 - negative numeric values fail validation
 - exact duplicate rows fail validation
+
+## NBA Matchup Data Ingestion POC
+
+The repository now includes a proof-of-concept adapter for NBA.com's game-level matchup data through the community-maintained `nba_api` package.
+
+The target endpoint is `BoxScoreMatchupsV3`, which accepts a 10-digit NBA Game ID and exposes the same core fields used by this project, including matchup minutes, partial possessions, defender/offensive time shares, points, assists, turnovers, blocks, shooting, free throws, and shooting fouls.
+
+The adapter normalizes the API response into the same schema as the current manually collected CSV, while retaining useful API-only fields such as player IDs, switches, potential assists, and help-defense statistics.
+
+### Install data-ingestion dependencies
+
+```bash
+pip install -r requirements.txt
+pip install -r requirements-data.txt
+```
+
+### Fetch one game
+
+2026 Western Conference Finals Game 1 (San Antonio at Oklahoma City) uses NBA Game ID `0042500311`.
+
+```bash
+python -m scripts.fetch_matchup_game \
+  --game-id 0042500311 \
+  --game-number 1
+```
+
+By default, the normalized result is written to:
+
+```text
+data/api/0042500311_matchups.csv
+```
+
+The `data/api/` folder is ignored by Git because these files are treated as reproducible local cache outputs.
+
+### Compare API data with the manually collected Game 1
+
+```bash
+python -m scripts.compare_api_manual \
+  --game-id 0042500311 \
+  --game-number 1
+```
+
+The comparison checks:
+
+- matchup rows by offensive player, defensive player, and teams
+- matchup time
+- partial possessions
+- defender/offensive/both-on time percentages
+- points, assists, turnovers, blocks, shooting, free throws, and shooting fouls
+
+Small tolerances are allowed for fields displayed with rounding on NBA.com.
+
+### Network reliability note
+
+NBA Stats endpoints can time out or block requests from cloud-hosted environments. A GitHub Actions smoke test confirmed that `stats.nba.com` was not reachable reliably from the hosted runner, even though the rest of the project's automated tests passed.
+
+For that reason, NBA network ingestion is intentionally separated from the dashboard and normal CI. The intended architecture is:
+
+```text
+NBA Game ID
+    ↓
+Local / controlled data fetch
+    ↓
+Normalized cached CSV
+    ↓
+Data validation
+    ↓
+Analytics
+    ↓
+Streamlit dashboard
+```
+
+This avoids making the user-facing app dependent on a live NBA endpoint and gives the project a reproducible raw-data layer.
 
 ## Limitations and Next Steps
 
