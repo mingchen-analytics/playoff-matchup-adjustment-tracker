@@ -33,6 +33,11 @@ def main():
     p.add_argument("--cache-dir", type=Path)
     p.add_argument("--output-dir", type=Path)
     p.add_argument("--verification-report", type=Path)
+    p.add_argument(
+        "--source-policy",
+        choices=["strict_parity", "separate_snapshot"],
+        default="strict_parity",
+    )
     p.add_argument("--timeout", type=float, default=20)
     p.add_argument("--retries", type=int, default=2)
     p.add_argument("--request-interval", type=float, default=2)
@@ -103,6 +108,7 @@ def main():
             output_dir=args.output_dir,
             offline=args.offline,
             verification_report=args.verification_report,
+            source_policy=args.source_policy,
             timeout=args.timeout,
             retries=args.retries,
             request_interval=args.request_interval,

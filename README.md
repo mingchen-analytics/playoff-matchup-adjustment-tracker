@@ -4,7 +4,7 @@
 
 A reusable basketball analytics system for tracking how defensive assignments change **game by game** during a playoff series.
 
-**Current status:** Manifest ingestion, game discovery, a standardized schema, cached-series loading, and multi-series controls are implemented. V1.0 acceptance remains **blocked by API/manual source parity**. The original five-game manual sample remains the default; no public case-study values were replaced. See [validation findings](docs/V1_VALIDATION.md).
+**Current status:** V1.0 implementation and validation are complete under the owner-approved independent API snapshot policy. Two complete real seven-game series are bundled: 2026 OKC–SAS (1,513 matchup rows) and 2025 OKC–IND (1,388 rows). The original five-game manual sample remains the default; its values and formulas are unchanged. API/manual numerical parity remains **failed**, not silently waived or relabeled as passing. See [validation findings](docs/V1_VALIDATION.md).
 
 ## Why I Built This
 
@@ -440,16 +440,29 @@ Discovery creates `series/<series_id>.yml` and caches the game log under `data/d
 
 For offline discovery, add `--offline --game-log-csv path/to/league_game_finder.csv`. Game IDs must remain strings with leading zeros.
 
-### Acquire a series after source parity is resolved
+### Acquire a separately versioned API snapshot
+
+The owner approved an independent-snapshot policy on 2026-10-05, recorded in `docs/source_policy.json`. This requires unchanged benchmark/adapter hashes and the recorded one-to-one identity comparison. Numerical differences remain acknowledged, and the original manual dataset is never replaced.
+
+```bash
+python -m scripts.fetch_series \
+  --season 2024-25 --team-a OKC --team-b IND --round "NBA Finals" \
+  --series-id 2025_okc_ind_api_NEW_TIMESTAMP \
+  --source-policy separate_snapshot --output-dir data/snapshots
+```
+
+Use a new timestamped series ID for each published version. `data/snapshots/` is checked in so the dashboard runs without network access or `nba_api`. Published snapshot CSVs cannot be overwritten through ingestion. Reports retain acquisition timestamps, raw and dataset hashes, manifest/discovery hashes, source policy hash, coverage, and the explicit failed manual-parity status. The imported Game 1 cache has an unknown acquisition timestamp, explicitly recorded as null rather than invented. Future fresh requests record UTC acquisition times.
+
+### Optional strict historical parity gate
 
 ```bash
 python -m scripts.compare_api_manual --game-id 0042500311 --game-number 1
 python -m scripts.fetch_series \
-  --manifest series/2025_26_okc_sas.yml \
+  --manifest path/to/manifest.yml \
   --verification-report data/api/verification.json
 ```
 
-**The second command currently refuses live series acquisition because the first command has not passed.** A passing report must match the current adapter and the original manual benchmark hash. Do not increase tolerances to hide count differences or label unreviewed data as verified.
+Without `--source-policy separate_snapshot`, strict parity remains the default and currently refuses live acquisition because the comparison has not passed. A passing report must match the current adapter and original manual benchmark hash. Do not increase tolerances to hide differences or label snapshots as parity-verified.
 
 With a passing gate, ingestion uses raw caches first, fetches missing games, retries a bounded number of times, spaces requests, validates each game, and publishes only when every configured game is present. Tune `--timeout`, `--retries`, and `--request-interval`; defaults are 20 seconds, 2 attempts, and 2 seconds between requests. Use `--cache-dir` or `--output-dir` for an alternative working location.
 
@@ -468,7 +481,7 @@ Offline mode makes no NBA requests and requires `data/raw/<game_id>.csv` for eve
 3. Generate its processed data and report using `scripts.fetch_series`.
 4. Start/reload the app and select the season, round, and series.
 
-Only successfully validated data reaches analytics. API manifests without cached processed datasets produce a clear unavailable message. The bundled seven-game manifest is currently such a pending configuration, not a second completed dataset. Tests use synthetic temporary series to verify switching without claiming another real series was acquired.
+Only successfully validated data reaches analytics. API manifests without processed datasets produce a clear unavailable message. The bundled dated manifests each have a complete real dataset and provenance report; tests verify both real-series switching and synthetic edge cases. The old pending OKC–SAS configuration was replaced by its dated, fully acquired snapshot configuration.
 
 ### Schema and reports
 
@@ -478,9 +491,9 @@ Reports distinguish:
 
 - `coverage_complete`: every game explicitly listed in the manifest was loaded.
 - `series_complete`: the manifest represents a decided series, rather than a sample or ongoing series.
-- `source_verification`: passing API/manual gate or `offline_unverified` exploration.
+- `source_verification`: strict parity `pass`, `offline_unverified` exploration, or `approved_separate_snapshot` (which explicitly retains `manual_parity: fail`).
 
-A failed/partial run records individual failed IDs and exits non-zero without publishing a complete dataset. The dashboard refuses data after a failed latest run or a changed dataset hash, rather than silently displaying an old successful file. Writes are atomic and raw/processed/report cache folders are ignored by Git.
+A failed/partial run records individual failed IDs and exits non-zero without publishing a complete dataset. The dashboard refuses an incomplete report or changed dataset/manifest hash. For dated series it prefers the frozen published snapshot over disposable working caches. Writes are atomic; raw/processed/report working cache folders are ignored by Git, while published `data/snapshots/` files are versioned.
 
 ## Validation and V1.0 Acceptance
 
@@ -491,7 +504,7 @@ python -m pytest -q
 
 Normal CI installs only app/test dependencies, blocks live HTTP in tests, and validates manifests, discovery, schema, cache reuse, partial failures, source gates, and actual Streamlit interactions. It preserves the original Wembanyama largest adjustment of **0.620**. The existing manual-only API smoke workflow remains separate from normal CI.
 
-The reusable software path is implemented and exercised offline. Full V1.0 acceptance still requires resolving Game 1 source differences and completing real multi-series acquisition/validation. Detailed status and the concrete source decision are recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md).
+V1.0 is implemented and verified with two full real series under the approved source policy. Historical parity remains failed and visible; its cause is unconfirmed. Detailed evidence is recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md). Merge and deployment remain separate owner decisions.
 
 V2+ remains outside this change: ML, play-by-play, lineups, video, scouting PDFs, and major UI redesign.
 

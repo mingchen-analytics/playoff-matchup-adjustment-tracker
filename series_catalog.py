@@ -1,6 +1,7 @@
 """Discover configured series and load validated snapshots without network access."""
 
 import json
+import hashlib
 from pathlib import Path
 import pandas as pd
 from series_manifest import load_manifest
@@ -24,6 +25,9 @@ def list_series(project_root):
             not bool(pair[1].source_csv),
             not (
                 Path(project_root) / "data/processed" / f"{pair[1].series_id}.csv"
+            ).exists()
+            and not (
+                Path(project_root) / "data/snapshots" / f"{pair[1].series_id}.csv"
             ).exists(),
             pair[1].series_id,
         )
@@ -46,12 +50,25 @@ def load_series(manifest, project_root):
         }
     else:
         path = root / "data/processed" / f"{manifest.series_id}.csv"
+        published = root / "data/snapshots" / f"{manifest.series_id}.csv"
+        if published.exists():
+            path = published
         report_path = path.with_suffix(".report.json")
         if not path.exists() or not report_path.exists():
             raise ValueError(
                 "Series data is unavailable. Run scripts.fetch_series in a controlled ingestion environment first."
             )
         provenance = json.loads(report_path.read_text(encoding="utf-8"))
+        if provenance.get("series_id") != manifest.series_id:
+            raise ValueError("Report belongs to another series.")
+        if (
+            provenance.get("manifest_sha256")
+            and provenance["manifest_sha256"]
+            != hashlib.sha256(
+                json.dumps(manifest.to_dict(), sort_keys=True).encode()
+            ).hexdigest()
+        ):
+            raise ValueError("Manifest differs from its snapshot report.")
         if provenance.get("status") != "complete" or not provenance.get(
             "coverage_complete"
         ):
@@ -71,6 +88,10 @@ def load_series(manifest, project_root):
     if provenance.get("source_verification") == "offline_unverified":
         quality["warnings"].append(
             "Offline snapshot; API/manual parity remains unresolved."
+        )
+    if provenance.get("source_verification") == "approved_separate_snapshot":
+        quality["warnings"].append(
+            "Independent API snapshot; numerical parity with the manual reference failed. Do not mix these sources."
         )
     if quality["warnings"]:
         quality["status"] = "warning"

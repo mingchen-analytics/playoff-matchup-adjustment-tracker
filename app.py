@@ -112,6 +112,8 @@ selected_series_id = st.sidebar.selectbox(
     list(by_id),
     format_func=lambda key: (
         f"{by_id[key].label} — {len(by_id[key].games)} games"
+        + (" · manual reference" if by_id[key].source_csv else " · API snapshot")
+        + (f" · {key[-8:]}" if "_api_" in key else "")
         + (" (sample / ongoing)" if not by_id[key].series_complete else "")
     ),
 )
@@ -135,6 +137,20 @@ if provenance.get("source_verification") == "offline_unverified":
     st.warning(
         "This cached API snapshot is exploratory. API/manual parity has not been approved."
     )
+if provenance.get("source_verification") == "approved_separate_snapshot":
+    st.warning(
+        "Independent API snapshot: numerical values differ from the manual reference. Do not mix the two sources."
+    )
+    with st.expander("Snapshot provenance"):
+        st.write(
+            {
+                "snapshot_started_at": provenance.get("started_at"),
+                "snapshot_finished_at": provenance.get("finished_at"),
+                "dataset_sha256": provenance.get("dataset_sha256"),
+                "manual_parity": provenance.get("manual_parity"),
+                "games": provenance.get("games"),
+            }
+        )
 
 if data_quality["errors"]:
     st.error("Data validation failed. Analysis has been stopped.")

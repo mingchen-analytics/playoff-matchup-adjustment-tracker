@@ -2,7 +2,7 @@
 
 ## Status
 
-**Reusable software implemented; full V1.0 acceptance blocked by unresolved source parity.** No merge or deployment has been performed. The original CSV and analytical formulas are unchanged.
+**V1.0 implementation and validation complete under the owner-approved independent-snapshot policy.** Two full real seven-game series are published and exercised in the dashboard. No merge or deployment has been performed. The original CSV and analytical formulas are unchanged. Historical numerical parity still fails; this is explicitly recorded rather than relabeled as passing.
 
 ## Completed engineering
 
@@ -12,12 +12,13 @@
 - Versioned standardized schema with IDs, dates, source provenance, display-scale percentages, and unchanged legacy analytics compatibility.
 - Local series catalog and Season → Round → Series → Player controls, including missing-data, sample/ongoing, and unverified-cache states.
 - API/manual parity reports that fail on missing values, empty data, duplicate identities, unmatched rows, or differences outside the existing tolerances.
-- Live series acquisition requires a passing report for the current adapter and original manual benchmark; offline exploration stays explicitly unverified.
+- Strict parity remains the default acquisition gate. The explicitly selected independent-snapshot policy requires the owner's approval record, unchanged adapter/benchmark hashes, and the recorded complete identity comparison. Offline exploration without that policy stays unverified.
+- Frozen dated snapshots, per-game acquisition metadata, raw/dataset/manifest/discovery hashes, source-policy hash, and visible failed-parity warnings. Snapshot ingestion refuses to overwrite a published dataset.
 - Deterministic normal CI, cache/coverage/hash validation, CLI tests, and actual Streamlit switching tests.
 
 ## Baseline and regression checks
 
-The baseline was 14 passing tests before changes; the expanded suite now has **53 passing tests**. The expanded suite additionally exercises configuration, discovery, schema, cache reuse, partial failures, verification gates, and dashboard interactions. All tests run without live HTTP; synthetic data exists only in temporary test roots.
+The baseline was 14 passing tests before changes; the expanded suite now has **66 passing tests**. It additionally exercises configuration, discovery, schema, cache reuse, partial failures, verification gates, approved-policy rejection on changed evidence, snapshot immutability, acquisition timestamps/cache metadata, real frozen data, tampered dataset/manifest rejection, and actual dashboard interactions. All tests run without live HTTP; synthetic data exists only in temporary test roots.
 
 The original dashboard still renders without exceptions and keeps Wembanyama as the default for the manual sample. His maximum Adjustment Score remains **0.620**, Game 1 → Game 2. The manual data still contains **1,074 rows, 29 offensive players, and five recorded games**. No empirical thresholds or causal claims were added.
 
@@ -67,7 +68,20 @@ A live NBA LeagueGameFinder query for OKC versus SAS, 2025-26 Playoffs, returned
 | 6 | `0042500316` | 2026-05-28 | L |
 | 7 | `0042500317` | 2026-05-30 | L |
 
-The original dataset covers Games 1–5 only. It is now configured as `2026_okc_sas_sample`, with `series_complete: false`. Its existing numerical findings remain intact. A separately discovered seven-game manifest, `2025_26_okc_sas`, is checked in as a **pending configuration**; it does not claim a completed matchup dataset.
+The original dataset covers Games 1–5 only. It is configured as `2026_okc_sas_sample`, with `series_complete: false`; its findings remain intact. The former pending seven-game configuration was replaced by `2026_okc_sas_api_20261005`, with a full validated API dataset and provenance report.
+
+## Real published snapshots
+
+Both series were discovered from NBA LeagueGameFinder and acquired from BoxScoreMatchupsV3. All configured games passed individual and combined schema/identity/numeric/coverage checks. Published CSVs and reports are in `data/snapshots/`, enabling offline dashboard use without ingestion dependencies.
+
+| Snapshot | Games | Matchup rows | Per-game row counts |
+| --- | ---: | ---: | --- |
+| 2026 OKC–SAS Western Conference Finals | 7 | 1,513 | 176, 204, 236, 249, 222, 263, 163 |
+| 2025 OKC–IND NBA Finals | 7 | 1,388 | 189, 233, 175, 168, 182, 258, 183 |
+
+The 2025 series has IDs `0042400401` through `0042400407`; the 2026 series has IDs `0042500311` through `0042500317`. Reports include UTC run/acquisition times and source hashes. The pre-existing Game 1 OKC–SAS cache has no known original acquisition timestamp; its provenance explicitly records null and an imported-cache explanation. No acquisition time is fabricated.
+
+AppTest exercises manual → real OKC–SAS → different-season real OKC–IND switching, with no exceptions/errors, valid player controls, calculated metrics, and visible source warnings. Published snapshots are immutable through the ingestion command; future versions require a new series ID. Disposable raw caches are reusable unless the operator intentionally uses a fresh cache directory.
 
 ## Acceptance checkpoint
 
@@ -75,25 +89,24 @@ The original dataset covers Games 1–5 only. It is now configured as `2026_okc_
 | --- | --- |
 | Identify a playoff series | Manifest and team/season CLI paths implemented |
 | Obtain/discover Game IDs | Live seven-game discovery succeeded; offline filtering tests pass |
-| Acquire or load matchup data | Live single-game fetch succeeded; raw-cache/offline and bounded-fetch paths tested |
+| Acquire or load matchup data | Both real seven-game series acquired; raw-cache/offline and bounded-fetch paths tested |
 | Normalize each game | Adapter direction fixed; canonical round-trip tests pass |
 | Automatically validate | Per-game, full coverage, numeric, identity, metadata, hash, and source checks implemented |
-| Combine standardized dataset | Manual five-game build passed; synthetic cached API series build passed |
-| Load multiple series in app | Actual switching verified with temporary synthetic second series |
+| Combine standardized dataset | Manual sample plus both complete real API series passed |
+| Load multiple series in app | Actual real-series and cross-season switching verified, plus synthetic one-game edge case |
 | Preserve analytical engine | Existing functions/formulas unchanged; 0.620 result preserved |
 | Passing tests | Expanded suite passes locally; remote PR CI reported separately |
 | Network-independent normal CI | No nba_api dependency required for ordinary tests; live HTTP blocked by fixture |
 | Document full pipeline | README and this validation record |
 | Understandable failures | Missing-game/stale-file/unverified-source tests and visible app errors |
-| Resolve source parity / real-series acceptance | **Blocked**; complete live multi-game ingestion and a second real series have not been approved or demonstrated |
+| Source policy / real-series acceptance | Owner approved independent snapshots; two complete real series validated. Historical parity remains failed and visible |
 
-## Concrete decision needed
+## Approved source decision
 
-Before proceeding to production API series acquisition, Ming must choose the source policy for the documented discrepancies:
+On 2026-10-05 Ming explicitly approved the recommended policy: preserve the historical manual sample and create separate timestamped current API snapshots. The approval is recorded in [source_policy.json](source_policy.json), bound to the unchanged comparison report hash. Numerical discrepancies are acknowledged; their cause remains unconfirmed.
 
-1. **Recommended:** Keep the manual five-game historical case study and introduce current API snapshots as separate, timestamped datasets, clearly documenting that they are not identical. This requires explicitly approving a revised source gate based on schema/identity validation and acknowledged snapshot differences rather than exact historical parity.
-2. Keep exact API/manual parity as mandatory; obtain the original NBA.com snapshot or further evidence and resolve the discrepancies before continuing live series ingestion.
+`--source-policy separate_snapshot` is explicit, not an automatic fallback after strict verification fails. It rejects changed comparison, adapter, benchmark, or approval evidence. The normal strict gate is retained and still rejects live ingestion on the failed numerical comparison. No tolerances or comparison outcomes were altered.
 
-No automatic source-policy bypass was added. Both the original case study and pending seven-game configuration are available for review, and the next code change can be scoped to the approved policy. Full V1.0 should only be declared after that policy is implemented, a real full-series ingestion passes, and real multi-series behavior is demonstrated.
+The revised policy, full-series acquisition, second real series, and real multi-series dashboard tests have now been completed. V1.0 implementation is ready for owner review; merging the draft PR and deploying remain separate actions, not performed automatically.
 
-This stop follows the project handoff's Phase 1 decision gate (“Do not proceed to full automation until the source relationship is understood”) and its rule to ask when public results would need rewriting or a new source decision is required. Routine engineering continued to a reviewable PR before raising this decision.
+The earlier pause followed the handoff's Phase 1 source-decision gate. Work resumed only after the explicit owner approval. V2+ scope (ML, play-by-play, lineups, video, scouting PDFs, major UI redesign) remains excluded.

@@ -74,6 +74,7 @@ def ingest_series(
     output_dir=None,
     offline=False,
     verification_report=None,
+    source_policy="strict_parity",
     timeout=20,
     retries=2,
     request_interval=2,
@@ -93,9 +94,19 @@ def ingest_series(
         "errors": [],
         "started_at": datetime.now(timezone.utc).isoformat(),
         "adapter_sha256": adapter_digest(),
+        "manifest_sha256": hashlib.sha256(
+            json.dumps(manifest.to_dict(), sort_keys=True).encode()
+        ).hexdigest(),
     }
     report_path = output / f"{manifest.series_id}.report.json"
     processed_path = output / f"{manifest.series_id}.csv"
+    discovery_path = cache / "discovery" / f"{manifest.series_id}.csv"
+    if discovery_path.exists():
+        report["discovery_sha256"] = sha256(discovery_path)
+    if output.name == "snapshots" and processed_path.exists():
+        raise ValueError(
+            "Published snapshots are immutable. Choose a new timestamped series_id to acquire another version."
+        )
     frames = []
     fetcher = fetcher or fetch_boxscore_matchups
     if request_interval < 0 or retries < 1 or timeout <= 0:
@@ -119,9 +130,40 @@ def ingest_series(
                 )
         else:
             # Cached snapshots can be explored offline; never imply API/manual parity.
-            if not offline:
+            if source_policy == "separate_snapshot":
+                policy_path = root / "docs/source_policy.json"
+                policy = json.loads(policy_path.read_text(encoding="utf-8"))
+                comparison_path = root / "docs/api_manual_game1_comparison.json"
+                comparison = json.loads(comparison_path.read_text(encoding="utf-8"))
+                if (
+                    policy.get("approved") is not True
+                    or policy.get("policy") != source_policy
+                    or policy.get("comparison_sha256") != sha256(comparison_path)
+                    or comparison.get("adapter_sha256") != adapter_digest()
+                    or comparison.get("manual_sha256")
+                    != sha256(root / "data/OKC Spurs Matchup Data.csv")
+                    or comparison.get("matched_rows") != 176
+                    or comparison.get("game_id") != "0042500311"
+                    or comparison.get("game_number") != 1
+                    or comparison.get("status") != "fail"
+                    or policy.get("manual_parity") != "fail"
+                    or comparison.get("manual_only")
+                    or comparison.get("api_only")
+                ):
+                    raise ValueError(
+                        "Separate-snapshot approval does not match the current adapter and benchmark."
+                    )
+                report["source_verification"] = "approved_separate_snapshot"
+                report["manual_parity"] = comparison["status"]
+                report["source_policy_sha256"] = sha256(policy_path)
+            elif source_policy != "strict_parity":
+                raise ValueError("Unknown source policy.")
+            elif not offline:
                 require_verification(verification_report, root)
-            report["source_verification"] = "offline_unverified" if offline else "pass"
+            if source_policy == "strict_parity":
+                report["source_verification"] = (
+                    "offline_unverified" if offline else "pass"
+                )
             fetched = False
             for game in manifest.games:
                 item = {
@@ -144,6 +186,20 @@ def ingest_series(
                         fetched = True
                         raw = fetcher(game.game_id, timeout=timeout, retries=retries)
                         atomic_write(raw_path, raw.to_csv(index=False))
+                        atomic_write(
+                            raw_path.with_suffix(".meta.json"),
+                            json.dumps(
+                                {
+                                    "game_id": game.game_id,
+                                    "endpoint": "NBA BoxScoreMatchupsV3",
+                                    "fetched_at": datetime.now(
+                                        timezone.utc
+                                    ).isoformat(),
+                                    "raw_sha256": sha256(raw_path),
+                                },
+                                indent=2,
+                            ),
+                        )
                         item["status"] = "fetched"
                     if (
                         raw.empty
@@ -162,6 +218,21 @@ def ingest_series(
                         raw_sha256=sha256(raw_path),
                         warnings=quality["warnings"],
                     )
+                    meta_path = raw_path.with_suffix(".meta.json")
+                    if meta_path.exists():
+                        item["acquisition"] = json.loads(
+                            meta_path.read_text(encoding="utf-8")
+                        )
+                        if item["acquisition"].get("raw_sha256") != sha256(raw_path):
+                            raise ValueError(
+                                "Raw cache differs from acquisition metadata."
+                            )
+                    else:
+                        item["acquisition"] = {
+                            "endpoint": "NBA BoxScoreMatchupsV3",
+                            "fetched_at": None,
+                            "note": "Imported cache; original acquisition timestamp unavailable.",
+                        }
                     # Retain IDs for both teams without guessing historical player identities.
                     if "teamId" in raw:
                         ids = raw.groupby("teamTricode").teamId.unique()
@@ -185,7 +256,7 @@ def ingest_series(
             raise ValueError("Some games failed; no complete dataset was published.")
         combined = pd.concat(frames, ignore_index=True)
         quality = validate_processed(combined, manifest)
-        if manifest.source_csv is None and offline:
+        if manifest.source_csv is None and offline and source_policy == "strict_parity":
             quality["warnings"].append(
                 "Offline API snapshot: API/manual parity has not been approved."
             )
