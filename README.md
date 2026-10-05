@@ -91,6 +91,31 @@ This view is designed for series-level pattern recognition: it makes it easier t
 
 For readability, the dashboard displays the defenders with the most total matchup time across the selected player's series.
 
+### Matchup Concentration
+
+The dashboard also measures whether a team's matchup plan is concentrated on one or two defenders or distributed more broadly.
+
+For each game it reports:
+
+- **Primary Defender Share** — the largest individual matchup-time share
+- **Top-2 Defender Share** — the combined share of the two most-used defenders
+- **HHI Matchup Concentration** — the sum of squared defender matchup shares
+- **Effective Defenders** — `1 / HHI`, a concentration-equivalent count
+
+Higher HHI means the matchup allocation is more concentrated. A lower Effective Defenders value means fewer defenders account for most of the matchup responsibility.
+
+For Victor Wembanyama:
+
+| Game | Primary Share | Top-2 Share | HHI | Effective Defenders |
+| --- | ---: | ---: | ---: | ---: |
+| 1 | 36.2% | 54.1% | 0.204 | 4.90 |
+| 2 | 54.6% | 71.8% | 0.340 | 2.94 |
+| 3 | 33.9% | 67.5% | 0.250 | 3.99 |
+| 4 | 36.1% | 57.7% | 0.209 | 4.79 |
+| 5 | 45.5% | 70.0% | 0.283 | 3.53 |
+
+This adds a second layer to the adjustment analysis. Game 2 was not only a different matchup distribution; it was also a more concentrated assignment. Game 3 then became a two-defender split, with Holmgren and Hartenstein combining for 67.5% of the recorded matchup time.
+
 ### Game-to-game Adjustment Score
 
 The dashboard quantifies changes in matchup allocation using **total variation distance** between consecutive games.
