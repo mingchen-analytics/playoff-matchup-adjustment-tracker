@@ -428,27 +428,26 @@ def build_adjustment_event_summary(
         previous_outcome = previous_outcome.iloc[0]
         current_outcome = current_outcome.iloc[0]
 
+        pts_change = describe_change(
+            current_outcome["PTS/75"],
+            previous_outcome["PTS/75"],
+            decimals=1
+        )
+        efg_change = describe_change(
+            current_outcome["eFG%"],
+            previous_outcome["eFG%"],
+            unit="%",
+            decimals=1
+        )
+        tov_change = describe_change(
+            current_outcome["TOV/75"],
+            previous_outcome["TOV/75"],
+            decimals=1
+        )
+
         outcome_sentence = (
-            "Over the same transition, "
-            + describe_change(
-                current_outcome["PTS/75"],
-                previous_outcome["PTS/75"],
-                decimals=1
-            )
-            + " for PTS/75, eFG% "
-            + describe_change(
-                current_outcome["eFG%"],
-                previous_outcome["eFG%"],
-                unit="%",
-                decimals=1
-            )
-            + ", and TOV/75 "
-            + describe_change(
-                current_outcome["TOV/75"],
-                previous_outcome["TOV/75"],
-                decimals=1
-            )
-            + "."
+            f"Over the same transition, PTS/75 {pts_change}, "
+            f"eFG% {efg_change}, and TOV/75 {tov_change}."
         )
         sentences.append(outcome_sentence)
 
