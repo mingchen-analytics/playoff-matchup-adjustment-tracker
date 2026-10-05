@@ -1,0 +1,585 @@
+{
+  "status": "fail",
+  "game_id": "0042500311",
+  "game_number": 1,
+  "failures": [
+    "MIN: 9 mismatches",
+    "Players PTS: 2 mismatches",
+    "Team PTS: 3 mismatches",
+    "FGM: 2 mismatches",
+    "FGA: 4 mismatches",
+    "SFL: 1 mismatches",
+    "Partial Poss: 2 mismatches",
+    "DEF Time Percent: 8 mismatches",
+    "OFF Time Percent: 7 mismatches",
+    "Both On Percent: 9 mismatches",
+    "FG%: 4 mismatches"
+  ],
+  "manual_rows": 176,
+  "api_rows": 176,
+  "checks": {
+    "MIN": {
+      "mismatches": 9,
+      "tolerance": 1.1,
+      "max_abs_difference": 3.0
+    },
+    "Players PTS": {
+      "mismatches": 2,
+      "tolerance": 0.0,
+      "max_abs_difference": 2.0
+    },
+    "Team PTS": {
+      "mismatches": 3,
+      "tolerance": 0.0,
+      "max_abs_difference": 2.0
+    },
+    "AST": {
+      "mismatches": 0,
+      "tolerance": 0.0,
+      "max_abs_difference": 0.0
+    },
+    "TOV": {
+      "mismatches": 0,
+      "tolerance": 0.0,
+      "max_abs_difference": 0.0
+    },
+    "BLK": {
+      "mismatches": 0,
+      "tolerance": 0.0,
+      "max_abs_difference": 0.0
+    },
+    "FGM": {
+      "mismatches": 2,
+      "tolerance": 0.0,
+      "max_abs_difference": 1.0
+    },
+    "FGA": {
+      "mismatches": 4,
+      "tolerance": 0.0,
+      "max_abs_difference": 1.0
+    },
+    "3PM": {
+      "mismatches": 0,
+      "tolerance": 0.0,
+      "max_abs_difference": 0.0
+    },
+    "3PA": {
+      "mismatches": 0,
+      "tolerance": 0.0,
+      "max_abs_difference": 0.0
+    },
+    "FTM": {
+      "mismatches": 0,
+      "tolerance": 0.0,
+      "max_abs_difference": 0.0
+    },
+    "FTA": {
+      "mismatches": 0,
+      "tolerance": 0.0,
+      "max_abs_difference": 0.0
+    },
+    "SFL": {
+      "mismatches": 1,
+      "tolerance": 0.0,
+      "max_abs_difference": 1.0
+    },
+    "Partial Poss": {
+      "mismatches": 2,
+      "tolerance": 0.11,
+      "max_abs_difference": 0.6000000000000014
+    },
+    "DEF Time Percent": {
+      "mismatches": 8,
+      "tolerance": 0.11,
+      "max_abs_difference": 0.3000000000000007
+    },
+    "OFF Time Percent": {
+      "mismatches": 7,
+      "tolerance": 0.11,
+      "max_abs_difference": 0.20000000000000284
+    },
+    "Both On Percent": {
+      "mismatches": 9,
+      "tolerance": 0.11,
+      "max_abs_difference": 0.3000000000000007
+    },
+    "FG%": {
+      "mismatches": 4,
+      "tolerance": 0.11,
+      "max_abs_difference": 50.0
+    },
+    "3P%": {
+      "mismatches": 0,
+      "tolerance": 0.11,
+      "max_abs_difference": 7.105427357601002e-15
+    }
+  },
+  "differences": [
+    {
+      "Offense Player": "Devin Vassell",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "03:04",
+      "api": "03:06"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "01:01",
+      "api": "00:59"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Jalen Williams",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "03:59",
+      "api": "04:01"
+    },
+    {
+      "Offense Player": "Julian Champagnie",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "01:42",
+      "api": "01:44"
+    },
+    {
+      "Offense Player": "Julian Champagnie",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "00:35",
+      "api": "00:38"
+    },
+    {
+      "Offense Player": "Stephon Castle",
+      "OFF Team": "SAS",
+      "Defense Player": "Chet Holmgren",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "02:03",
+      "api": "02:01"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "08:18",
+      "api": "08:21"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Chet Holmgren",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "02:47",
+      "api": "02:50"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "MIN",
+      "manual": "01:06",
+      "api": "01:09"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "Players PTS",
+      "manual": "9",
+      "api": "7"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "Players PTS",
+      "manual": "6",
+      "api": "4"
+    },
+    {
+      "Offense Player": "Devin Vassell",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "Team PTS",
+      "manual": "42",
+      "api": "40"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "Team PTS",
+      "manual": "23",
+      "api": "21"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "Team PTS",
+      "manual": "9",
+      "api": "7"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "FGM",
+      "manual": "4",
+      "api": "3"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "FGM",
+      "manual": "3",
+      "api": "2"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "FGA",
+      "manual": "4",
+      "api": "3"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Cason Wallace",
+      "DEF Team": "OKC",
+      "column": "FGA",
+      "manual": "3",
+      "api": "2"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "FGA",
+      "manual": "2",
+      "api": "1"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "FGA",
+      "manual": "5",
+      "api": "4"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "SFL",
+      "manual": "0",
+      "api": "1"
+    },
+    {
+      "Offense Player": "Stephon Castle",
+      "OFF Team": "SAS",
+      "Defense Player": "Chet Holmgren",
+      "DEF Team": "OKC",
+      "column": "Partial Poss",
+      "manual": "10.6",
+      "api": "10.2"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Chet Holmgren",
+      "DEF Team": "OKC",
+      "column": "Partial Poss",
+      "manual": "13.2",
+      "api": "13.8"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "DEF Time Percent",
+      "manual": "36.8",
+      "api": "36.6"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "DEF Time Percent",
+      "manual": "7.2",
+      "api": "7.000000000000001"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Jalen Williams",
+      "DEF Team": "OKC",
+      "column": "DEF Time Percent",
+      "manual": "24.7",
+      "api": "24.9"
+    },
+    {
+      "Offense Player": "Julian Champagnie",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "DEF Time Percent",
+      "manual": "11.3",
+      "api": "11.5"
+    },
+    {
+      "Offense Player": "Julian Champagnie",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "DEF Time Percent",
+      "manual": "4.2",
+      "api": "4.5"
+    },
+    {
+      "Offense Player": "Stephon Castle",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "DEF Time Percent",
+      "manual": "17.9",
+      "api": "17.599999999999998"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "DEF Time Percent",
+      "manual": "59.1",
+      "api": "59.3"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Chet Holmgren",
+      "DEF Team": "OKC",
+      "column": "DEF Time Percent",
+      "manual": "15.9",
+      "api": "16.1"
+    },
+    {
+      "Offense Player": "Devin Vassell",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "OFF Time Percent",
+      "manual": "44.7",
+      "api": "44.5"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "OFF Time Percent",
+      "manual": "4.9",
+      "api": "4.7"
+    },
+    {
+      "Offense Player": "Julian Champagnie",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "OFF Time Percent",
+      "manual": "3.1",
+      "api": "3.3000000000000003"
+    },
+    {
+      "Offense Player": "Stephon Castle",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "OFF Time Percent",
+      "manual": "11.8",
+      "api": "11.600000000000001"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "OFF Time Percent",
+      "manual": "39.7",
+      "api": "39.900000000000006"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Chet Holmgren",
+      "DEF Team": "OKC",
+      "column": "OFF Time Percent",
+      "manual": "13.4",
+      "api": "13.600000000000001"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "OFF Time Percent",
+      "manual": "5.3",
+      "api": "5.5"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "46.1",
+      "api": "45.800000000000004"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "9.7",
+      "api": "9.4"
+    },
+    {
+      "Offense Player": "Julian Champagnie",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "14.6",
+      "api": "14.799999999999999"
+    },
+    {
+      "Offense Player": "Julian Champagnie",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "5.1",
+      "api": "5.4"
+    },
+    {
+      "Offense Player": "Stephon Castle",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "21.3",
+      "api": "21.0"
+    },
+    {
+      "Offense Player": "Stephon Castle",
+      "OFF Team": "SAS",
+      "Defense Player": "Chet Holmgren",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "12.1",
+      "api": "11.899999999999999"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "62.1",
+      "api": "62.4"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Chet Holmgren",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "17.4",
+      "api": "17.7"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "Both On Percent",
+      "manual": "5.3",
+      "api": "5.5"
+    },
+    {
+      "Offense Player": "Dylan Harper",
+      "OFF Team": "SAS",
+      "Defense Player": "Cason Wallace",
+      "DEF Team": "OKC",
+      "column": "FG%",
+      "manual": "33.3",
+      "api": "50.0"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Ajay Mitchell",
+      "DEF Team": "OKC",
+      "column": "FG%",
+      "manual": "50.0",
+      "api": "100.0"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Alex Caruso",
+      "DEF Team": "OKC",
+      "column": "FG%",
+      "manual": "80.0",
+      "api": "75.0"
+    },
+    {
+      "Offense Player": "Victor Wembanyama",
+      "OFF Team": "SAS",
+      "Defense Player": "Shai Gilgeous-Alexander",
+      "DEF Team": "OKC",
+      "column": "FG%",
+      "manual": "75.0",
+      "api": "50.0"
+    }
+  ],
+  "matched_rows": 176,
+  "manual_only": 0,
+  "api_only": 0,
+  "raw_api_sha256": "c4ad038d7f1a9768e31d6ae75314b8fd14ef85a1e570fee47ff970707424ea80",
+  "manual_sha256": "8b187811df1b797d51553510d4c1884178e59eced8a2f0413964f893b75590a7",
+  "adapter_sha256": "9b09f31322043e76b7965336f2c98e111d80b800ac84a76be6e88441ff6097d3",
+  "checked_at": "2026-10-05T06:01:26.338898+00:00"
+}

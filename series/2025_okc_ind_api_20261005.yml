@@ -1,0 +1,33 @@
+series_id: 2025_okc_ind_api_20261005
+season: 2024-25
+season_type: Playoffs
+playoff_round: NBA Finals
+team_a: OKC
+team_b: IND
+games:
+- game_number: 1
+  game_id: '0042400401'
+  game_date: '2025-06-05'
+- game_number: 2
+  game_id: '0042400402'
+  game_date: '2025-06-08'
+- game_number: 3
+  game_id: '0042400403'
+  game_date: '2025-06-11'
+- game_number: 4
+  game_id: '0042400404'
+  game_date: '2025-06-13'
+- game_number: 5
+  game_id: '0042400405'
+  game_date: '2025-06-16'
+- game_number: 6
+  game_id: '0042400406'
+  game_date: '2025-06-19'
+- game_number: 7
+  game_id: '0042400407'
+  game_date: '2025-06-22'
+series_complete: true
+source_csv: null
+default_player: null
+notes: Discovered from NBA LeagueGameFinder played-game results; complete means one
+  team reached four wins.

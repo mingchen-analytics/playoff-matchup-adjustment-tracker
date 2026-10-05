@@ -1,0 +1,14 @@
+{
+  "policy": "separate_snapshot",
+  "approved": true,
+  "approved_on": "2026-10-05",
+  "authority": "Project owner explicitly approved preserving the manual sample and publishing independent timestamped API snapshots.",
+  "comparison_sha256": "a6dea4daff2add20adc7ad171cb2a4c08feb4a8a970d8aa92195d2342c6c32ac",
+  "manual_parity": "fail",
+  "constraints": [
+    "Never replace the original manual CSV or change analytical formulas.",
+    "Keep numerical comparison failures and tolerances unchanged.",
+    "Label API snapshots separately; preserve timestamps and source hashes.",
+    "A changed adapter or benchmark requires a renewed comparison and approval."
+  ]
+}

@@ -9,27 +9,29 @@ from data_pipeline import (
 
 
 def make_valid_data():
-    return pd.DataFrame({
-        "Game": [1, 1],
-        "Offense Player": ["Player A", "Player A"],
-        "OFF Team": ["AAA", "AAA"],
-        "Defense Player": ["Defender A", "Defender B"],
-        "DEF Team": ["BBB", "BBB"],
-        "MIN": ["01:00", "00:40"],
-        "Partial Poss": [5.0, 4.0],
-        "Players PTS": [4, 2],
-        "Team PTS": [8, 6],
-        "AST": [1, 0],
-        "TOV": [0, 1],
-        "BLK": [0, 0],
-        "FGM": [2, 1],
-        "FGA": [3, 2],
-        "3PM": [0, 0],
-        "3PA": [1, 1],
-        "FTM": [0, 0],
-        "FTA": [0, 0],
-        "SFL": [0, 0],
-    })
+    return pd.DataFrame(
+        {
+            "Game": [1, 1],
+            "Offense Player": ["Player A", "Player A"],
+            "OFF Team": ["AAA", "AAA"],
+            "Defense Player": ["Defender A", "Defender B"],
+            "DEF Team": ["BBB", "BBB"],
+            "MIN": ["01:00", "00:40"],
+            "Partial Poss": [5.0, 4.0],
+            "Players PTS": [4, 2],
+            "Team PTS": [8, 6],
+            "AST": [1, 0],
+            "TOV": [0, 1],
+            "BLK": [0, 0],
+            "FGM": [2, 1],
+            "FGA": [3, 2],
+            "3PM": [0, 0],
+            "3PA": [1, 1],
+            "FTM": [0, 0],
+            "FTA": [0, 0],
+            "SFL": [0, 0],
+        }
+    )
 
 
 def test_parse_matchup_time_mm_ss():
@@ -97,3 +99,17 @@ def test_repository_dataset_passes_validation():
     assert report["offensive_players"] == 29
     assert set(report["teams"]) == {"OKC", "SAS"}
     assert cleaned["matchup_seconds"].notna().all()
+
+
+def test_nonfinite_values_and_duplicate_columns_fail_cleanly():
+    for column in ["MIN", "FGA", "Partial Poss"]:
+        data = make_valid_data()
+        data[column] = data[column].astype(object)
+        data.loc[0, column] = float("inf")
+        _, report = prepare_matchup_data(data)
+        assert report["errors"]
+    data = make_valid_data()
+    data["game"] = data["Game"]
+    _, report = prepare_matchup_data(data)
+    assert report["status"] == "fail"
+    assert "Duplicate normalized" in report["errors"][0]

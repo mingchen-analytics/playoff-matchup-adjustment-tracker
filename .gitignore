@@ -5,3 +5,9 @@ venv/
 
 # API outputs are reproducible local cache files.
 data/api/
+
+# Raw snapshots, generated series, and diagnostic reports stay local.
+data/raw/
+data/normalized/
+data/discovery/
+data/processed/

@@ -115,7 +115,7 @@ def parse_matchup_time(value):
     except ValueError:
         return math.nan
 
-    if numeric_value < 0:
+    if not math.isfinite(numeric_value) or numeric_value < 0:
         return math.nan
 
     if 0 < numeric_value < 1:
@@ -183,6 +183,10 @@ def prepare_matchup_data(raw_df):
             + ", ".join(duplicate_column_names)
         )
 
+    if duplicate_column_names:
+        report["status"] = "fail"
+        return df, report
+
     if missing_columns:
         report["errors"].append(
             "Missing required columns: " + ", ".join(missing_columns)
@@ -221,7 +225,7 @@ def prepare_matchup_data(raw_df):
         df["game"] = df["game"].astype(int)
 
     df["matchup_seconds"] = df["min"].apply(parse_matchup_time)
-    invalid_time_count = int(df["matchup_seconds"].isna().sum())
+    invalid_time_count = int((~df["matchup_seconds"].map(math.isfinite)).sum())
 
     if invalid_time_count:
         report["errors"].append(
@@ -254,6 +258,10 @@ def prepare_matchup_data(raw_df):
                     missing_numeric_count,
                 )
             )
+
+        nonfinite_count = int((converted.notna() & ~converted.map(lambda v: math.isfinite(v) if pd.notna(v) else False)).sum())
+        if nonfinite_count:
+            report["errors"].append(_format_issue(f"Non-finite {column}", nonfinite_count))
 
         negative_count = int((converted < 0).fillna(False).sum())
         if negative_count:
@@ -320,6 +328,9 @@ def prepare_matchup_data(raw_df):
         set(df["off_team"].dropna())
         | set(df["def_team"].dropna())
     )
+
+    if df.empty:
+        report["errors"].append("Dataset contains no rows")
 
     if report["errors"]:
         report["status"] = "fail"
