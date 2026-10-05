@@ -306,6 +306,160 @@ def make_outcome_chart(outcome_df, selected_player):
     return fig
 
 
+def describe_change(current_value, previous_value, unit="", decimals=1):
+    delta = current_value - previous_value
+
+    if abs(delta) < 10 ** (-decimals):
+        return f"was essentially unchanged at {current_value:.{decimals}f}{unit}"
+
+    direction = "rose" if delta > 0 else "fell"
+    return (
+        f"{direction} from {previous_value:.{decimals}f}{unit} "
+        f"to {current_value:.{decimals}f}{unit}"
+    )
+
+
+def build_adjustment_event_summary(
+    selected_player,
+    adjustment_df,
+    concentration_df,
+    outcome_df
+):
+    """
+    Builds a rule-based summary of the largest game-to-game matchup adjustment.
+    The language is descriptive and intentionally avoids causal attribution.
+    """
+    if adjustment_df.empty:
+        return None
+
+    largest = adjustment_df.loc[
+        adjustment_df["Adjustment Score"].idxmax()
+    ]
+
+    previous_game = largest["From"]
+    current_game = largest["To"]
+    score = largest["Adjustment Score"]
+    defender = largest["Largest Share Change"]
+    share_delta = largest["Share Change (pp)"]
+
+    if share_delta > 0:
+        share_sentence = (
+            f"{defender}'s matchup share increased by "
+            f"{abs(share_delta):.1f} percentage points."
+        )
+    elif share_delta < 0:
+        share_sentence = (
+            f"{defender}'s matchup share decreased by "
+            f"{abs(share_delta):.1f} percentage points."
+        )
+    else:
+        share_sentence = (
+            f"{defender}'s matchup share was essentially unchanged."
+        )
+
+    sentences = [
+        (
+            f"The largest matchup redistribution for **{selected_player}** occurred "
+            f"from **{previous_game} to {current_game}**, with an Adjustment Score "
+            f"of **{score:.3f}**."
+        ),
+        share_sentence
+    ]
+
+    previous_concentration = concentration_df[
+        concentration_df["Game"] == previous_game
+    ]
+    current_concentration = concentration_df[
+        concentration_df["Game"] == current_game
+    ]
+
+    if not previous_concentration.empty and not current_concentration.empty:
+        previous_concentration = previous_concentration.iloc[0]
+        current_concentration = current_concentration.iloc[0]
+
+        previous_primary = previous_concentration["Primary Defender"]
+        current_primary = current_concentration["Primary Defender"]
+
+        if previous_primary != current_primary:
+            sentences.append(
+                f"The primary matchup changed from **{previous_primary}** "
+                f"({previous_concentration['Primary Share %']:.1f}%) to "
+                f"**{current_primary}** "
+                f"({current_concentration['Primary Share %']:.1f}%)."
+            )
+        else:
+            sentences.append(
+                f"**{current_primary}** remained the primary matchup, while "
+                + describe_change(
+                    current_concentration["Primary Share %"],
+                    previous_concentration["Primary Share %"],
+                    unit="%",
+                    decimals=1
+                )
+                + "."
+            )
+
+        hhi_delta = (
+            current_concentration["HHI"]
+            - previous_concentration["HHI"]
+        )
+
+        if abs(hhi_delta) < 0.005:
+            concentration_direction = "remained similarly concentrated"
+        elif hhi_delta > 0:
+            concentration_direction = "became more concentrated"
+        else:
+            concentration_direction = "became more distributed"
+
+        sentences.append(
+            f"The overall matchup allocation **{concentration_direction}** "
+            f"(HHI {previous_concentration['HHI']:.3f} → "
+            f"{current_concentration['HHI']:.3f})."
+        )
+
+    previous_outcome = outcome_df[
+        outcome_df["Game"] == previous_game
+    ]
+    current_outcome = outcome_df[
+        outcome_df["Game"] == current_game
+    ]
+
+    if not previous_outcome.empty and not current_outcome.empty:
+        previous_outcome = previous_outcome.iloc[0]
+        current_outcome = current_outcome.iloc[0]
+
+        outcome_sentence = (
+            "Over the same transition, "
+            + describe_change(
+                current_outcome["PTS/75"],
+                previous_outcome["PTS/75"],
+                decimals=1
+            )
+            + " for PTS/75, eFG% "
+            + describe_change(
+                current_outcome["eFG%"],
+                previous_outcome["eFG%"],
+                unit="%",
+                decimals=1
+            )
+            + ", and TOV/75 "
+            + describe_change(
+                current_outcome["TOV/75"],
+                previous_outcome["TOV/75"],
+                decimals=1
+            )
+            + "."
+        )
+        sentences.append(outcome_sentence)
+
+    sentences.append(
+        "*Outcome changes are descriptive context only and should not be "
+        "interpreted as evidence that the matchup adjustment caused the result.*"
+    )
+
+    return "\n\n".join(sentences)
+
+
 def calculate_matchup_concentration(player_df):
     """
     Summarizes how concentrated the matchup allocation is within each game.
@@ -990,36 +1144,16 @@ else:
             hide_index=True
         )
 
-    if selected_player == "Victor Wembanyama" and selected_off_team == "SAS":
-        st.markdown(
-            """
-    ### Key Insight
+    event_summary = build_adjustment_event_summary(
+        selected_player=selected_player,
+        adjustment_df=adjustment_df,
+        concentration_df=concentration_df,
+        outcome_df=outcome_df
+    )
 
-    The clearest signal is the shift in matchup allocation.  
-    For Victor Wembanyama, OKC did not use one fixed defensive matchup across the series.
-
-    The largest game-to-game change occurred from **Game 1 to Game 2**, when the Adjustment Score reached **0.620**. Hartenstein's matchup share increased by roughly **53 percentage points**, while Caruso's fell by about **30 points**.
-
-    That change also made the assignment more concentrated: the primary defender share rose from **36.2% to 54.6%**, while HHI increased from **0.204 to 0.340**.
-
-    In the same transition, Wembanyama's recorded **PTS/75 fell from 38.3 to 22.1** and **TOV/75 rose from 2.9 to 4.6**, while **eFG% changed only slightly from 66.2% to 64.7%**. That pattern is descriptive context, not proof that the matchup change caused the outcome.
-
-    Game 3 then moved toward a near-even Holmgren–Hartenstein split. The top two defenders still accounted for **67.5%** of Wembanyama's recorded matchup time even though neither defender individually exceeded 34%.
-
-    This is exactly the type of adjustment that can be hidden in series-level matchup totals.
-    """
-        )
-    else:
-        st.markdown(
-            f"""
-    ### Key Insight
-
-    This view shows how defensive matchup responsibility changed game by game for **{selected_player}**.
-
-    The main signal is not single-game efficiency, which can be noisy in small samples.  
-    The more reliable signal is **matchup allocation**: who guarded the offensive player, how much time they spent on that assignment, and whether that responsibility changed across the series.
-    """
-        )
+    if event_summary:
+        st.subheader("Adjustment Event Summary")
+        st.markdown(event_summary)
 
     st.subheader("Primary Defender Summary")
 
