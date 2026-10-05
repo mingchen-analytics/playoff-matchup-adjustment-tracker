@@ -180,6 +180,103 @@ def seconds_to_label(seconds):
     return f"{minutes}:{sec:02d}"
 
 
+def calculate_matchup_concentration(player_df):
+    """
+    Summarizes how concentrated the matchup allocation is within each game.
+
+    HHI is the sum of squared defender matchup shares.
+    Higher HHI means the assignment is more concentrated.
+
+    Effective defenders = 1 / HHI.
+    This is a concentration-equivalent count, not a literal defender count.
+    """
+    if player_df.empty:
+        return pd.DataFrame()
+
+    game_defender_time = (
+        player_df.groupby(["game", "defense_player"], as_index=False)["matchup_seconds"]
+        .sum()
+    )
+
+    game_defender_time["game_total_seconds"] = (
+        game_defender_time.groupby("game")["matchup_seconds"].transform("sum")
+    )
+
+    game_defender_time["matchup_share"] = (
+        game_defender_time["matchup_seconds"]
+        / game_defender_time["game_total_seconds"]
+    )
+
+    records = []
+
+    for game, game_df in game_defender_time.groupby("game"):
+        game_df = game_df.sort_values("matchup_share", ascending=False).copy()
+        shares = game_df["matchup_share"].tolist()
+
+        primary_share = shares[0] if shares else 0
+        top_two_share = sum(shares[:2])
+        hhi = sum(share ** 2 for share in shares)
+        effective_defenders = (1 / hhi) if hhi > 0 else 0
+
+        records.append({
+            "Game": f"Game {int(game)}",
+            "Primary Defender": game_df.iloc[0]["defense_player"] if len(game_df) else "",
+            "Primary Share %": primary_share * 100,
+            "Top-2 Share %": top_two_share * 100,
+            "HHI": hhi,
+            "Effective Defenders": effective_defenders
+        })
+
+    return pd.DataFrame(records)
+
+
+def make_concentration_chart(concentration_df):
+    if concentration_df.empty:
+        return None
+
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=concentration_df["Game"],
+            y=concentration_df["Primary Share %"],
+            mode="lines+markers",
+            name="Primary Defender Share",
+            hovertemplate="%{x}<br>Primary share: %{y:.1f}%<extra></extra>"
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=concentration_df["Game"],
+            y=concentration_df["Top-2 Share %"],
+            mode="lines+markers",
+            name="Top-2 Defender Share",
+            hovertemplate="%{x}<br>Top-2 share: %{y:.1f}%<extra></extra>"
+        )
+    )
+
+    fig.update_layout(
+        title="Matchup Concentration by Game",
+        yaxis=dict(
+            title="Share of Recorded Matchup Time (%)",
+            range=[0, 100]
+        ),
+        xaxis=dict(title=""),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="left",
+            x=0
+        ),
+        height=430,
+        margin=dict(l=70, r=40, t=90, b=60)
+    )
+
+    return fig
+
+
 def calculate_adjustment_scores(player_df):
     """
     Quantifies how much the defensive matchup-time distribution changes
@@ -613,6 +710,38 @@ else:
     if heatmap_fig is not None:
         st.plotly_chart(heatmap_fig, use_container_width=True)
 
+    concentration_df = calculate_matchup_concentration(player_df)
+
+    if not concentration_df.empty:
+        st.subheader("Matchup Concentration")
+        st.caption(
+            "Primary and Top-2 shares show how much of the assignment was concentrated "
+            "among the leading defenders. HHI summarizes the full distribution; higher HHI "
+            "means a more concentrated matchup plan. Effective Defenders = 1 / HHI."
+        )
+
+        concentration_fig = make_concentration_chart(concentration_df)
+        if concentration_fig is not None:
+            st.plotly_chart(concentration_fig, use_container_width=True)
+
+        concentration_display = concentration_df.copy()
+        concentration_display["Primary Share %"] = (
+            concentration_display["Primary Share %"].round(1)
+        )
+        concentration_display["Top-2 Share %"] = (
+            concentration_display["Top-2 Share %"].round(1)
+        )
+        concentration_display["HHI"] = concentration_display["HHI"].round(3)
+        concentration_display["Effective Defenders"] = (
+            concentration_display["Effective Defenders"].round(2)
+        )
+
+        st.dataframe(
+            concentration_display,
+            use_container_width=True,
+            hide_index=True
+        )
+
     adjustment_df = calculate_adjustment_scores(player_df)
 
     if not adjustment_df.empty:
@@ -662,7 +791,9 @@ else:
 
     The largest game-to-game change occurred from **Game 1 to Game 2**, when the Adjustment Score reached **0.620**. Hartenstein's matchup share increased by roughly **53 percentage points**, while Caruso's fell by about **30 points**.
 
-    Game 3 then moved toward a near-even Holmgren–Hartenstein split before Hartenstein again carried the largest share in Games 4–5.
+    That change also made the assignment more concentrated: the primary defender share rose from **36.2% to 54.6%**, while HHI increased from **0.204 to 0.340**.
+
+    Game 3 then moved toward a near-even Holmgren–Hartenstein split. The top two defenders still accounted for **67.5%** of Wembanyama's recorded matchup time even though neither defender individually exceeded 34%.
 
     This is exactly the type of adjustment that can be hidden in series-level matchup totals.
     """
