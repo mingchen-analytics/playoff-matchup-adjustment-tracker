@@ -34,6 +34,29 @@ def test_real_snapshot_coverage_and_provenance(series_id, rows):
     assert any("Do not mix" in warning for warning in quality["warnings"])
 
 
+@pytest.mark.parametrize("series_id,rows", SNAPSHOTS)
+def test_windows_snapshot_line_endings_preserve_validation(tmp_path, series_id, rows):
+    manifest = load_manifest(ROOT / "series" / f"{series_id}.yml")
+    output = tmp_path / "data/snapshots"
+    output.mkdir(parents=True)
+    for suffix in (".csv", ".report.json"):
+        original = ROOT / "data/snapshots" / f"{series_id}{suffix}"
+        target = output / original.name
+        target.write_bytes(original.read_bytes().replace(b"\n", b"\r\n"))
+    frame, quality, provenance = load_series(manifest, tmp_path)
+    assert len(frame) == rows
+    assert not quality["errors"]
+    assert provenance["manual_parity"] == "fail"
+
+    # An actual value change must fail even when the file has Windows endings.
+    dataset = output / f"{series_id}.csv"
+    data = dataset.read_bytes()
+    assert b"004" in data
+    dataset.write_bytes(data.replace(b"004", b"005", 1))
+    with pytest.raises(ValueError, match="Dataset hash differs"):
+        load_series(manifest, tmp_path)
+
+
 def test_real_multi_series_dashboard_switching():
     app = AppTest.from_file(str(ROOT / "app.py")).run(timeout=30)
     assert not app.exception and not app.error
