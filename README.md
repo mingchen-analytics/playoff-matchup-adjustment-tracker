@@ -6,6 +6,8 @@ A reusable basketball analytics system for tracking how defensive assignments ch
 
 **Current status:** V1.0 implementation and validation are complete under the owner-approved independent API snapshot policy. Two complete real seven-game series are bundled: 2026 OKC–SAS (1,513 matchup rows) and 2025 OKC–IND (1,388 rows). The original five-game manual sample remains the default; its values and formulas are unchanged. API/manual numerical parity remains **failed**, not silently waived or relabeled as passing. See [validation findings](docs/V1_VALIDATION.md).
 
+**First V2 milestone:** Verified offline game context is available for both API series: scores, result, home/away, point differential, and series records before/after each game. The table follows the selected player's team and the selected adjustment transition. See [game-context design and validation](docs/V2_GAME_CONTEXT.md).
+
 ## Why I Built This
 
 Series-level matchup totals are useful, but they can hide the timing of tactical adjustments.
@@ -511,9 +513,9 @@ python -m pytest -q
 
 Normal CI installs only app/test dependencies, blocks live HTTP in tests, and validates manifests, discovery, schema, cache reuse, partial failures, source gates, and actual Streamlit interactions. It preserves the original Wembanyama largest adjustment of **0.620**. The existing manual-only API smoke workflow remains separate from normal CI.
 
-V1.0 is implemented and verified with two full real series under the approved source policy. Historical parity remains failed and visible; its cause is unconfirmed. Detailed evidence is recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md). Merge and deployment remain separate owner decisions.
+V1.0 is implemented, merged and verified locally with two full real series under the approved source policy. Historical parity remains failed and visible; its cause is unconfirmed. Detailed evidence is recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md). Hosted Streamlit deployment has not been confirmed updated.
 
-V2+ remains outside this change: ML, play-by-play, lineups, video, scouting PDFs, and major UI redesign.
+Game context is the first V2 milestone. Player box scores, ML, play-by-play, lineups, video, scouting PDFs, and major UI redesign remain deferred.
 
 ## Author
 

@@ -6,19 +6,7 @@ from pathlib import Path
 import pandas as pd
 from series_manifest import load_manifest
 from series_schema import to_processed, to_analytics, validate_processed
-
-
-def _matches_dataset_hash(path, expected):
-    """Accept Git's Windows line endings without ignoring content changes.
-
-    Published snapshots use LF, but older Windows checkouts may contain CRLF.
-    Retain the original byte hash check for reports made from other files.
-    """
-    data = path.read_bytes()
-    return expected in {
-        hashlib.sha256(data).hexdigest(),
-        hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest(),
-    }
+from artifact_integrity import matches_text_sha256
 
 
 def list_series(project_root):
@@ -87,7 +75,7 @@ def load_series(manifest, project_root):
             raise ValueError(
                 "Latest ingestion was incomplete. Review its report before using this series."
             )
-        if not _matches_dataset_hash(path, provenance.get("dataset_sha256")):
+        if not matches_text_sha256(path, provenance.get("dataset_sha256")):
             raise ValueError("Dataset hash differs from its ingestion report.")
         frame = pd.read_csv(path, dtype={"game_id": "string", "game_date": "string"})
         quality = validate_processed(frame, manifest)
