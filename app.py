@@ -1070,41 +1070,6 @@ def parse_player_key(player_key):
 label_by_value = {value: label for label, value in offense_options}
 offense_values = [value for _, value in offense_options]
 
-default_value = (
-    "SAS|Victor Wembanyama"
-    if "SAS|Victor Wembanyama" in offense_values
-    else offense_values[0]
-)
-
-selected_offense_key = st.sidebar.selectbox(
-    "Offense Player",
-    options=offense_values,
-    index=offense_values.index(default_value),
-    format_func=lambda x: label_by_value[x]
-)
-
-selected_off_team, selected_player = parse_player_key(selected_offense_key)
-
-temp = df[
-    (df["off_team"] == selected_off_team) &
-    (df["offense_player"] == selected_player)
-].copy()
-
-defender_order = (
-    temp.groupby("defense_player")["matchup_seconds"]
-    .sum()
-    .sort_values(ascending=False)
-    .index
-    .tolist()
-)
-
-defender_options = ["All Defenders"] + defender_order
-
-highlight_defender = st.sidebar.selectbox(
-    "Defense Player",
-    options=defender_options
-)
-
 
 # -----------------------------
 # Main content
@@ -1134,6 +1099,7 @@ leaderboard_df = calculate_series_adjustment_leaderboard(
 
 if leaderboard_df.empty:
     st.info("No players meet the current leaderboard eligibility filters.")
+    analysis_values = offense_values
 else:
     leaderboard_fig = make_series_leaderboard_chart(leaderboard_df)
     if leaderboard_fig is not None:
@@ -1158,6 +1124,61 @@ else:
         use_container_width=True,
         hide_index=True
     )
+
+    analysis_values = [
+        f'{row["Team"]}|{row["Player"]}'
+        for _, row in leaderboard_df.iterrows()
+    ]
+
+st.subheader("Analyze a Player")
+st.caption(
+    "Choose an eligible player from the leaderboard to open the full "
+    "game-by-game adjustment analysis below."
+)
+
+default_analysis_value = (
+    "SAS|Victor Wembanyama"
+    if "SAS|Victor Wembanyama" in analysis_values
+    else analysis_values[0]
+)
+
+selected_offense_key = st.selectbox(
+    "Offensive player",
+    options=analysis_values,
+    index=analysis_values.index(default_analysis_value),
+    format_func=lambda value: label_by_value.get(value, value)
+)
+
+selected_off_team, selected_player = parse_player_key(selected_offense_key)
+
+temp = df[
+    (df["off_team"] == selected_off_team) &
+    (df["offense_player"] == selected_player)
+].copy()
+
+defender_order = (
+    temp.groupby("defense_player")["matchup_seconds"]
+    .sum()
+    .sort_values(ascending=False)
+    .index
+    .tolist()
+)
+
+defender_options = ["All Defenders"] + defender_order
+
+st.sidebar.subheader("Player Analysis")
+highlight_defender = st.sidebar.selectbox(
+    "Highlight defender",
+    options=defender_options
+)
+
+st.markdown(
+    f"### {selected_off_team} — {selected_player}"
+)
+st.caption(
+    "Full player-level view: timeline, matchup-share shifts, concentration, "
+    "outcome context, and automated adjustment summary."
+)
 
 st.divider()
 
