@@ -93,6 +93,20 @@ For readability, the dashboard displays the defenders with the most total matchu
 
 ### Series Adjustment Leaderboard
 
+The leaderboard is also the entry point into the player-level analysis workflow.
+
+After scanning the series, users can choose an eligible player directly beneath the leaderboard. The full dashboard below then updates to that player, including:
+
+- game-by-game matchup timeline
+- matchup-share heatmap
+- concentration metrics
+- outcome context
+- Adjustment Score
+- rule-based Adjustment Event Summary
+
+The defender highlight remains a secondary control in the sidebar so the main workflow stays focused on **series scan → player selection → deeper analysis**.
+
+
 The dashboard can also scan the entire series and rank offensive players by their **largest game-to-game matchup redistribution**.
 
 For each eligible player, the leaderboard reports:
