@@ -3,6 +3,7 @@ from pathlib import Path
 
 from series_catalog import list_series, load_series
 from game_context import load_game_context, context_for_team
+from player_context import load_player_context, player_context_display
 from analytics.metrics import (
     build_adjustment_event_summary,
     calculate_adjustment_scores,
@@ -331,6 +332,26 @@ try:
 except (ValueError, OSError) as exc:
     st.warning(f"Game context is unavailable: {exc}")
 
+player_box_display = None
+st.subheader("Player Game Box Score")
+try:
+    player_box = load_player_context(manifest, PROJECT_ROOT)
+    if player_box is None:
+        st.info("Verified player game box scores are not available for this dataset.")
+    else:
+        player_box_display = player_context_display(
+            player_box, df, manifest, selected_off_team, selected_player
+        )
+        st.caption(
+            f"Full-game statistics for {selected_player} from cached NBA BoxScoreTraditionalV3. "
+            "These differ from the matchup-attributed outcomes below. Non-participants "
+            "retain the source status and blank statistics; fouls and +/- do not explain "
+            "the timing or intent of a matchup change."
+        )
+        st.dataframe(player_box_display, use_container_width=True, hide_index=True)
+except (ValueError, OSError) as exc:
+    st.warning(f"Player game box scores are unavailable: {exc}")
+
 temp = df[
     (df["off_team"] == selected_off_team) & (df["offense_player"] == selected_player)
 ].copy()
@@ -553,6 +574,16 @@ else:
             st.dataframe(
                 game_context_display[
                     game_context_display["Game"].isin([from_label, to_label])
+                ],
+                use_container_width=True,
+                hide_index=True,
+            )
+
+        if player_box_display is not None:
+            st.markdown("**Player box scores around this adjustment**")
+            st.dataframe(
+                player_box_display[
+                    player_box_display["Game"].isin([from_label, to_label])
                 ],
                 use_container_width=True,
                 hide_index=True,

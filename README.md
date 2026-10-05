@@ -8,6 +8,11 @@ A reusable basketball analytics system for tracking how defensive assignments ch
 
 **First V2 milestone:** Verified offline game context is available for both API series: scores, result, home/away, point differential, and series records before/after each game. The table follows the selected player's team and the selected adjustment transition. See [game-context design and validation](docs/V2_GAME_CONTEXT.md).
 
+**Player game context:** Both API series also include full-game player box scores:
+minutes, starter status, points, FGA, FTA, turnovers, personal fouls and plus/minus.
+Player IDs join these records to matchup identities. DNP/inactive entries retain
+their source comments and blank statistics. See [player-context validation and CLI](docs/V2_PLAYER_CONTEXT.md).
+
 ## Why I Built This
 
 Series-level matchup totals are useful, but they can hide the timing of tactical adjustments.
@@ -515,7 +520,8 @@ Normal CI installs only app/test dependencies, blocks live HTTP in tests, and va
 
 V1.0 is implemented, merged and verified locally with two full real series under the approved source policy. Historical parity remains failed and visible; its cause is unconfirmed. Detailed evidence is recorded in [V1_VALIDATION.md](docs/V1_VALIDATION.md). Hosted Streamlit deployment has not been confirmed updated.
 
-Game context is the first V2 milestone. Player box scores, ML, play-by-play, lineups, video, scouting PDFs, and major UI redesign remain deferred.
+Team results and player game box scores are the first V2 context milestones.
+ML, play-by-play, lineups, video, scouting PDFs, and major UI redesign remain deferred.
 
 ## Author
 
