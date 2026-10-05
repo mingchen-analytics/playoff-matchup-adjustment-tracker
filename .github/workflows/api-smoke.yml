@@ -29,6 +29,6 @@ jobs:
 
       - name: Compare API with manual Game 1
         run: |
-          python scripts/compare_api_manual.py \
+          python -m scripts.compare_api_manual \
             --game-id 0042500311 \
             --game-number 1
