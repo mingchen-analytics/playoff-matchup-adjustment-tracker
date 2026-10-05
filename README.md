@@ -91,6 +91,21 @@ This view is designed for series-level pattern recognition: it makes it easier t
 
 For readability, the dashboard displays the defenders with the most total matchup time across the selected player's series.
 
+### Adjustment Event Summary
+
+The dashboard generates a **rule-based summary** of the largest game-to-game matchup adjustment for the selected offensive player.
+
+The summary combines:
+
+- the largest Adjustment Score
+- the defender with the largest matchup-share change
+- any change in the primary defender
+- the direction of HHI matchup concentration
+- PTS/75, eFG%, and TOV/75 over the same transition
+- an explicit caution that the outcome changes are descriptive rather than causal
+
+This summary is generated deterministically from the calculated metrics rather than by a language model. The goal is to reduce the amount of manual interpretation required while keeping the logic transparent and reproducible.
+
 ### Outcome Context
 
 The dashboard also summarizes the selected offensive player's recorded outcomes by game:
