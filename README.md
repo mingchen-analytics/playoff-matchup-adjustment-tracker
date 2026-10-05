@@ -129,6 +129,26 @@ Users can adjust both thresholds in the sidebar.
 
 Under the default eligibility settings, Victor Wembanyama ranks first in this series with a largest Adjustment Score of **0.620**, followed by Isaiah Hartenstein (**0.590**) and Keldon Johnson (**0.580**).
 
+### Game Transition Comparison
+
+The player-level dashboard also lets users inspect any available **game-to-game transition** directly rather than only the largest adjustment.
+
+For the selected transition, the dashboard shows:
+
+- each defender's matchup share before and after
+- percentage-point changes in defender responsibility
+- matchup time before and after
+- Adjustment Score
+- HHI concentration change
+- primary-defender change
+- PTS/75 change
+- eFG% change
+- TOV/75 change
+
+A horizontal change chart makes it easy to see which defenders gained or lost the most matchup responsibility.
+
+This turns the tool from a passive summary into an interactive scouting workflow: an analyst can identify an interesting transition, inspect the redistribution of assignments, and then compare the offensive outcomes over the same interval.
+
 ### Adjustment Event Summary
 
 The dashboard generates a **rule-based summary** of the largest game-to-game matchup adjustment for the selected offensive player.
