@@ -301,7 +301,7 @@ def test_fetcher_bounded_retries_without_http(monkeypatch):
 
 
 def test_dashboard_timeline_game_team_types_and_transition():
-    app = AppTest.from_file(str(ROOT / "app.py")).run(timeout=30)
+    app = AppTest.from_file(str(ROOT / "app_v1.py")).run(timeout=30)
     assert not app.exception and not app.error
     assert any("event timelines are not available" in i.value for i in app.info)
     app.sidebar.selectbox[2].set_value(SERIES[0]).run(timeout=30)

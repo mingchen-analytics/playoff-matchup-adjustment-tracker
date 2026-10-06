@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_original_case_study_renders_and_preserves_wembanyama_result():
-    app = AppTest.from_file(str(ROOT / "app.py")).run(timeout=30)
+    app = AppTest.from_file(str(ROOT / "app_v1.py")).run(timeout=30)
     assert not app.exception
     assert not app.error
     assert (
@@ -49,7 +49,7 @@ def test_multi_series_and_one_game_state(tmp_path):
     data.to_csv(tmp_path / "data/second.csv", index=False)
     save_manifest(manifest_from_dict(second), tmp_path / "series/second.yml")
     code = (
-        (ROOT / "app.py")
+        (ROOT / "app_v1.py")
         .read_text()
         .replace(
             "PROJECT_ROOT = Path(__file__).resolve().parent",

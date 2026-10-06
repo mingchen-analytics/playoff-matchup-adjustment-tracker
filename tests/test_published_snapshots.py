@@ -58,7 +58,7 @@ def test_windows_snapshot_line_endings_preserve_validation(tmp_path, series_id, 
 
 
 def test_real_multi_series_dashboard_switching():
-    app = AppTest.from_file(str(ROOT / "app.py")).run(timeout=30)
+    app = AppTest.from_file(str(ROOT / "app_v1.py")).run(timeout=30)
     assert not app.exception and not app.error
     for season, series_id in [
         ("2025-26", SNAPSHOTS[0][0]),

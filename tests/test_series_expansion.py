@@ -92,7 +92,7 @@ def test_dashboard_switches_all_new_rounds_and_shared_round_series():
     catalog, errors = list_series(ROOT)
     assert not errors
     by_id = {manifest.series_id: manifest for _, manifest in catalog}
-    app = AppTest.from_file(str(ROOT / "app.py")).run(timeout=30)
+    app = AppTest.from_file(str(ROOT / "app_v1.py")).run(timeout=30)
     assert not app.exception and not app.error
     assert app.sidebar.selectbox[2].value == "2026_okc_sas_sample"
     for series_id, game_count in NEW_SERIES:
