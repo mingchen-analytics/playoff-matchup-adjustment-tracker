@@ -87,7 +87,8 @@ double overtime; coverage 0.979). TVD 0.648 = overlap 0.310 + assignment 0.333
 | Chet Holmgren | 12.3% → 18.0% | +5.7 pp | −7.0 | +13.1 |
 
 Hartenstein shared far more of Wembanyama's floor time *and* guarded him more
-often when both were on (A 29% → 76%). Caruso's drop is almost entirely an
+often when both were on (assignment rate roughly 29% → 76%; Game 1 is a
+percentage-scale anomaly game, so treat the Game 1 level as approximate). Caruso's drop is almost entirely an
 assignment change. The redistribution was about half overlap, half assignment.
 Game 1 is one of the five games with the `off_time_percent` scale issue; S and
 the split do not use that field.
@@ -145,10 +146,12 @@ The max-adjusted leaderboard is still led by low-volume bench players and
 transitions across missed games. Ranking becomes meaningful only once phase 5
 restricts it to primary offensive players defined from box scores.
 
-## Open before phase 4
+## Open items
 
 - Cause of the five-game percentage scale issue (NBA source side).
-- Remote CI on the `rebuild` branch (draft PR to `main`).
+- External validity: see `research/FACE_VALIDITY.md`. The overlap component
+  matches documented causes; the assignment component is not yet confirmed
+  beyond the motivating case.
 
 ## Not done yet
 
