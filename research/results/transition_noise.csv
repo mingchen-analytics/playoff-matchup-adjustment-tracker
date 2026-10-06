@@ -1,4 +1,4 @@
-series_id,off_player_id,off_player,off_team,from_game,to_game,game_gap,possessions_before,possessions_after,tvd,null_median,null_p95,excess_tvd,p_value,uncertain,q_value,q_value_league
+series_id,off_player_id,off_player,off_team,from_game,to_game,game_gap,possessions_before,possessions_after,tvd,null_median,null_p95,excess_tvd,p_value,high_noise,q_value,q_value_league
 2025_okc_ind_api_20261005,201949,James Johnson,IND,2,6,4,4,3,0.7962962962962963,0.33333333333333337,0.75,0.4629629629629629,0.019245188702824295,True,0.09408758921380767,0.08140356215294003
 2025_okc_ind_api_20261005,204456,T.J. McConnell,IND,1,2,1,34,35,0.20248163681442172,0.2747899159663866,0.3949579831932773,-0.07230827915196486,0.8422894276430892,True,0.855247726529906,0.8865519323414895
 2025_okc_ind_api_20261005,204456,T.J. McConnell,IND,2,3,1,35,31,0.4004002725259751,0.26820276497695855,0.3953917050691244,0.13219750754901655,0.04573856535866033,True,0.14532081265397936,0.1409410090916185

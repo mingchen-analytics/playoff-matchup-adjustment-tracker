@@ -76,6 +76,43 @@ def matchup_measures(snapshot):
     return frame.sort_values(KEY).reset_index(drop=True)
 
 
+def _percentage_scale_check(frame, sum_o_ratio, tolerance=0.01):
+    """Find games whose off_time_percent is S times a per-player constant.
+
+    In most games off_time_percent equals S. In a few, every defender's value
+    for a player-game is off by the same factor, which points to a different
+    denominator on the source side rather than a different allocation. S is
+    always computed from matchup seconds, and ratios of shares are unaffected.
+    """
+    scale = frame.groupby(["game_number", "off_player_id"]).off_time_percent.sum() / 100
+    affected = scale[(scale - 1).abs() > tolerance]
+    games = sorted(int(g) for g in affected.index.get_level_values(0).unique())
+    in_games = frame.game_number.isin(games)
+    normalized = frame.off_time_percent / frame.groupby(
+        ["game_number", "off_player_id"]
+    ).off_time_percent.transform("sum")
+    gap = (normalized - frame.S).abs() * 100
+    ratio_games = sum_o_ratio.index.get_level_values(0)
+    return {
+        "off_time_percent_scale_games": games,
+        "off_time_percent_scale_player_games": int(len(affected)),
+        "off_time_percent_scale_min": float(affected.min()) if len(affected) else 1.0,
+        "off_time_percent_scale_max": float(affected.max()) if len(affected) else 1.0,
+        "normalized_off_time_percent_vs_s_max_pp_affected_games": float(
+            gap[in_games].max() if in_games.any() else 0.0
+        ),
+        "normalized_off_time_percent_vs_s_max_pp_other_games": float(
+            gap[~in_games].max() if (~in_games).any() else 0.0
+        ),
+        "sum_o_over_recorded_time_median_affected_games": float(
+            sum_o_ratio[ratio_games.isin(games)].median()
+        ) if ratio_games.isin(games).any() else None,
+        "sum_o_over_recorded_time_median_other_games": float(
+            sum_o_ratio[~ratio_games.isin(games)].median()
+        ),
+    }
+
+
 def audit_measures(
     snapshot, player_minutes=None, min_total_seconds=300, min_row_seconds=30
 ):
@@ -115,6 +152,7 @@ def audit_measures(
         "sum_o_over_recorded_time_p90": float(ratio.quantile(0.90)),
         "player_games_checked": int(len(ratio)),
     }
+    result.update(_percentage_scale_check(frame, ratio))
 
     if player_minutes is not None:
         court = np.minimum(
