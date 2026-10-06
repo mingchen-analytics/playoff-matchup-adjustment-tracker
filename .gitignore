@@ -11,3 +11,6 @@ data/raw/
 data/normalized/
 data/discovery/
 data/processed/
+
+# League acquisition raw caches stay local; outputs in data/league/ are versioned.
+data/league/raw/
