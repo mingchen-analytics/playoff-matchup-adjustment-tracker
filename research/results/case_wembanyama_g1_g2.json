@@ -1,0 +1,15 @@
+{
+  "series_id": "2026_okc_sas_api_20261005",
+  "player": "Victor Wembanyama",
+  "from_game": 1,
+  "to_game": 2,
+  "game_gap": 1,
+  "tvd": 0.6475990633748073,
+  "overlap": 0.309737061017024,
+  "assignment": 0.3330433565748796,
+  "entry_exit": 0.004818645782903817,
+  "comparable_share_before": 0.9978339350180505,
+  "comparable_share_after": 0.9788639365918099,
+  "coverage": 0.9788639365918099,
+  "low_coverage": false
+}

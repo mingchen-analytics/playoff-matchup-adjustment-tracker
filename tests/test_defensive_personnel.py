@@ -222,7 +222,7 @@ def test_manual_sample_is_not_joined_to_api_personnel(cases):
 
 def test_dashboard_personnel_follows_team_and_transition():
     sid = "2026_okc_sas_api_20261005"
-    app = AppTest.from_file(str(ROOT / "app.py")).run(timeout=30)
+    app = AppTest.from_file(str(ROOT / "app_v1.py")).run(timeout=30)
     assert not app.exception and not app.error
     assert any(
         "defensive personnel context is not available" in entry.value

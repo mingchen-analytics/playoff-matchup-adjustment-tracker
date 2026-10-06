@@ -32,7 +32,7 @@ After this fix, **all 176 matchup identities align one-to-one** with the origina
 
 ## Real source finding 2: values still differ
 
-Recorded evidence: [api_manual_game1_comparison.json](api_manual_game1_comparison.json). It includes benchmark/adapter hashes, timestamp, matched counts, tolerances, and individual mismatches. Its status is **fail**.
+Recorded evidence: [api_manual_game1_comparison.json](../docs/api_manual_game1_comparison.json). It includes benchmark/adapter hashes, timestamp, matched counts, tolerances, and individual mismatches. Its status is **fail**.
 
 | Field | Rows beyond existing tolerance | Maximum absolute difference |
 | --- | ---: | ---: |
@@ -103,7 +103,7 @@ AppTest exercises manual → real OKC–SAS → different-season real OKC–IND 
 
 ## Approved source decision
 
-On 2026-10-05 Ming explicitly approved the recommended policy: preserve the historical manual sample and create separate timestamped current API snapshots. The approval is recorded in [source_policy.json](source_policy.json), bound to the unchanged comparison report hash. Numerical discrepancies are acknowledged; their cause remains unconfirmed.
+On 2026-10-05 Ming explicitly approved the recommended policy: preserve the historical manual sample and create separate timestamped current API snapshots. The approval is recorded in [source_policy.json](../docs/source_policy.json), bound to the unchanged comparison report hash. Numerical discrepancies are acknowledged; their cause remains unconfirmed.
 
 `--source-policy separate_snapshot` is explicit, not an automatic fallback after strict verification fails. It rejects changed comparison, adapter, benchmark, or approval evidence. The normal strict gate is retained and still rejects live ingestion on the failed numerical comparison. No tolerances or comparison outcomes were altered.
 

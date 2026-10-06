@@ -147,7 +147,7 @@ def test_publication_cli_checks_evidence_before_writing(tmp_path):
 
 
 def test_dashboard_context_follows_player_team_and_transition():
-    app = AppTest.from_file(str(ROOT / "app.py")).run(timeout=30)
+    app = AppTest.from_file(str(ROOT / "app_v1.py")).run(timeout=30)
     assert not app.exception and not app.error
     assert any("context is not available" in item.value for item in app.info)
     app.sidebar.selectbox[2].set_value(SERIES[0]).run(timeout=30)

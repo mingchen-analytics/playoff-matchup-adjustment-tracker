@@ -1,0 +1,51 @@
+{
+  "simulations": 4000,
+  "seed": 20261005,
+  "time_basis": {
+    "transitions": 681,
+    "transitions_high_noise_heuristic": 255,
+    "transitions_spanning_missed_games": 38,
+    "transitions_q_below_0.1_league": 182,
+    "players": 183,
+    "players_q_below_0.1_league": 71,
+    "players_largest_spans_missed_games": 25
+  },
+  "possession_basis": {
+    "transitions": 678,
+    "transitions_high_noise_heuristic": 261,
+    "transitions_spanning_missed_games": 39,
+    "transitions_q_below_0.1_league": 141,
+    "players": 183,
+    "players_q_below_0.1_league": 54,
+    "players_largest_spans_missed_games": 25
+  },
+  "basis_agreement_at_q_below_0.10": {
+    "transitions_matched": 676,
+    "both_flag": 122,
+    "time_only": 60,
+    "possessions_only": 19,
+    "neither": 475,
+    "corr_excess_tvd": 0.8545500134266848,
+    "corr_tvd": 0.9437263169416852
+  },
+  "case_wembanyama_g1_g2": {
+    "tvd_time": 0.6475990633748073,
+    "null_median_time": 0.16687370600414075,
+    "excess_tvd_time": 0.4807253573706666,
+    "p_value_time": 0.00024993751562109475,
+    "q_value_league_time": 0.005673581604598851,
+    "tvd_poss": 0.5969672520695409,
+    "null_median_poss": 0.1714285714285714,
+    "excess_tvd_poss": 0.42553868064096956,
+    "p_value_poss": 0.00024993751562109475,
+    "q_value_league_poss": 0.006052058413967937
+  },
+  "audit_reproduction_time_basis": {
+    "filter": "both games >= 20 possessions",
+    "transitions": 477,
+    "median_observed_tvd": 0.2671986417657046,
+    "median_null_tvd": 0.19206579583938074,
+    "share_above_null_p95": 0.3752620545073375,
+    "corr_tvd_min_possessions": -0.35761549117453945
+  }
+}
